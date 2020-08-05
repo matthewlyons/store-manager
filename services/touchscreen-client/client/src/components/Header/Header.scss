@@ -1,0 +1,27 @@
+header {
+  .Icon {
+    position: fixed;
+    svg {
+      fill: white;
+      width: 80px;
+      height: 80px;
+    }
+  }
+  #BackIcon {
+    top: 58px;
+    left: 150px;
+  }
+  #HomeIcon {
+    top: 58px;
+    left: 250px;
+  }
+  #SearchIcon {
+    top: 58px;
+    left: 1690px;
+  }
+  #LogoIcon {
+    top: 100px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

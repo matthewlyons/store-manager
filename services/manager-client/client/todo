@@ -1,0 +1,19 @@
+In Progress
+
+-add estimated delivery date to order
+
+-Add extra product page to invoice
+
+-Add product import/ update function
+-Add product data import
+
+-Add Printing Confirmation to order view page
+
+
+DONE
+-Add draft version of order form
+-add save draft order to order form
+-add tax api to product form
+-add create customer modal to order form
+-add remove customer button to order form
+-Add draft model for mongodb

@@ -1,0 +1,157 @@
+[
+  {
+    "room": "Bedroom",
+    "image": "Main 1.jpg",
+    "link": "/Select",
+    "categories": [
+      {
+        "title": "Beds",
+        "image": "Beds.jpg"
+      },
+      {
+        "title": "Chests",
+        "image": "Chests.jpg"
+      },
+      {
+        "title": "Dressers",
+        "image": "Dressers.jpg"
+      },
+      {
+        "title": "Nightstands",
+        "image": "Nightstands.jpg"
+      },
+      {
+        "title": "Benches",
+        "image": "Benches.jpg"
+      },
+      {
+        "title": "Bedroom",
+        "image": "ViewAll.jpg"
+      }
+    ]
+  },
+  {
+    "room": "Dining",
+    "image": "Main 2.jpg",
+    "link": "/Select",
+    "categories": [
+      {
+        "title": "Tables",
+        "image": "Table.jpg"
+      },
+      {
+        "title": "Chairs",
+        "image": "Chair.jpg"
+      },
+      {
+        "title": "Stools",
+        "image": "Stool.jpg"
+      },
+      {
+        "title": "Buffets",
+        "image": "Buffet.jpg"
+      },
+      {
+        "title": "Wine",
+        "image": "Wine.jpg"
+      },
+      {
+        "title": "Dining",
+        "image": "ViewAll.jpg"
+      }
+    ]
+  },
+  {
+    "room": "Living",
+    "image": "Main 3.jpg",
+    "link": "/Select",
+    "categories": [
+      {
+        "title": "TVCab",
+        "image": "TVCab.jpg"
+      },
+      {
+        "title": "TVWall",
+        "image": "TVWall.jpg"
+      },
+      {
+        "title": "Occasional",
+        "image": "Occasional.jpg"
+      },
+      {
+        "title": "Curio",
+        "image": "Curio.jpg"
+      },
+      {
+        "title": "Clock",
+        "image": "Clock.jpg"
+      },
+      {
+        "title": "Living",
+        "image": "ViewAll.jpg"
+      }
+    ]
+  },
+  {
+    "room": "Office",
+    "image": "Main 4.jpg",
+    "link": "/Select",
+    "categories": [
+      {
+        "title": "Desks",
+        "image": "Desks.jpg"
+      },
+      {
+        "title": "FileCabinets",
+        "image": "FileCabinets.jpg"
+      },
+      {
+        "title": "Hutches",
+        "image": "Hutches.jpg"
+      },
+      {
+        "title": "Bookcase",
+        "image": "Bookcase.jpg"
+      },
+      {
+        "title": "DeskChairs",
+        "image": "DeskChairs.jpg"
+      },
+      {
+        "title": "Office",
+        "image": "ViewAll.jpg"
+      }
+    ]
+  },
+  {
+    "room": "Misc",
+    "image": "Main 5.jpg",
+    "link": "/Select",
+    "categories": [
+      {
+        "title": "Futon",
+        "image": "Futon.jpg"
+      },
+      {
+        "title": "Rocking",
+        "image": "Rocking.jpg"
+      },
+      {
+        "title": "Mirror",
+        "image": "Mirror.jpg"
+      },
+      {
+        "title": "Kids",
+        "image": "Kids.jpg"
+      },
+      {
+        "title": "Outdoor",
+        "image": "Outdoor.jpg"
+      },
+      {
+        "title": "Misc",
+        "image": "ViewAll.jpg"
+      }
+    ]
+  }
+]

@@ -1,0 +1,115 @@
+$Primary-Color: #08543f;
+
+.flex {
+  display: flex;
+}
+.flexCenter {
+  align-items: center;
+}
+.flexBaseline {
+  align-items: baseline;
+}
+.flexSpacer {
+  flex: 1;
+}
+
+.FullHeight {
+  height: 100%;
+}
+.FormMaxWidth {
+  max-width: 75%;
+}
+.SearchContainer {
+  width: 95%;
+  margin: auto;
+}
+
+.formContainer {
+  button {
+    margin: 8px;
+  }
+}
+
+.ListLink {
+  ul {
+    padding: 0;
+    margin: 10px;
+    .flexContainer {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 5px;
+      align-items: center;
+    }
+    a {
+      color: inherit;
+      text-decoration: inherit;
+      width: 100%;
+      height: 100%;
+    }
+    li {
+      list-style-type: none;
+      border-bottom: 1px solid lightgray;
+      cursor: pointer;
+      &:first-of-type {
+        border-top: 1px solid lightgray;
+      }
+      &:hover {
+        background-color: lightgray;
+        color: white;
+      }
+      input[type='number'] {
+        height: 100%;
+        padding: 5px;
+        width: 5%;
+      }
+    }
+  }
+}
+
+.visitForm {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.standardLink:hover {
+  background-color: gray !important;
+}
+.activeLink {
+  background-color: darkblue !important;
+  color: white;
+}
+
+.modalContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.TableStaffCell {
+  width: 125px;
+}
+
+.ProductModal {
+  width: 50%;
+  height: 50%;
+}
+.ProductQuantity {
+  float: right;
+  display: flex;
+  align-items: center;
+  p {
+    padding: 0px 10px;
+  }
+}
+
+.NoBottom {
+  border: none;
+}
+
+.data-grid {
+  width: 100%;
+}

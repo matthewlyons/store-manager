@@ -1,0 +1,373 @@
+body {
+  font-family: helvetica;
+  color: white;
+}
+
+#screensaver {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+  z-index: 9999;
+  display: none;
+}
+
+body {
+  background-color: #08543f;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.container {
+  height: 799px;
+  padding: 42px 0;
+}
+
+.SecondRow {
+  position: relative;
+  top: 70px;
+}
+
+#Screen2 {
+  display: none;
+}
+.FullHeight {
+  height: 100%;
+}
+
+/* Text */
+.h1 {
+  font-size: 3em;
+}
+.h2 {
+  font-size: 2.25em;
+}
+.h3 {
+  font-size: 1.7em;
+}
+.h4 {
+  font-size: 1.5em;
+}
+.h5 {
+  font-size: 1.25em;
+}
+.l1 {
+  line-height: 3em;
+}
+.l2 {
+  line-height: 2.25em;
+}
+.l3 {
+  line-height: 1.7em;
+}
+.l4 {
+  line-height: 1.5em;
+}
+.l5 {
+  line-height: 1.25em;
+}
+.p {
+  font-size: 1em;
+  color: white;
+}
+
+.TextBold {
+  font-weight: bold;
+}
+.TextItalic {
+  font-style: italic;
+}
+.TextUnderline {
+  text-decoration: underline;
+}
+.TextCrossed {
+  text-decoration: line-through;
+}
+
+/* Flex */
+.Flex {
+  display: flex;
+}
+.FlexCenter {
+  align-items: center;
+}
+.FlexColumn {
+  flex-direction: column;
+}
+.FlexSpacer {
+  flex: 1;
+}
+
+.Divider {
+  border-bottom: 2px solid white;
+  margin-bottom: 10px;
+}
+
+/* Slider */
+
+.slick-slide {
+  margin: 0 12.5px;
+  width: 522px;
+}
+
+.slick-slide > div:last-child {
+  padding-top: 25px;
+}
+.Image {
+  height: 92%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.CollectionTitle {
+  font-size: 20px;
+  font-family: helvetica;
+  padding: 5px;
+  color: black;
+}
+
+/* Structure */
+.ContainerWidth {
+  width: 1620px;
+  margin: auto;
+}
+.BackgroundImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.CollectionImage {
+  display: block;
+  width: 100%;
+  height: 90%;
+  object-fit: cover;
+}
+/* Header */
+.Header {
+  padding: 25px 0;
+  border-bottom: 2px solid white;
+  height: 146px;
+}
+#Logo {
+  width: 350px;
+}
+
+#IconBack {
+  position: fixed;
+  top: 58px;
+  left: 150px;
+}
+
+#IconHome {
+  position: fixed;
+  top: 58px;
+  left: 250px;
+}
+
+#IconSearch {
+  position: fixed;
+  top: 58px;
+  right: 150px;
+}
+
+.LogoContainer {
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Index */
+.IndexGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 25px;
+}
+.HiddenClick {
+  display: none;
+}
+
+/* Collection Page */
+#LeftButton {
+  position: fixed;
+  top: 600px;
+  right: 34.5px;
+}
+#RightButton {
+  position: fixed;
+  top: 600px;
+  left: 34.5px;
+}
+
+.Product {
+  height: 387px;
+}
+.Bottom {
+  margin-top: 25px;
+}
+.CollectionContainer {
+  height: 799px;
+  padding: 40px 0;
+}
+.SliderContainer {
+  height: 799px;
+  padding: 16px 0;
+}
+/* Product Page */
+.ProductGrid {
+  display: grid;
+  grid-template-columns: 49.5% 49.5%;
+  color: white;
+  grid-gap: 1%;
+}
+.Padding10 {
+  padding: 10px;
+}
+.FullWidth {
+  width: 100%;
+}
+.PTB20 {
+  padding: 20px 0;
+}
+.PB10 {
+  padding-bottom: 10px;
+}
+.PL40 {
+  padding-left: 40px;
+}
+
+#ProductPage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #08543f;
+  z-index: 1;
+}
+.FeatureList {
+  line-height: 25px;
+  text-indent: 20px;
+}
+
+#QR {
+  position: fixed;
+  bottom: 45px;
+  display: flex;
+  border: 1px solid white;
+  width: 234px;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 32px;
+  height: 130px;
+}
+
+.SearchField {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 25px;
+  height: 51px;
+}
+
+.react-simple-keyboard {
+  color: black;
+}
+
+.LoadingSpinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h2 {
+    font-size: 50px;
+  }
+}
+
+.lds-spinner {
+  color: official;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-spinner div {
+  transform-origin: 40px 40px;
+  animation: lds-spinner 1.2s linear infinite;
+}
+.lds-spinner div:after {
+  content: ' ';
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: 37px;
+  width: 6px;
+  height: 18px;
+  border-radius: 20%;
+  background: #fff;
+}
+.lds-spinner div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -1.1s;
+}
+.lds-spinner div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -1s;
+}
+.lds-spinner div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.9s;
+}
+.lds-spinner div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.8s;
+}
+.lds-spinner div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.7s;
+}
+.lds-spinner div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.6s;
+}
+.lds-spinner div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.5s;
+}
+.lds-spinner div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.4s;
+}
+.lds-spinner div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.3s;
+}
+.lds-spinner div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.2s;
+}
+.lds-spinner div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.1s;
+}
+.lds-spinner div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+}
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

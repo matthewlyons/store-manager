@@ -1,0 +1,58 @@
+[
+  {
+    "name": "manager-api",
+    "description": "Standard API for single document/ function api requests",
+    "type": "Manager",
+    "env": "server",
+    "port": 5000
+  },
+  {
+    "name": "manager-bulk",
+    "description": "API for bulk actions such as importing products/ customers",
+    "type": "Manager",
+    "env": "server",
+    "port": 5001
+  },
+  {
+    "name": "manager-invoice",
+    "description": "API for generating PDF invoices",
+    "type": "Manager",
+    "env": "server",
+    "port": 5002
+  },
+  {
+    "name": "manager-auth",
+    "description": "API for Authentication",
+    "type": "Manager",
+    "env": "server",
+    "port": 5003
+  },
+  {
+    "name": "touchscreen-api",
+    "description": "Touchscreen Product API",
+    "type": "Touchscreen",
+    "env": "server",
+    "port": 5005
+  },
+  {
+    "name": "manager-tax",
+    "description": "Tax Rate Api",
+    "type": "Manager",
+    "env": "server",
+    "port": 5006
+  },
+  {
+    "name": "manager-client",
+    "description": "Main React App Client",
+    "type": "Manager",
+    "env": "client",
+    "port": 80
+  },
+  {
+    "name": "touchscreen-client",
+    "description": "React App for instore Touchscreen Display",
+    "type": "Touchscreen",
+    "env": "client",
+    "port": 3001
+  }
+]
