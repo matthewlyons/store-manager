@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import SlideModal from '../../SlideModal';
 
+import { makeStyles } from '@material-ui/core/styles';
+
 import {
   Grid,
   Button,
@@ -20,7 +22,16 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { format } from 'react-phone-input-auto-format';
 import ListLink from '../../ListLink';
 
+const useStyles = makeStyles((theme) => ({
+  buttonGroup: {
+    '& > *': {
+      margin: theme.spacing(1)
+    }
+  }
+}));
+
 export default function CustomerForm(props) {
+  const classes = useStyles();
   const commonCities = [
     'Vancouver',
     'Portland',
@@ -491,15 +502,24 @@ export default function CustomerForm(props) {
           </React.Fragment>
         ) : (
           <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setNewAddress('');
-              }}
-            >
-              Add Address
-            </Button>
+            <div className={classes.buttonGroup}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  setNewAddress('');
+                }}
+              >
+                Add Address
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={addNewAddress}
+              >
+                Add Custom Address
+              </Button>
+            </div>
           </Grid>
         )}
 
