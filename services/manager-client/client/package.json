@@ -23,6 +23,7 @@
     "react-dropzone": "^10.2.1",
     "react-google-autocomplete": "^1.2.6",
     "react-google-places-autocomplete": "^2.3.0",
+    "react-hook-form": "^6.3.0",
     "react-number-format": "^4.4.1",
     "react-phone-input-auto-format": "^0.1.0",
     "react-places-autocomplete": "^7.3.0",

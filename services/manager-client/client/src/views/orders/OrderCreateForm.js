@@ -110,6 +110,14 @@ export default function OrderCreateForm(props) {
       if (customer.addresses[staticValues.address].state === 'Oregon') {
         orderObj.driversLicense = driversLicense;
       }
+    } else if (customer.addresses.length > 0) {
+      let address = {
+        street: customer.addresses[0].street,
+        city: customer.addresses[0].city,
+        state: customer.addresses[0].state,
+        zip: customer.addresses[0].zip
+      };
+      orderObj.address = address;
     }
 
     makeRequest('post', 'api', '/orders/', orderObj)
@@ -150,7 +158,16 @@ export default function OrderCreateForm(props) {
       if (customer.addresses[staticValues.address].state === 'Oregon') {
         orderObj.driversLicense = driversLicense;
       }
+    } else if (customer.addresses.length > 0) {
+      let address = {
+        street: customer.addresses[0].street,
+        city: customer.addresses[0].city,
+        state: customer.addresses[0].state,
+        zip: customer.addresses[0].zip
+      };
+      orderObj.address = address;
     }
+
     makeRequest('post', 'api', '/draftorders/', orderObj)
       .then((res) => {
         let order = res.data;

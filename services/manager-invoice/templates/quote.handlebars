@@ -867,10 +867,8 @@
         <section class="CustomerInformation Container">
             <h3 class="Font16 LH20">
                 {{../customer.name}}<br />
-                {{#if ../delivery}}
                 {{../address.street}}<br />{{../address.city}}, {{../address.state}}
                 {{../address.zip}}
-                {{/if}}
             </h3>
             <h3 class="TextCenter FlexFill Font16 LH20">
                 {{#each ../customer.phone}}
