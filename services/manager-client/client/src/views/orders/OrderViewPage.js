@@ -146,6 +146,12 @@ export default function OrderViewPage(props) {
           >
             <MenuItem
               component={Link}
+              to={`/Customers/View/${order.customer._id}`}
+            >
+              View Customer
+            </MenuItem>
+            <MenuItem
+              component={Link}
               to={`/Orders/Edit/Order/${props.match.params.id}`}
             >
               Edit Order
