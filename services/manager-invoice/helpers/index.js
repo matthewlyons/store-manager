@@ -19,6 +19,9 @@ hbs.registerHelper('ConvertDate', function (date) {
 hbs.registerHelper('getTotal', function (arg1, arg2) {
   return arg1 * arg2;
 });
+hbs.registerHelper('getTaxPercent', function (arg1) {
+  return arg1 * 100;
+});
 
 const mailerConfig = {
   host: 'smtp.office365.com',

@@ -862,23 +862,26 @@
                 {{/each}}
             </h3>
             <h3 class="TextRight Font16 LH20">
+                {{#if ../estimatedStoreArrival}}
                 <br />Estimated Store Arrival<br />{{../estimatedStoreArrival}} Weeks.
+                {{/if}}
             </h3>
         </section>
         <div class="Container BorderLine"></div>
         <section class="{{#ifEquals index ../pagesLength}}ProductTable{{else}}ProductTable Additional{{/ifEquals}}">
             <table class="Container">
                 <tr>
+                    <th class="TextCenter Bold Font14">Qty</th>
                     <th class="TextLeft Description Bold Font14">Description</th>
                     <th class="TextCenter Bold Font14">Status</th>
-                    <th class="TextCenter Bold Font14">Wood</th>
                     <th class="TextCenter Bold Font14">Color</th>
                     <th class="TextCenter Bold Font14">Rate</th>
-                    <th class="TextCenter Bold Font14">Qty</th>
+
                     <th class="TextRight Bold Font14" style="width: 1px;">Amount</th>
                 </tr>
                 {{#each products}}
                 <tr>
+                    <td class="TextCenter Regular Font14">{{quantity}}</td>
                     <td class="Regular Font14">
                         {{vendorCollection}} {{title}}<br />{{vendor.name}} | {{sku}}
                         {{#each notes}}
@@ -886,10 +889,8 @@
                         {{/each}}
                     </td>
                     <td class="TextCenter Regular Font14">{{status}}</td>
-                    <td class="TextCenter Regular Font14">{{wood}}</td>
                     <td class="TextCenter Regular Font14">{{color}}</td>
                     <td class="TextCenter Regular Font14">${{price}}</td>
-                    <td class="TextCenter Regular Font14">{{quantity}}</td>
                     <td class="TextCenter Regular Font14">${{getTotal quantity price}}</td>
                 </tr>
 
@@ -937,7 +938,8 @@
                     {{else}}
                     <h1 class="Font20"><br /></h1>
                     {{/if}}</h1>
-                    <h1 class="Font20">Sales Tax ({{../salesTaxRate}}%):</h1>
+
+                    <h1 class="Font20">Sales Tax ({{getTaxPercent ../salesTaxRate }}%):</h1>
                     <h1 class="Font20">Subtotal:</h1>
                     <h1 class="Font20">Deposit:</h1>
                     <h1 class="Font20"><br /></h1>

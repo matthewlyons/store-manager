@@ -29,7 +29,6 @@ app.post('/pdf', async (req, res) => {
   let html = await compileTemplate('order', order);
   let title = order.customer.name + ' Invoice';
   let pdf = await createPDF(html + html, title);
-
   printPDF(pdf)
     .then((pdf) => {
       res.send('Printing...');
@@ -46,12 +45,10 @@ app.post('/Email/:Type', async (req, res) => {
   let order = configureOrder(req.body.order);
 
   let html = await compileTemplate(req.params.Type, order);
-
-  let title = order.customer.name + ' Invoice';
+  let type = Type === 'order' ? 'Invoice' : 'Quote';
+  let title = `${order.customer.name} ${type}`;
   let pdf = await createPDF(html, title);
-  console.log(email);
-  console.log(order);
-  console.log(pdf);
+
   emailInvoice(pdf, email)
     .then(() => {
       res.send('Email Sent');
@@ -69,7 +66,7 @@ app.post('/Draft', async (req, res) => {
   let html = await compileTemplate('quote', order);
 
   let title = order.customer.name + ' Invoice';
-  let pdf = await createPDF(html + html, title);
+  let pdf = await createPDF(html, title);
   printPDF(pdf)
     .then((pdf) => {
       res.send('Printing...');
