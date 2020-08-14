@@ -1,12 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useSnackbar } from 'notistack';
+
+import { useAlert } from '../../customHooks';
 
 import { Button } from '@material-ui/core';
 
 import { StoreContext } from '../../context/StoreContext';
 
 export default function VisitorForm() {
-  const { enqueueSnackbar } = useSnackbar();
+  let { createAlert } = useAlert();
   const { makeRequest } = useContext(StoreContext);
 
   useEffect(() => {
@@ -15,9 +16,7 @@ export default function VisitorForm() {
         setData({ ...data, users: res.data });
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   }, []);
 
@@ -87,7 +86,6 @@ export default function VisitorForm() {
   const handleBack = () => {
     setData({ ...data, step: data.step - 1 });
   };
-
   const handleSubmit = () => {
     let visit = {
       user: data.employee._id,
@@ -101,9 +99,7 @@ export default function VisitorForm() {
         window.location.reload();
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 

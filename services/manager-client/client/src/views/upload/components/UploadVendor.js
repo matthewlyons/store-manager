@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../../customHooks';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UploadVendor(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const { setError, makeRequest } = useContext(StoreContext);
   const classes = useStyles();
   const [vendors, setVendors] = useState([]);
@@ -37,9 +37,7 @@ export default function UploadVendor(props) {
         setVendors(res.data);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   }, []);
 

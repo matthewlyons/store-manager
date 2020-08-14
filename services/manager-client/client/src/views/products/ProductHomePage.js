@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductHomePage() {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const { makeRequest } = useContext(StoreContext);
   const classes = useStyles();
 
@@ -37,15 +37,13 @@ export default function ProductHomePage() {
       makeRequest('get', 'api', `/products/search/${query}`)
         .then((res) => {
           if (res.data.length < 1) {
-            enqueueSnackbar('No Products Found', { variant: 'error' });
+            createAlert('No Products Found');
           } else {
             setProducts(res.data);
           }
         })
         .catch((error) => {
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     }
   }

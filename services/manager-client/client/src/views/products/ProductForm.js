@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Paper,
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductForm(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const { setSuccess, makeRequest } = useContext(StoreContext);
   useEffect(() => {
     if (props.match) {
@@ -37,9 +37,7 @@ export default function ProductForm(props) {
           setProduct(res.data);
         })
         .catch((error) => {
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     }
     makeRequest('get', 'api', '/vendor/')
@@ -47,9 +45,7 @@ export default function ProductForm(props) {
         setVendors(res.data);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   }, []);
 
@@ -93,9 +89,7 @@ export default function ProductForm(props) {
           setSuccess('Success');
         })
         .catch((error) => {
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     } else {
       makeRequest('post', 'api', '/products/', product)
@@ -104,9 +98,7 @@ export default function ProductForm(props) {
           window.location = `/products/View/${product._id}`;
         })
         .catch((error) => {
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     }
   };
@@ -120,9 +112,7 @@ export default function ProductForm(props) {
         window.location = `http://localhost:3000/Products`;
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 
@@ -304,8 +294,6 @@ export default function ProductForm(props) {
         </Grid>
       </Grid>
       <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
         open={openDeleteModal}
         onClose={() => {
           toggleModal('delete');

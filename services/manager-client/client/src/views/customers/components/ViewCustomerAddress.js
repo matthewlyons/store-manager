@@ -139,7 +139,7 @@ export default function ViewCustomerAddress(props) {
         <h3>Addresses</h3>
         <Divider />
         {customer.addresses.length > 0 && (
-          <Table className={classes.table} aria-label="simple table">
+          <Table className={classes.table}>
             <TableBody>
               {customer.addresses.map((item, i) => (
                 <TableRow key={i}>
@@ -176,8 +176,6 @@ export default function ViewCustomerAddress(props) {
       </Card>
       {/* Add Address Modal */}
       <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
         open={openAddressModal}
         onClose={() => {
           toggleModal('address');

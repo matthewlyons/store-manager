@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { Prompt } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function OrderCreatePage(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const classes = useStyles();
 
   const { makeRequest, state } = useContext(StoreContext);
@@ -118,9 +118,7 @@ export default function OrderCreatePage(props) {
           window.location = `/Orders/View/${order._id}`;
         })
         .catch((error) => {
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     } else {
       makeRequest('post', 'api', '/draftorders/', orderObj)
@@ -129,9 +127,7 @@ export default function OrderCreatePage(props) {
           window.location = `/DraftOrders/View/${order._id}`;
         })
         .catch((error) => {
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     }
   };
@@ -158,9 +154,7 @@ export default function OrderCreatePage(props) {
             setStaticValues({ ...staticValues, taxRate: res.data.rate });
           })
           .catch((error) => {
-            error.errors.forEach((err) => {
-              enqueueSnackbar(err.message, { variant: 'error' });
-            });
+            createAlert(error);
           });
       }
     }
@@ -174,9 +168,7 @@ export default function OrderCreatePage(props) {
           setCustomer(res.data);
         })
         .catch((error) => {
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     }
   }, [customerID]);

@@ -37,19 +37,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductList(props) {
-  const { addProduct, closeModal } = props;
+  const { addProduct, closeModal, products } = props;
   const classes = useStyles();
   return (
     <Dialog
-      aria-labelledby="simple-dialog-title"
-      open={props.products.length > 0}
+      open={products.length > 0}
       onBackdropClick={() => {
         closeModal('db');
       }}
     >
       <Slide
         direction="left"
-        in={props.products.length > 0}
+        in={products.length > 0}
         mountOnEnter
         unmountOnExit
         style={{ zIndex: 10000 }}
@@ -60,7 +59,7 @@ export default function ProductList(props) {
           </div>
 
           <ListLink>
-            {props.products.map((product, i) => (
+            {products.map((product, i) => (
               <div
                 onClick={() => {
                   addProduct(product);

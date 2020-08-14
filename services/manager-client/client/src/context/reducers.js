@@ -1,6 +1,7 @@
 const initialState = {
   alert: { message: '', success: false, active: false },
   redirect: { to: '', active: false },
+  loading: false,
   apiAuth: {
     user: {
       name: '',
@@ -27,10 +28,10 @@ if (localStorage.getItem('state')) {
   localStorage.setItem('state', JSON.stringify(initialState));
   localState = JSON.stringify(initialState);
 }
-// localState = JSON.stringify(initialState);
 
 const types = {
   SET_ALERT: 'SET_ALERT',
+  SET_LOADING: 'SET_LOADING',
   SET_API: 'SET_API',
   SET_CUST: 'SET_CUST'
 };
@@ -48,6 +49,10 @@ const reducer = (state = localState, action) => {
       return updatedState;
     case types.SET_CUST:
       updatedState = { ...state, custAuth: action.payload };
+      localStorage.setItem('state', JSON.stringify(updatedState));
+      return updatedState;
+    case types.SET_LOADING:
+      updatedState = { ...state, loading: action.payload };
       localStorage.setItem('state', JSON.stringify(updatedState));
       return updatedState;
     default:

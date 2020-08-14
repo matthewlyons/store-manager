@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { StoreContext } from '../../context/StoreContext';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Settings() {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const classes = useStyles();
   const { setSuccess, makeRequest, state, signOut } = useContext(StoreContext);
   const [vendors, setVendors] = useState([]);
@@ -74,9 +74,7 @@ export default function Settings() {
         setSuccess('Success');
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 
@@ -106,9 +104,7 @@ export default function Settings() {
   //       setSuccess('Success');
   //     })
   //     .catch((error) => {
-  //       error.errors.forEach((err) => {
-  //         enqueueSnackbar(err.message, { variant: 'error' });
-  //       });
+  // createAlert(error);
   //     });
   // };
 
@@ -125,9 +121,7 @@ export default function Settings() {
         setSuccess('Success');
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
   const addUser = () => {
@@ -139,9 +133,7 @@ export default function Settings() {
         setSuccess('Success');
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
   const setVisible = (e) => {
@@ -151,9 +143,7 @@ export default function Settings() {
     //     setSuccess('Success');
     //   })
     //   .catch((error) => {
-    //     error.errors.forEach((err) => {
-    //       enqueueSnackbar(err.message, { variant: 'error' });
-    //     });
+    // createAlert(error);
     //   });
   };
   const handleInput = (e) => {
@@ -177,18 +167,14 @@ export default function Settings() {
         setVendors(res.data);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
     makeRequest('get', 'auth', '/users/')
       .then((res) => {
         setUsers(res.data);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   }, [state]);
   return (
@@ -219,7 +205,7 @@ export default function Settings() {
             <CardHeader subheader="Vendors" style={{ textAlign: 'center' }} />
             <Divider />
             <CardContent>
-              <Table className={classes.table} aria-label="simple table">
+              <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
@@ -281,7 +267,7 @@ export default function Settings() {
             <CardHeader subheader="Users" style={{ textAlign: 'center' }} />
             <Divider />
             <CardContent>
-              <Table className={classes.table} aria-label="simple table">
+              <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
@@ -332,8 +318,6 @@ export default function Settings() {
         </Grid>
       </Grid>
       <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
         open={vendorModal}
         onClose={() => {
           toggleModal('vendor');
@@ -360,8 +344,6 @@ export default function Settings() {
         </Card>
       </Modal>
       <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
         open={userModal}
         onClose={() => {
           toggleModal('user');

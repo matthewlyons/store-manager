@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CustomerHomePage() {
-  const { enqueueSnackbar } = useSnackbar();
+  let { createAlert } = useAlert();
   const { makeRequest } = useContext(StoreContext);
 
   const classes = useStyles();
@@ -40,9 +40,7 @@ export default function CustomerHomePage() {
           setCustomers(res.data);
         })
         .catch((error) => {
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     }
   }

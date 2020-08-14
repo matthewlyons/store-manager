@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { Prompt } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function OrderCreateForm(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const classes = useStyles();
 
   const { makeRequest, state } = useContext(StoreContext);
@@ -94,9 +94,16 @@ export default function OrderCreateForm(props) {
       deposit: staticValues.deposit,
       customer: customer._id,
       employee: state.apiAuth.user.name,
-      estimatedStoreArrival: staticValues.storeArrival,
       note
     };
+
+    let customProducts = products.filter((product) => {
+      return product.status === 'Special Order';
+    });
+
+    if (customProducts.length > 0) {
+      orderObj.estimatedStoreArrival = staticValues.storeArrival;
+    }
 
     if (staticValues.delivery) {
       orderObj.deliveryFee = staticValues.deliveryFee;
@@ -126,9 +133,7 @@ export default function OrderCreateForm(props) {
         window.location = `/Orders/View/${order._id}`;
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 
@@ -142,9 +147,16 @@ export default function OrderCreateForm(props) {
       deposit: staticValues.deposit,
       customer: customer._id,
       employee: state.apiAuth.user.name,
-      estimatedStoreArrival: staticValues.storeArrival,
       note
     };
+
+    let customProducts = products.filter((product) => {
+      return product.status === 'Special Order';
+    });
+
+    if (customProducts.length > 0) {
+      orderObj.estimatedStoreArrival = staticValues.storeArrival;
+    }
 
     if (staticValues.delivery) {
       orderObj.deliveryFee = staticValues.deliveryFee;
@@ -174,9 +186,7 @@ export default function OrderCreateForm(props) {
         window.location = `/DraftOrders/View/${order._id}`;
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 
@@ -190,11 +200,13 @@ export default function OrderCreateForm(props) {
   // Update Tax information on address or dlivery change
   useEffect(() => {
     if (customer.addresses) {
+      console.log(customer);
       let { street, city, zip, state } = staticValues.delivery
         ? customer.addresses[staticValues.address]
         : VancouverWoodworks;
 
-      if (state !== 'Washington') {
+      if (state !== 'Washington' && state !== 'WA') {
+        console.log(state);
         setStaticValues({ ...staticValues, taxRate: 0 });
       } else {
         makeRequest('post', 'tax', '/', { street, city, zip })
@@ -202,9 +214,7 @@ export default function OrderCreateForm(props) {
             setStaticValues({ ...staticValues, taxRate: res.data.rate });
           })
           .catch((error) => {
-            error.errors.forEach((err) => {
-              enqueueSnackbar(err.message, { variant: 'error' });
-            });
+            createAlert(error);
           });
       }
     }
@@ -218,14 +228,13 @@ export default function OrderCreateForm(props) {
           setCustomer(res.data);
         })
         .catch((error) => {
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     }
   }, [customerID]);
 
   useEffect(() => {
+    console.log(products);
     let { deliveryFee, taxRate, deposit, delivery } = staticValues;
 
     deliveryFee = Number(deliveryFee);

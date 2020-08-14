@@ -1,8 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import { reducer, globalState, types } from './reducers';
 
-import { useSnackbar } from 'notistack';
-
 import axios from 'axios';
 
 const StoreContext = createContext(globalState);
@@ -14,7 +12,7 @@ const StoreProvider = ({ children }) => {
   async function makeRequest(method, host, route, data) {
     let url;
     if (process.env.NODE_ENV === 'development') {
-      url = `http://localhost/${host}${route}`;
+      url = `http://192.168.0.166/${host}${route}`;
     } else {
       url = `/${host}${route}`;
     }
@@ -52,6 +50,12 @@ const StoreProvider = ({ children }) => {
       }
     });
   }
+  function setLoading(loading) {
+    dispatch({
+      type: types.SET_LOADING,
+      payload: loading
+    });
+  }
 
   function setSuccess(message) {
     dispatch({
@@ -87,7 +91,8 @@ const StoreProvider = ({ children }) => {
         setError,
         setSuccess,
         setUser,
-        signOut
+        signOut,
+        setLoading
       }}
     >
       {children}

@@ -104,7 +104,6 @@ export default function Sidebar() {
           button
           key="Hello"
           color="inherit"
-          aria-label="open drawer"
           onClick={handleDrawerToggle}
           edge="start"
           className={clsx(classes.menuButton)}

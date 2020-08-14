@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../../../customHooks';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OrderFormProducts(props) {
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const { setError, makeRequest, state } = useContext(StoreContext);
 
   const { products, setProducts } = props;
@@ -156,9 +156,7 @@ export default function OrderFormProducts(props) {
           }
         })
         .catch((error) => {
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     }
   };
@@ -333,9 +331,7 @@ export default function OrderFormProducts(props) {
         setVendors(res.data);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   }, [state]);
 
@@ -421,7 +417,6 @@ export default function OrderFormProducts(props) {
       </Grid>
       {/* Product Search Modal */}
       <Dialog
-        aria-labelledby="simple-dialog-title"
         open={databaseArray.length > 0}
         onBackdropClick={() => {
           toggleModal('search');

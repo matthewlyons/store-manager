@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+
+import { useAlert } from '../../customHooks';
+
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 
@@ -20,6 +22,7 @@ import {
 
 import ListLink from '../../components/ListLink';
 import ListItem from '../../components/ListItem';
+import TableCard from '../../components/TableCard';
 
 import { StoreContext } from '../../context/StoreContext';
 
@@ -35,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NewCustomerViewPage(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const { setSuccess, makeRequest } = useContext(StoreContext);
 
   const commonCities = [
@@ -68,9 +71,7 @@ export default function NewCustomerViewPage(props) {
         setCustomer(res.data);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   }, []);
 
@@ -96,9 +97,7 @@ export default function NewCustomerViewPage(props) {
         setCustomerModal(false);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 
@@ -120,155 +119,139 @@ export default function NewCustomerViewPage(props) {
         <Grid item xs={12}>
           <Divider />
         </Grid>
-        {customer.draftorders.length > 0 && (
-          <Grid item xs={12}>
-            <Card className={classes.paper}>
-              <h3>Draft Orders</h3>
-              <Divider />
-              <ListLink>
-                {customer.draftorders.map((order, i) => {
-                  let products;
-                  if (order.order) {
-                    products = order.order.products
-                      .map((element) => {
-                        return element.title ? element.title : element.sku;
-                      })
-                      .join(', ');
-                  }
-                  return (
-                    <ListItem
-                      key={i}
-                      to={`/DraftOrders/View/${order.order._id}`}
-                    >
-                      <p>{Moment(order.order.date).format('MM/DD/YYYY')}</p>
-                      <p>{products}</p>
-                    </ListItem>
-                  );
-                })}
-              </ListLink>
-            </Card>
-          </Grid>
-        )}
-        <Grid item xs={12}>
-          <Card className={classes.paper}>
-            <h3>Orders</h3>
-            <Divider />
-            {customer.orders.length > 0 && (
-              <ListLink>
-                {customer.orders.map((order, i) => {
-                  let products;
-                  if (order.order) {
-                    products = order.order.products
-                      .map((element) => {
-                        return element.title ? element.title : element.sku;
-                      })
-                      .join(', ');
-                  }
-                  return (
-                    <ListItem key={i} to={`/Orders/View/${order.order._id}`}>
-                      <p>{Moment(order.order.date).format('MM/DD/YYYY')}</p>
-                      <p>{products}</p>
-                    </ListItem>
-                  );
-                })}
-              </ListLink>
-            )}
-            <CardActions style={{ justifyContent: 'Center' }}>
-              <Button
-                size="small"
-                component={Link}
-                to={`/Orders/New/${props.match.params.id}`}
-              >
-                Add an Order
-              </Button>
-            </CardActions>
-          </Card>
-        </Grid>
-        {customer.phone.length > 0 && (
-          <Grid item xs={12} md={6}>
-            <Card className={classes.paper}>
-              <h3>Phone Numbers</h3>
-              <Divider />
-              <Table className={classes.table} aria-label="simple table">
-                <TableBody>
-                  {customer.phone.map((item, i) => (
-                    <TableRow key={i}>
-                      <TableCell component="th" scope="row">
-                        {item.comment}
-                      </TableCell>
-                      <TableCell align="left">{item.number}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Card>
-          </Grid>
-        )}
-        {customer.email.length > 0 && (
-          <Grid item xs={12} md={6}>
-            <Card className={classes.paper}>
-              <h3>Email Addresses</h3>
-              <Divider />
-              <Table className={classes.table} aria-label="simple table">
-                <TableBody>
-                  {customer.email.map((item, i) => (
-                    <TableRow key={i}>
-                      <TableCell component="th" scope="row">
-                        {item}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Card>
-          </Grid>
-        )}
-        {customer.addresses.length > 0 && (
-          <Grid item xs={12} md={6}>
-            <Card className={classes.paper}>
-              <h3>Addresses</h3>
-              <Divider />
 
-              <Table className={classes.table} aria-label="simple table">
-                <TableBody>
-                  {customer.addresses.map((item, i) => (
-                    <TableRow key={i}>
-                      <TableCell component="th" scope="row">
-                        {item.comment}
-                      </TableCell>
-                      <TableCell align="left">
-                        {item.street}, {item.city}, {item.state} {item.zip}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Card>
-          </Grid>
-        )}
-        {customer.notes.length > 0 && (
-          <Grid item xs={12}>
-            <Card className={classes.paper}>
-              <h3>Notes</h3>
-              <Divider />
-              <Table className={classes.table} aria-label="simple table">
-                <TableBody>
-                  {customer.notes.map((note, i) => (
-                    <TableRow key={i}>
-                      <TableCell component="th" scope="row">
-                        {Moment(note.date).format('MM/DD/YYYY')}
-                      </TableCell>
-                      <TableCell align="left">{note.comment}</TableCell>
-                      <TableCell align="right" className="TableStaffCell">
-                        {note.staff}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Card>
-          </Grid>
-        )}
+        {/* Draft Orders */}
+        <TableCard
+          title={'Draft Orders'}
+          delimiter={customer.draftorders.length}
+        >
+          <ListLink>
+            {customer.draftorders.map((order, i) => {
+              let products;
+              if (order.order) {
+                products = order.order.products
+                  .map((element) => {
+                    return element.title ? element.title : element.sku;
+                  })
+                  .join(', ');
+              }
+              return (
+                <ListItem key={i} to={`/DraftOrders/View/${order.order._id}`}>
+                  <p>{Moment(order.order.date).format('MM/DD/YYYY')}</p>
+                  <p>{products}</p>
+                </ListItem>
+              );
+            })}
+          </ListLink>
+        </TableCard>
+
+        {/* Orders */}
+        <TableCard
+          title={'Orders'}
+          link={`/Orders/New/${props.match.params.id}`}
+          linkTitle={'Add an Order'}
+        >
+          {customer.orders.length > 0 && (
+            <ListLink>
+              {customer.orders.map((order, i) => {
+                let products;
+                if (order.order) {
+                  products = order.order.products
+                    .map((element) => {
+                      return element.title ? element.title : element.sku;
+                    })
+                    .join(', ');
+                }
+                return (
+                  <ListItem key={i} to={`/Orders/View/${order.order._id}`}>
+                    <p>{Moment(order.order.date).format('MM/DD/YYYY')}</p>
+                    <p>{products}</p>
+                  </ListItem>
+                );
+              })}
+            </ListLink>
+          )}
+        </TableCard>
+
+        {/* Phone Numbers */}
+        <TableCard
+          title={'Phone Numbers'}
+          delimiter={customer.phone.length}
+          md={6}
+        >
+          <Table className={classes.table}>
+            <TableBody>
+              {customer.phone.map((item, i) => (
+                <TableRow key={i}>
+                  <TableCell component="th" scope="row">
+                    {item.comment}
+                  </TableCell>
+                  <TableCell align="left">{item.number}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableCard>
+
+        {/* Email Addresses */}
+        <TableCard
+          title={'Email Addresses'}
+          delimiter={customer.email.length}
+          md={6}
+        >
+          <Table className={classes.table}>
+            <TableBody>
+              {customer.email.map((item, i) => (
+                <TableRow key={i}>
+                  <TableCell component="th" scope="row">
+                    {item}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableCard>
+
+        {/* Addresses */}
+        <TableCard
+          title={'Addresses'}
+          delimiter={customer.addresses.length}
+          md={6}
+        >
+          <Table className={classes.table}>
+            <TableBody>
+              {customer.addresses.map((item, i) => (
+                <TableRow key={i}>
+                  <TableCell component="th" scope="row">
+                    {item.comment}
+                  </TableCell>
+                  <TableCell align="left">
+                    {item.street}, {item.city}, {item.state} {item.zip}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableCard>
+
+        {/* Notes */}
+        <TableCard title={'Notes'} delimiter={customer.notes.length} md={6}>
+          <Table className={classes.table}>
+            <TableBody>
+              {customer.notes.map((note, i) => (
+                <TableRow key={i}>
+                  <TableCell component="th" scope="row">
+                    {Moment(note.date).format('MM/DD/YYYY')}
+                  </TableCell>
+                  <TableCell align="left">{note.comment}</TableCell>
+                  <TableCell align="right" className="TableStaffCell">
+                    {note.staff}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableCard>
       </Grid>
       {/* Create Customer Modal */}
       <CustomerForm

@@ -39,11 +39,7 @@ export default function SlideModal(props) {
   const { open, close, children, title } = props;
   const classes = useStyles();
   return (
-    <Dialog
-      aria-labelledby="simple-dialog-title"
-      open={open}
-      onBackdropClick={close}
-    >
+    <Dialog open={open} onBackdropClick={close}>
       <Slide
         direction="left"
         in={open}

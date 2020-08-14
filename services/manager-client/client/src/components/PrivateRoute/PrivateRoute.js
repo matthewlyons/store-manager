@@ -3,10 +3,10 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 // Custom Hooks
-import { hasApiToken } from '../../customHooks';
+import { useAuthToken } from '../../customHooks';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const ApiToken = hasApiToken();
+  const ApiToken = useAuthToken();
 
   return (
     <Route

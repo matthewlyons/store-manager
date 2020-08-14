@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { Link } from 'react-router-dom';
 
 import Moment from 'moment';
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function OrderHomePage() {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const { makeRequest } = useContext(StoreContext);
   const classes = useStyles();
 
@@ -39,9 +39,7 @@ export default function OrderHomePage() {
         setOrders(res.data);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   }, []);
 

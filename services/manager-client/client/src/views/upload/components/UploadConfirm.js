@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../../customHooks';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Paper,
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 });
 
 export default function UploadConfirm(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const classes = useStyles();
 
   let { currentProducts, uploadedProducts } = props;
@@ -189,9 +189,7 @@ export default function UploadConfirm(props) {
         setSuccess('Success');
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 
@@ -218,7 +216,7 @@ export default function UploadConfirm(props) {
               </Grid>
               <Grid item xs={12}>
                 <TableContainer>
-                  <Table className={classes.table} aria-label="simple table">
+                  <Table className={classes.table}>
                     <TableHead>
                       <TableRow>
                         <TableCell>Include</TableCell>
@@ -268,7 +266,7 @@ export default function UploadConfirm(props) {
               </Grid>
               <Grid item xs={12}>
                 <TableContainer>
-                  <Table className={classes.table} aria-label="simple table">
+                  <Table className={classes.table}>
                     <TableHead>
                       <TableRow>
                         <TableCell>Include</TableCell>

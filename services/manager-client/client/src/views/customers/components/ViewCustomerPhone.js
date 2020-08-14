@@ -120,7 +120,7 @@ export default function ViewCustomerPhone(props) {
         <h3>Phone Numbers</h3>
         <Divider />
         {customer.phone.length > 0 && (
-          <Table className={classes.table} aria-label="simple table">
+          <Table className={classes.table}>
             <TableBody>
               {customer.phone.map((item, i) => (
                 <TableRow key={i}>
@@ -150,8 +150,6 @@ export default function ViewCustomerPhone(props) {
       </Card>
       {/* Add Phone Modal */}
       <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
         open={openPhoneModal}
         onClose={toggleModal}
         className="modalContainer"

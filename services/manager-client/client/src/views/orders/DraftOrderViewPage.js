@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useContext, useState } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { Link } from 'react-router-dom';
 
 import OrderProducts from './components/OrderProducts';
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function OrderViewPage(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const classes = useStyles();
   const { setSuccess, makeRequest } = useContext(StoreContext);
   const [order, setOrder] = useState({
@@ -58,9 +58,7 @@ export default function OrderViewPage(props) {
         setOrder(res.data);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   }, []);
 
@@ -70,9 +68,7 @@ export default function OrderViewPage(props) {
         setSuccess(res.data);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 
@@ -83,9 +79,7 @@ export default function OrderViewPage(props) {
         window.location = `/Orders/View/${order._id}`;
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 

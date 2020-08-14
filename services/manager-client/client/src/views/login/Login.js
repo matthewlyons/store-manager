@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useContext, useEffect } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Grid, TextField, Button } from '@material-ui/core';
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const history = useHistory();
   const classes = useStyles();
   const { makeRequest, setUser } = useContext(StoreContext);
@@ -33,9 +33,7 @@ export default function Login() {
         setData({ ...data, users: res.data });
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   }, []);
 
@@ -61,9 +59,7 @@ export default function Login() {
         history.push('/');
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 

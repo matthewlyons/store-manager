@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { Prompt } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function OrderUpdateForm(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   let { type } = props.match.params;
 
   const classes = useStyles();
@@ -116,9 +116,7 @@ export default function OrderUpdateForm(props) {
         window.location = `/${viewDest}/View/${order._id}`;
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 
@@ -144,9 +142,7 @@ export default function OrderUpdateForm(props) {
             setStaticValues({ ...staticValues, taxRate: res.data.rate });
           })
           .catch((error) => {
-            error.errors.forEach((err) => {
-              enqueueSnackbar(err.message, { variant: 'error' });
-            });
+            createAlert(error);
           });
       }
     }
@@ -172,9 +168,7 @@ export default function OrderUpdateForm(props) {
         setCustomer({ ...orderCustomer });
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   }, []);
 

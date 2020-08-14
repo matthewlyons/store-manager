@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useContext, useState } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { Link } from 'react-router-dom';
 
 import OrderProducts from './components/OrderProducts';
@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function OrderViewPage(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const classes = useStyles();
-  const { setSuccess, setError, makeRequest } = useContext(StoreContext);
+  const { makeRequest, setLoading } = useContext(StoreContext);
 
   const [order, setOrder] = useState({
     delivery: false,
@@ -65,12 +65,11 @@ export default function OrderViewPage(props) {
   useEffect(() => {
     makeRequest('get', 'api', `/orders/${props.match.params.id}`)
       .then((res) => {
+        console.log(res.data);
         setOrder(res.data);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   }, []);
 
@@ -90,29 +89,31 @@ export default function OrderViewPage(props) {
   };
 
   const printInvoice = () => {
+    setLoading(true);
     makeRequest('post', 'invoice', '/pdf', order)
       .then((res) => {
-        setSuccess(res.data);
+        setLoading(false);
+        createAlert(res.data, false);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        setLoading(false);
+        createAlert(error);
       });
   };
 
   const emailInvoice = () => {
+    setLoading(true);
     makeRequest('post', 'invoice', '/Email/order', {
       email: order.customer.email[email],
       order
     })
       .then((res) => {
-        setSuccess(res.data);
+        setLoading(false);
+        createAlert(res.data, false);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        setLoading(false);
+        createAlert(error);
       });
   };
 

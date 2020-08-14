@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import UploadForm from './components/UploadForm';
 import UploadConfirm from './components/UploadConfirm';
 import UploadStart from './components/UploadStart';
@@ -8,7 +8,7 @@ import UploadVendor from './components/UploadVendor';
 import { StoreContext } from '../../context/StoreContext';
 
 export default function UploadHomePage() {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const { setError, makeRequest } = useContext(StoreContext);
 
   const [data, setData] = useState({
@@ -31,9 +31,7 @@ export default function UploadHomePage() {
           setData({ ...data, currentProducts: res.data });
         })
         .catch((error) => {
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     }
   }, [data.vendor]);

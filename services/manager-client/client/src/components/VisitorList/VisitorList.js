@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
-import { useSnackbar } from 'notistack';
 import Moment from 'moment';
+
+import { useAlert } from '../../customHooks';
 
 import ListLink from '../ListLink';
 import ListItem from '../ListItem';
@@ -9,9 +10,10 @@ import ListItem from '../ListItem';
 import { StoreContext } from '../../context/StoreContext';
 
 export default function VisitorList() {
-  const { enqueueSnackbar } = useSnackbar();
+  let { createAlert } = useAlert();
   const { makeRequest } = useContext(StoreContext);
   const [visits, setVisits] = useState([]);
+
   useEffect(() => {
     makeRequest('get', 'api', '/visits/recent/5')
       .then((res) => {
@@ -20,11 +22,10 @@ export default function VisitorList() {
         setVisits(visitList);
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error, true);
       });
   }, []);
+
   return (
     <ListLink>
       {visits.map((row, i) => {

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../../../customHooks';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function OrderCustomerInfo(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
 
   const { setError, makeRequest } = useContext(StoreContext);
 
@@ -128,9 +128,7 @@ export default function OrderCustomerInfo(props) {
         })
         .catch((error) => {
           console.log(error);
-          error.errors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: 'error' });
-          });
+          createAlert(error);
         });
     }
   };
@@ -202,9 +200,7 @@ export default function OrderCustomerInfo(props) {
         toggleModal('customer');
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 

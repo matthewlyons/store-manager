@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { getOrderTotals } from './util';
-
 // Custom Hooks
-import { hasApiToken, windowSize } from './customHooks';
+import { useAuthToken, useWindowDimensions } from './customHooks';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,6 +12,7 @@ import Sidebar from './components/Sidebar';
 import TopBar from './components/TopBar';
 import Alert from './components/Alert';
 import PrivateRoute from './components/PrivateRoute';
+import Loading from './components/Loading';
 
 // Views
 import HomePage from './views/HomePage';
@@ -37,9 +36,8 @@ import OrderUpdateForm from './views/orders/OrderUpdateForm';
 
 function App() {
   const { state } = useContext(StoreContext);
-  getOrderTotals();
-  const { width } = windowSize();
-  const ApiToken = hasApiToken();
+  const { width } = useWindowDimensions();
+  const ApiToken = useAuthToken();
 
   let navigation;
   if (!ApiToken) {
@@ -135,7 +133,7 @@ function App() {
           </Switch>
         </main>
       </div>
-      {state.alert.active && <Alert />}
+      <Loading />
     </Router>
   );
 }

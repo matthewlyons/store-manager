@@ -113,3 +113,18 @@ $Primary-Color: #08543f;
 .data-grid {
   width: 100%;
 }
+
+.Loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background: black;
+  z-index: 10000;
+  opacity: 0.5;
+}

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../customHooks';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Paper,
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CustomerCreatePage() {
-  const { enqueueSnackbar } = useSnackbar();
+  let { createAlert } = useAlert();
   const { makeRequest } = useContext(StoreContext);
 
   const commonCities = [
@@ -136,9 +136,7 @@ export default function CustomerCreatePage() {
         window.location = `/Customers/View/${customer._id}`;
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 
@@ -232,8 +230,6 @@ export default function CustomerCreatePage() {
         </Grid>
       </Grid>
       <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
         open={openPhoneModal}
         onClose={() => {
           toggleModal('phone');
@@ -272,8 +268,6 @@ export default function CustomerCreatePage() {
         </Paper>
       </Modal>
       <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
         open={openAddressModal}
         onClose={() => {
           toggleModal('address');

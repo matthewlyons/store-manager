@@ -1,4 +1,5 @@
-import windowSize from './windowSize/windowSize';
-import hasApiToken from './hasApiToken/hasApiToken';
+import useAlert from './useAlert';
+import useWindowDimensions from './useWindowDimensions';
+import useAuthToken from './useAuthToken';
 
-export { hasApiToken, windowSize };
+export { useAlert, useAuthToken, useWindowDimensions };

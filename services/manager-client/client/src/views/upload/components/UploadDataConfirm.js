@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import { useSnackbar } from 'notistack';
+import { useAlert } from '../../../customHooks';
 import { Paper, Grid, Typography, Divider, Button } from '@material-ui/core';
 
 import { StoreContext } from '../../../context/StoreContext';
 
 export default function UploadDataConfirm(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { createAlert } = useAlert();
   const { setSuccess, makeRequest } = useContext(StoreContext);
 
   let { productData } = props;
@@ -18,9 +18,7 @@ export default function UploadDataConfirm(props) {
         setSuccess('Success');
       })
       .catch((error) => {
-        error.errors.forEach((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
-        });
+        createAlert(error);
       });
   };
 
