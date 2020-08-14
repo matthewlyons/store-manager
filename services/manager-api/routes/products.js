@@ -65,6 +65,16 @@ router.get('/Search/:Query', async (req, res) => {
       res.json([]);
     });
 });
+router.get('/color', async (req, res) => {
+  Product.find({ color: { $ne: null } })
+    .limit(50)
+    .then((products) => {
+      res.json(products);
+    })
+    .catch((err) => {
+      res.json([]);
+    });
+});
 
 // Product Routes
 router

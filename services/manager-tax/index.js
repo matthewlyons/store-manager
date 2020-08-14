@@ -25,14 +25,13 @@ app.get('/', async (req, res) => {
 });
 
 async function GetRate(street, city, zip) {
-  console.log('Getting New Rate');
   let response = await axios.get(
     `http://webgis.dor.wa.gov/webapi/AddressRates.aspx?output=xml&addr=${street}&city=${city}&zip=${zip}`
   );
 
   // Convert XML To JSON
   let data = convert.xml2json(response.data, { compact: true, spaces: 4 });
-  // Get Rate From Json
+
   return JSON.parse(data).response._attributes.rate;
 }
 
@@ -40,8 +39,6 @@ app.post('/', async (req, res) => {
   let { street, city, zip } = req.body;
 
   let current = await TaxRate.findOne({ address: `${street} ${city} ${zip}` });
-
-  console.log(current);
 
   let rate;
 
