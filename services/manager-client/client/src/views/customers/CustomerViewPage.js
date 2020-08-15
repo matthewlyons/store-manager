@@ -136,7 +136,7 @@ export default function NewCustomerViewPage(props) {
                   .join(', ');
               }
               return (
-                <ListItem key={i} to={`/DraftOrders/View/${order.order._id}`}>
+                <ListItem key={i} to={`/Orders/View/Draft/${order.order._id}`}>
                   <p>{Moment(order.order.date).format('MM/DD/YYYY')}</p>
                   <p>{products}</p>
                 </ListItem>
@@ -148,7 +148,7 @@ export default function NewCustomerViewPage(props) {
         {/* Orders */}
         <TableCard
           title={'Orders'}
-          link={`/Orders/New/${props.match.params.id}`}
+          link={`/Orders/Form/${props.match.params.id}`}
           linkTitle={'Add an Order'}
         >
           {customer.orders.length > 0 && (
@@ -163,7 +163,10 @@ export default function NewCustomerViewPage(props) {
                     .join(', ');
                 }
                 return (
-                  <ListItem key={i} to={`/Orders/View/${order.order._id}`}>
+                  <ListItem
+                    key={i}
+                    to={`/Orders/View/Order/${order.order._id}`}
+                  >
                     <p>{Moment(order.order.date).format('MM/DD/YYYY')}</p>
                     <p>{products}</p>
                   </ListItem>

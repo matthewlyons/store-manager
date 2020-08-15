@@ -54,7 +54,7 @@ export default function OrderHomePage() {
             variant="contained"
             color="primary"
             component={Link}
-            to={'/Orders/New'}
+            to={'/Orders/Form'}
           >
             New Order
           </Button>
@@ -68,7 +68,7 @@ export default function OrderHomePage() {
           <Paper className={classes.paper}>
             <ListLink>
               {orders.map((order, i) => (
-                <ListItem key={i} to={`/Orders/View/${order._id}`}>
+                <ListItem key={i} to={`/Orders/View/Order/${order._id}`}>
                   <p>{order.customer.name}</p>
                   <p>{Moment(order.date).format('hh:mm A MM/DD/YY')}</p>
                 </ListItem>

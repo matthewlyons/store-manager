@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
-import { useAlert } from '../../customHooks';
+import { useAlert, useOrder } from '../../customHooks';
 import { Prompt } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -32,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OrderCreatePage(props) {
   const { createAlert } = useAlert();
+  const { getValues, getOrder } = useOrder();
   const classes = useStyles();
 
   const { makeRequest, state } = useContext(StoreContext);
@@ -45,8 +45,13 @@ export default function OrderCreatePage(props) {
   };
 
   // State
+  const [type, setType] = useState('Create');
+  const [title, setTitle] = useState('');
   const [customerID, setCustomerID] = useState(undefined);
-  const [customer, setCustomer] = useState({ addresses: [] });
+  const [customer, setCustomer] = useState({});
+
+  const [address, setAddress] = useState({});
+  const [changeAddress, setChangeAddress] = useState(false);
 
   const [note, setNote] = useState('');
 
@@ -74,63 +79,127 @@ export default function OrderCreatePage(props) {
     totalDue: 0
   });
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  // Menu Events
+  const [anchor, setAnchor] = useState(null);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchor(event.currentTarget);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchor(null);
   };
 
   // Submit Order to Database
-  const submitOrder = (type) => {
-    let orderObj = {
-      products: products,
-      delivery: staticValues.delivery,
-      salesTaxRate: staticValues.taxRate,
-      ...orderValues,
-      deposit: staticValues.deposit,
-      customer: customer._id,
+  const submitOrder = () => {
+    let orderObj = getOrder({
+      customer,
+      address,
+      products,
+      staticValues,
+      orderValues,
       employee: state.apiAuth.user.name,
-      estimatedStoreArrival: staticValues.storeArrival,
-      note
-    };
+      note,
+      driversLicense
+    });
 
-    if (staticValues.delivery) {
-      orderObj.deliveryFee = staticValues.deliveryFee;
-      let address = {
-        street: customer.addresses[staticValues.address].street,
-        city: customer.addresses[staticValues.address].city,
-        state: customer.addresses[staticValues.address].state,
-        zip: customer.addresses[staticValues.address].zip
-      };
-      orderObj.address = address;
-      if (customer.addresses[staticValues.address].state === 'Oregon') {
-        orderObj.driversLicense = driversLicense;
-      }
-    }
-    if (type === 'order') {
-      makeRequest('post', 'api', '/orders/', orderObj)
+    makeRequest('post', 'api', '/orders/', orderObj)
+      .then((res) => {
+        let order = res.data;
+        window.location = `/Orders/View/Order/${order._id}`;
+      })
+      .catch((error) => {
+        createAlert(error);
+      });
+  };
+  // Update Order
+  const updateOrder = () => {
+    let orderObj = getOrder({
+      customer,
+      address,
+      products,
+      staticValues,
+      orderValues,
+      employee: state.apiAuth.user.name,
+      note,
+      driversLicense
+    });
+    console.log(type);
+    let dest = props.location.state.type === 'Order' ? 'orders' : 'draftorders';
+    let viewDest = props.location.state.type === 'Order' ? 'Order' : 'Draft';
+    makeRequest('put', 'api', `/${dest}/${props.location.state.id}`, orderObj)
+      .then((res) => {
+        let order = res.data;
+        console.log(res);
+        window.location = `/Orders/View/${viewDest}/${order._id}`;
+      })
+      .catch((error) => {
+        createAlert(error);
+      });
+  };
+
+  // Submit Draft Order to Database
+  const submitDraftOrder = () => {
+    let orderObj = getOrder({
+      customer,
+      address,
+      products,
+      staticValues,
+      orderValues,
+      employee: state.apiAuth.user.name,
+      note,
+      driversLicense
+    });
+
+    makeRequest('post', 'api', '/draftorders/', orderObj)
+      .then((res) => {
+        let order = res.data;
+        window.location = `/Orders/View/Draft/${order._id}`;
+      })
+      .catch((error) => {
+        createAlert(error);
+      });
+  };
+
+  // Inital View Load
+  useEffect(() => {
+    // Check if Type is Create Or Update
+    if (props.location.state?.id) {
+      setType('Update');
+      console.log('Running');
+      let dest =
+        props.location.state.type === 'Order' ? 'orders' : 'draftorders';
+      makeRequest('get', 'api', `/${dest}/${props.location.state.id}`)
         .then((res) => {
-          let order = res.data;
-          window.location = `/Orders/View/${order._id}`;
+          console.log(res.data);
+          let {
+            delivery,
+            deliveryFee,
+            deposit,
+            estimatedStoreArrival
+          } = res.data;
+          let orderProducts = res.data.products;
+          let orderCustomer = res.data.customer;
+          setStaticValues({
+            ...staticValues,
+            delivery,
+            deliveryFee,
+            deposit,
+            storeArrival: estimatedStoreArrival
+          });
+          setAddress({ ...res.data.address });
+          setProducts([...orderProducts]);
+          setCustomerID(orderCustomer._id);
+          setCustomer({ ...orderCustomer });
+          setTitle('Update Order.');
         })
         .catch((error) => {
           createAlert(error);
         });
     } else {
-      makeRequest('post', 'api', '/draftorders/', orderObj)
-        .then((res) => {
-          let order = res.data;
-          window.location = `/DraftOrders/View/${order._id}`;
-        })
-        .catch((error) => {
-          createAlert(error);
-        });
+      setTitle('New Order.');
     }
-  };
+  }, []);
 
   // Set Customer ID from Params
   useEffect(() => {
@@ -141,12 +210,12 @@ export default function OrderCreatePage(props) {
 
   // Update Tax information on address or dlivery change
   useEffect(() => {
+    console.log('Updating Tax Rate');
     if (customer.addresses) {
       let { street, city, zip, state } = staticValues.delivery
-        ? customer.addresses[staticValues.address]
+        ? address
         : VancouverWoodworks;
-
-      if (state !== 'Washington') {
+      if (state !== 'Washington' && state !== 'WA') {
         setStaticValues({ ...staticValues, taxRate: 0 });
       } else {
         makeRequest('post', 'tax', '/', { street, city, zip })
@@ -158,7 +227,7 @@ export default function OrderCreatePage(props) {
           });
       }
     }
-  }, [staticValues.address, staticValues.delivery]);
+  }, [address, staticValues.delivery]);
 
   // Get Customer Information
   useEffect(() => {
@@ -166,6 +235,10 @@ export default function OrderCreatePage(props) {
       makeRequest('get', 'api', `/customers/${customerID}`)
         .then((res) => {
           setCustomer(res.data);
+          setTitle(`New Order for ${res.data.name}.`);
+          if (res.data.addresses?.length > 0) {
+            setAddress({ ...res.data.addresses[0] });
+          }
         })
         .catch((error) => {
           createAlert(error);
@@ -174,26 +247,10 @@ export default function OrderCreatePage(props) {
   }, [customerID]);
 
   useEffect(() => {
-    let { deliveryFee, taxRate, deposit, delivery } = staticValues;
-
-    deliveryFee = Number(deliveryFee);
-    deposit = Number(deposit);
-
-    let itemTotal = products.reduce((total, product) => {
-      return total + parseInt(product.price) * product.quantity;
-    }, 0);
-
-    let salesTax;
-    let subTotal;
-    if (delivery) {
-      salesTax = parseFloat(((itemTotal + deliveryFee) * taxRate).toFixed(2));
-      subTotal = parseFloat((itemTotal + deliveryFee + salesTax).toFixed(2));
-    } else {
-      salesTax = parseFloat((itemTotal * taxRate).toFixed(2));
-      subTotal = parseFloat((itemTotal + salesTax).toFixed(2));
-    }
-
-    let totalDue = parseFloat((subTotal - deposit).toFixed(2));
+    let { itemTotal, salesTax, subTotal, totalDue } = getValues(
+      staticValues,
+      products
+    );
 
     setOrderValues({ itemTotal, salesTax, subTotal, totalDue });
   }, [products, staticValues]);
@@ -201,37 +258,34 @@ export default function OrderCreatePage(props) {
   return (
     <Grid container spacing={3}>
       <Grid item className="flex flexBaseline" xs={12}>
-        {customerID ? (
-          <h2 className="flexSpacer">New Order for {customer.name}</h2>
-        ) : (
-          <h2 className="flexSpacer">New Order</h2>
-        )}
+        <h2 className="flexSpacer">{title}</h2>
+
         <div className={classes.buttonGroup}>
           <Button variant="contained" color="primary" onClick={handleClick}>
             Menu
           </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem
-              onClick={() => {
-                submitOrder('order');
-              }}
+          {type === 'Create' ? (
+            <Menu
+              id="simple-menu"
+              anchorEl={anchor}
+              keepMounted
+              open={Boolean(anchor)}
+              onClose={handleClose}
             >
-              Submit Order
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                submitOrder('draft');
-              }}
+              <MenuItem onClick={submitOrder}>Submit Order</MenuItem>
+              <MenuItem onClick={submitDraftOrder}>Save as Draft</MenuItem>
+            </Menu>
+          ) : (
+            <Menu
+              id="simple-menu"
+              anchorEl={anchor}
+              keepMounted
+              open={Boolean(anchor)}
+              onClose={handleClose}
             >
-              Save as Draft
-            </MenuItem>
-          </Menu>
+              <MenuItem onClick={updateOrder}>Save</MenuItem>
+            </Menu>
+          )}
         </div>
       </Grid>
       <Grid item xs={12}>
@@ -251,6 +305,11 @@ export default function OrderCreatePage(props) {
               orderValues={orderValues}
               driversLicense={driversLicense}
               setDriversLicense={setDriversLicense}
+              type={type}
+              address={address}
+              setAddress={setAddress}
+              changeAddress={changeAddress}
+              setChangeAddress={setChangeAddress}
             />
           </Grid>
           <Grid item xs={6} md={12}>

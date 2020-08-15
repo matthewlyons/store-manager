@@ -6,7 +6,6 @@ const path = require('path');
 
 const {
   configureOrder,
-  configureHTML,
   emailInvoice,
   compileTemplate,
   createPDF,
@@ -23,12 +22,17 @@ app.use(cors());
 app.use(express.static(path.resolve(__dirname, 'build')));
 app.use(express.static(path.resolve(__dirname, 'template')));
 
-app.post('/pdf', async (req, res) => {
-  let order = configureOrder(req.body);
+app.post('/Print/:Type', async (req, res) => {
+  let { Type } = req.params;
+  console.log(req.body.order);
+  let order = configureOrder(req.body.order);
 
-  let html = await compileTemplate('order', order);
-  let title = order.customer.name + ' Invoice';
-  let pdf = await createPDF(html + html, title);
+  let template = Type === 'order' ? 'order' : 'quote';
+  let html = await compileTemplate(template, order);
+  let type = Type === 'order' ? 'Invoice' : 'Quote';
+  let title = `${order.customer.name} ${type}`;
+  let pdf = await createPDF(html, title);
+
   printPDF(pdf)
     .then((pdf) => {
       res.send('Printing...');
@@ -41,10 +45,11 @@ app.post('/pdf', async (req, res) => {
 });
 
 app.post('/Email/:Type', async (req, res) => {
+  let { Type } = req.params;
   let email = req.body.email;
   let order = configureOrder(req.body.order);
-
-  let html = await compileTemplate(req.params.Type, order);
+  let template = Type === 'order' ? 'order' : 'quote';
+  let html = await compileTemplate(template, order);
   let type = Type === 'order' ? 'Invoice' : 'Quote';
   let title = `${order.customer.name} ${type}`;
   let pdf = await createPDF(html, title);
@@ -56,24 +61,6 @@ app.post('/Email/:Type', async (req, res) => {
     .catch(() => {
       res.json({
         errors: [{ message: 'Could Not Send Email' }]
-      });
-    });
-});
-
-app.post('/Draft', async (req, res) => {
-  let order = configureOrder(req.body);
-
-  let html = await compileTemplate('quote', order);
-
-  let title = order.customer.name + ' Invoice';
-  let pdf = await createPDF(html, title);
-  printPDF(pdf)
-    .then((pdf) => {
-      res.send('Printing...');
-    })
-    .catch((pdf) => {
-      return res.status(500).json({
-        errors: [{ message: 'Could Not Print Invoice' }]
       });
     });
 });

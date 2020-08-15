@@ -75,6 +75,7 @@ router
   })
   // Update
   .put(async (req, res) => {
+    console.log(req.params.id);
     await DraftOrder.updateOne({ _id: req.params.id }, req.body);
     let order = await DraftOrder.findOne({ _id: req.params.id });
     if (order) {
@@ -122,7 +123,9 @@ router.post('/convert/:id', async (req, res) => {
     customer,
     employee,
     deliveryFee,
-    phone
+    phone,
+    note,
+    estimatedStoreArrival
   } = order;
 
   const NewOrder = new Order({
@@ -138,7 +141,9 @@ router.post('/convert/:id', async (req, res) => {
     customer,
     employee,
     deliveryFee,
-    phone
+    phone,
+    note,
+    estimatedStoreArrival
   });
 
   let customerDB = await Customer.findOne({ _id: customer })

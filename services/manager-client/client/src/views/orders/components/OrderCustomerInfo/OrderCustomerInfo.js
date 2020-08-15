@@ -17,7 +17,8 @@ import {
   FormControl,
   Select,
   TextField,
-  IconButton
+  IconButton,
+  Typography
 } from '@material-ui/core';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -60,7 +61,12 @@ export default function OrderCustomerInfo(props) {
     setStaticValues,
     orderValues,
     driversLicense,
-    setDriversLicense
+    setDriversLicense,
+    address,
+    changeAddress,
+    setChangeAddress,
+    setAddress,
+    type
   } = props;
 
   const [editCustomerModal, setEditCustomerModal] = useState(false);
@@ -127,7 +133,6 @@ export default function OrderCustomerInfo(props) {
           }
         })
         .catch((error) => {
-          console.log(error);
           createAlert(error);
         });
     }
@@ -135,7 +140,8 @@ export default function OrderCustomerInfo(props) {
 
   // Change In Address
   const addressChange = (e) => {
-    setStaticValues({ ...staticValues, address: e.target.value });
+    let newAddress = customer.addresses[e.target.value];
+    setAddress({ ...newAddress });
   };
 
   const updateStaticValues = (e) => {
@@ -151,14 +157,14 @@ export default function OrderCustomerInfo(props) {
   const updateDeposit = (event) => {
     setStaticValues({
       ...staticValues,
-      deposit: event.target.value
+      deposit: Number(event.target.value)
     });
   };
 
   const autoDeposit = (event) => {
     setStaticValues({
       ...staticValues,
-      deposit: recommendedDeposit
+      deposit: Number(recommendedDeposit)
     });
   };
 
@@ -187,8 +193,7 @@ export default function OrderCustomerInfo(props) {
         setCustomerID(customer._id);
       })
       .catch((error) => {
-        console.log(error);
-        console.log('Error Occurred');
+        createAlert(error);
       });
   };
 
@@ -209,8 +214,6 @@ export default function OrderCustomerInfo(props) {
       (orderValues.subTotal + orderValues.salesTax) * 0.3
     );
     setRecommendedDeposit(recommended);
-    console.log(recommended);
-    console.log(orderValues);
   }, [orderValues]);
 
   let editCustomerAction;
@@ -228,56 +231,98 @@ export default function OrderCustomerInfo(props) {
     editCustomerAction = null;
   }
 
+  let addressForm;
+  if (staticValues.delivery) {
+    if (type === 'Create' || changeAddress) {
+      addressForm = (
+        <React.Fragment>
+          <CardContent>
+            <FormControl variant="outlined" fullWidth={true}>
+              {customer.addresses && (
+                <Select native name="state" onChange={addressChange}>
+                  {customer.addresses.map((element, i) => (
+                    <option value={i} key={i}>
+                      {element.street}, {element.zip}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            </FormControl>
+          </CardContent>
+          <Divider />
+        </React.Fragment>
+      );
+    } else {
+      addressForm = (
+        <React.Fragment>
+          <CardContent>
+            <Grid container spacing={3}>
+              <Grid item xs={12} style={{ textAlign: 'center' }}>
+                <Typography>
+                  {address.street}, {address.city},
+                </Typography>
+                <Typography>
+                  {address.state} {address.zip}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} style={{ textAlign: 'center' }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    setChangeAddress(true);
+                  }}
+                >
+                  Update Address
+                </Button>
+              </Grid>
+            </Grid>
+          </CardContent>
+
+          <Divider />
+        </React.Fragment>
+      );
+    }
+  }
+
+  // If type is create or changeAddress is true
+  // Show Standard Form
+  // else
+  // Show order address with button to set change address to true
+
   return (
     <React.Fragment>
       <Grid item xs={12} md={12}>
         <Card className={classes.root}>
           <CardHeader
-            subheader="Customer Information!"
+            subheader="Customer Information"
             style={{ textAlign: 'center' }}
             action={editCustomerAction}
           />
           <Divider />
-          {staticValues.delivery && (
+
+          {addressForm}
+
+          {customerID && staticValues.delivery && address.state === 'Oregon' && (
             <React.Fragment>
               <CardContent>
-                <FormControl variant="outlined" fullWidth={true}>
-                  {customer.addresses && (
-                    <Select native name="state" onChange={addressChange}>
-                      {customer.addresses.map((element, i) => (
-                        <option value={i} key={i}>
-                          {element.street}, {element.zip}
-                        </option>
-                      ))}
-                    </Select>
-                  )}
-                </FormControl>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} style={{ textAlign: 'center' }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        toggleModal('license');
+                      }}
+                    >
+                      Add Drivers License
+                    </Button>
+                  </Grid>
+                </Grid>
               </CardContent>
               <Divider />
             </React.Fragment>
           )}
-          {customerID &&
-            staticValues.delivery &&
-            customer.addresses[staticValues.address].state === 'Oregon' && (
-              <React.Fragment>
-                <CardContent>
-                  <Grid container spacing={3}>
-                    <Grid item xs={12} style={{ textAlign: 'center' }}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                          toggleModal('license');
-                        }}
-                      >
-                        Add Drivers License
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-                <Divider />
-              </React.Fragment>
-            )}
           {!customerID && (
             <CardContent>
               <Grid container spacing={3}>
@@ -308,7 +353,7 @@ export default function OrderCustomerInfo(props) {
           )}
           {customerID && (
             <CardContent>
-              {customer.addresses.length > 0 ? (
+              {customer.addresses?.length > 0 ? (
                 <FormControlLabel
                   control={
                     <Switch

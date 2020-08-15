@@ -11,12 +11,12 @@ const StoreProvider = ({ children }) => {
 
   async function makeRequest(method, host, route, data) {
     let url;
+
     if (process.env.NODE_ENV === 'development') {
-      url = `http://192.168.0.166/${host}${route}`;
+      url = `http://${process.env.REACT_APP_IP_ADDRESS}/${host}${route}`;
     } else {
       url = `/${host}${route}`;
     }
-
     return new Promise((resolve, reject) => {
       axios({
         method: method,

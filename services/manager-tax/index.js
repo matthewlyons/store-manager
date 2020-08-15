@@ -37,7 +37,6 @@ async function GetRate(street, city, zip) {
 
 app.post('/', async (req, res) => {
   let { street, city, zip } = req.body;
-
   let current = await TaxRate.findOne({ address: `${street} ${city} ${zip}` });
 
   let rate;

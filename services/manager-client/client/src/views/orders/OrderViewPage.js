@@ -1,13 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useAlert } from '../../customHooks';
 import { Link } from 'react-router-dom';
 
-import OrderProducts from './components/OrderProducts';
-
 import Moment from 'moment';
 
+import OrderProducts from './components/OrderProducts';
+
 import { StoreContext } from '../../context/StoreContext';
+
 import { makeStyles } from '@material-ui/core/styles';
 import {
   FormControl,
@@ -22,7 +22,8 @@ import {
   Menu,
   MenuItem
 } from '@material-ui/core';
-import ModalCenter from '../../components/ModalCenter/ModalCenter';
+
+import ModalCenter from '../../components/ModalCenter';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +45,7 @@ export default function OrderViewPage(props) {
   const classes = useStyles();
   const { makeRequest, setLoading } = useContext(StoreContext);
 
+  //   Order State
   const [order, setOrder] = useState({
     delivery: false,
     customer: {
@@ -63,9 +65,11 @@ export default function OrderViewPage(props) {
   const [email, setEmail] = useState(0);
 
   useEffect(() => {
-    makeRequest('get', 'api', `/orders/${props.match.params.id}`)
+    setLoading(false);
+    let { type, id } = props.match.params;
+    let route = type === 'Order' ? 'orders' : 'draftorders';
+    makeRequest('get', 'api', `/${route}/${id}`)
       .then((res) => {
-        console.log(res.data);
         setOrder(res.data);
       })
       .catch((error) => {
@@ -84,13 +88,15 @@ export default function OrderViewPage(props) {
   };
 
   const emailChange = (e) => {
-    console.log(e.target.value);
     setEmail(e.target.value);
   };
 
   const printInvoice = () => {
+    let { type } = props.match.params;
+    let route = type === 'Order' ? 'order' : 'draftorders';
+    console.log(order);
     setLoading(true);
-    makeRequest('post', 'invoice', '/pdf', order)
+    makeRequest('post', 'invoice', `/Print/${route}`, { order })
       .then((res) => {
         setLoading(false);
         createAlert(res.data, false);
@@ -102,8 +108,10 @@ export default function OrderViewPage(props) {
   };
 
   const emailInvoice = () => {
+    let { type } = props.match.params;
+    let route = type === 'Order' ? 'order' : 'draftorders';
     setLoading(true);
-    makeRequest('post', 'invoice', '/Email/order', {
+    makeRequest('post', 'invoice', `/Email/${route}`, {
       email: order.customer.email[email],
       order
     })
@@ -117,14 +125,26 @@ export default function OrderViewPage(props) {
       });
   };
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const createOrder = () => {
+    makeRequest('post', 'api', `/draftorders/convert/${props.match.params.id}`)
+      .then((res) => {
+        let order = res.data;
+        window.location = `/Orders/View/Order/${order._id}`;
+      })
+      .catch((error) => {
+        createAlert(error);
+      });
+  };
+
+  // Material Menu
+  const [anchor, setAnchor] = useState(null);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchor(event.currentTarget);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchor(null);
   };
 
   return (
@@ -138,34 +158,78 @@ export default function OrderViewPage(props) {
           <Button variant="contained" color="primary" onClick={handleClick}>
             Menu
           </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem
-              component={Link}
-              to={`/Customers/View/${order.customer._id}`}
+          {props.match.params.type === 'Order' ? (
+            <Menu
+              id="simple-menu"
+              anchorEl={anchor}
+              keepMounted
+              open={Boolean(anchor)}
+              onClose={handleClose}
             >
-              View Customer
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to={`/Orders/Edit/Order/${props.match.params.id}`}
+              <MenuItem
+                component={Link}
+                to={`/Customers/View/${order.customer._id}`}
+              >
+                View Customer
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                to={{
+                  pathname: `/Orders/Form/`,
+                  state: {
+                    type: props.match.params.type,
+                    id: props.match.params.id
+                  }
+                }}
+              >
+                Edit Order
+              </MenuItem>
+              <MenuItem onClick={printInvoice}>Print Invoice</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  toggleModal('email');
+                }}
+              >
+                Email Invoice
+              </MenuItem>
+            </Menu>
+          ) : (
+            <Menu
+              id="simple-menu"
+              anchorEl={anchor}
+              keepMounted
+              open={Boolean(anchor)}
+              onClose={handleClose}
             >
-              Edit Order
-            </MenuItem>
-            <MenuItem onClick={printInvoice}>Print Invoice</MenuItem>
-            <MenuItem
-              onClick={() => {
-                toggleModal('email');
-              }}
-            >
-              Email Invoice
-            </MenuItem>
-          </Menu>
+              <MenuItem
+                component={Link}
+                to={`/Customers/View/${order.customer._id}`}
+              >
+                View Customer
+              </MenuItem>
+              <MenuItem onClick={createOrder}>Create Order</MenuItem>
+              <MenuItem
+                component={Link}
+                to={{
+                  pathname: `/Orders/Form/`,
+                  state: {
+                    type: props.match.params.type,
+                    id: props.match.params.id
+                  }
+                }}
+              >
+                Edit Quote
+              </MenuItem>
+              <MenuItem onClick={printInvoice}>Print Quote</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  toggleModal('email');
+                }}
+              >
+                Email Quote
+              </MenuItem>
+            </Menu>
+          )}
         </div>
       </Grid>
       <Grid item xs={12}>
@@ -321,20 +385,26 @@ export default function OrderViewPage(props) {
           toggleModal('email');
         }}
       >
-        <FormControl variant="outlined" fullWidth={true}>
-          {order.customer.email.length > 0 && (
-            <Select native onChange={emailChange}>
-              {order.customer.email.map((element, i) => (
-                <option value={i} key={i}>
-                  {element}
-                </option>
-              ))}
-            </Select>
-          )}
-        </FormControl>
-        <Button variant="contained" color="primary" onClick={emailInvoice}>
-          Submit
-        </Button>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <FormControl variant="outlined" fullWidth={true}>
+              {order.customer.email.length > 0 && (
+                <Select native onChange={emailChange}>
+                  {order.customer.email.map((element, i) => (
+                    <option value={i} key={i}>
+                      {element}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <Button variant="contained" color="primary" onClick={emailInvoice}>
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
       </ModalCenter>
     </Grid>
   );
