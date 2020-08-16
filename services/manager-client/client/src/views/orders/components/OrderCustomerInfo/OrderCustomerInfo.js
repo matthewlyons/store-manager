@@ -66,7 +66,8 @@ export default function OrderCustomerInfo(props) {
     changeAddress,
     setChangeAddress,
     setAddress,
-    type
+    type,
+    showEst
   } = props;
 
   const [editCustomerModal, setEditCustomerModal] = useState(false);
@@ -425,38 +426,42 @@ export default function OrderCustomerInfo(props) {
             </Grid>
           </CardContent>
           <Divider />
-          <CardContent>
-            <FormControl variant="outlined" fullWidth={true}>
-              <InputLabel id="demo-controlled-open-select-label">
-                Estimated Store Arrival Date
-              </InputLabel>
-              <Select
-                native
-                name="storeArrival"
-                label="Estimated Recieving Date"
-                onChange={updateStaticValues}
-                value={staticValues.storeArrival}
-              >
-                <option value={1}>1 Week</option>
-                <option value={2}>2 Weeks</option>
-                <option value={3}>3 Weeks</option>
-                <option value={4}>4 Weeks</option>
-                <option value={5}>5 Weeks</option>
-                <option value={6}>6 Weeks</option>
-                <option value={7}>7 Weeks</option>
-                <option value={8}>8 Weeks</option>
-                <option value={9}>9 Weeks</option>
-                <option value={10}>10 Weeks</option>
-                <option value={11}>11 Weeks</option>
-                <option value={12}>12 Weeks</option>
-                <option value={13}>13 Weeks</option>
-                <option value={14}>14 Weeks</option>
-                <option value={15}>15 Weeks</option>
-                <option value={16}>16 Weeks</option>
-              </Select>
-            </FormControl>
-          </CardContent>
-          <Divider />
+          {showEst && (
+            <React.Fragment>
+              <CardContent>
+                <FormControl variant="outlined" fullWidth={true}>
+                  <InputLabel id="demo-controlled-open-select-label">
+                    Estimated Store Arrival Date
+                  </InputLabel>
+                  <Select
+                    native
+                    name="storeArrival"
+                    label="Estimated Recieving Date"
+                    onChange={updateStaticValues}
+                    value={staticValues.storeArrival}
+                  >
+                    <option value={1}>1 Week</option>
+                    <option value={2}>2 Weeks</option>
+                    <option value={3}>3 Weeks</option>
+                    <option value={4}>4 Weeks</option>
+                    <option value={5}>5 Weeks</option>
+                    <option value={6}>6 Weeks</option>
+                    <option value={7}>7 Weeks</option>
+                    <option value={8}>8 Weeks</option>
+                    <option value={9}>9 Weeks</option>
+                    <option value={10}>10 Weeks</option>
+                    <option value={11}>11 Weeks</option>
+                    <option value={12}>12 Weeks</option>
+                    <option value={13}>13 Weeks</option>
+                    <option value={14}>14 Weeks</option>
+                    <option value={15}>15 Weeks</option>
+                    <option value={16}>16 Weeks</option>
+                  </Select>
+                </FormControl>
+              </CardContent>
+              <Divider />
+            </React.Fragment>
+          )}
         </Card>
       </Grid>
       {/* Search Current Customers Modal */}

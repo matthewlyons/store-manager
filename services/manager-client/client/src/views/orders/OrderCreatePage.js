@@ -53,6 +53,8 @@ export default function OrderCreatePage(props) {
   const [address, setAddress] = useState({});
   const [changeAddress, setChangeAddress] = useState(false);
 
+  const [showEst, setShowEst] = useState(true);
+
   const [note, setNote] = useState('');
 
   const [driversLicense, setDriversLicense] = useState({
@@ -255,6 +257,18 @@ export default function OrderCreatePage(props) {
     setOrderValues({ itemTotal, salesTax, subTotal, totalDue });
   }, [products, staticValues]);
 
+  useEffect(() => {
+    let customProducts = products.filter((product) => {
+      return product.status === 'Special Order';
+    });
+
+    if (customProducts.length > 0) {
+      setShowEst(true);
+    } else {
+      setShowEst(false);
+    }
+  }, [products]);
+
   return (
     <Grid container spacing={3}>
       <Grid item className="flex flexBaseline" xs={12}>
@@ -310,6 +324,7 @@ export default function OrderCreatePage(props) {
               setAddress={setAddress}
               changeAddress={changeAddress}
               setChangeAddress={setChangeAddress}
+              showEst={showEst}
             />
           </Grid>
           <Grid item xs={6} md={12}>

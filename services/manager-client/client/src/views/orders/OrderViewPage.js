@@ -290,11 +290,13 @@ export default function OrderViewPage(props) {
                     </Grid>
                   </React.Fragment>
                 )}
-                <Grid item xs={12}>
-                  <Typography gutterBottom>
-                    Order Will Arrive in {order.estimatedStoreArrival} Weeks
-                  </Typography>
-                </Grid>
+                {order.estimatedStoreArrival && (
+                  <Grid item xs={12}>
+                    <Typography gutterBottom>
+                      Order Will Arrive in {order.estimatedStoreArrival} Weeks
+                    </Typography>
+                  </Grid>
+                )}
               </Grid>
             </CardContent>
           </Card>
