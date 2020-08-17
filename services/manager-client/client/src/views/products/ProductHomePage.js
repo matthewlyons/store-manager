@@ -39,6 +39,7 @@ export default function ProductHomePage() {
           if (res.data.length < 1) {
             createAlert('No Products Found');
           } else {
+            console.log(res.data);
             setProducts(res.data);
           }
         })
