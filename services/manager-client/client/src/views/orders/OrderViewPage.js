@@ -261,47 +261,45 @@ export default function OrderViewPage(props) {
           </Card>
         </Grid>
       )}
-      {order.delivery && (
-        <Grid item xs={6} md={3}>
-          <Card className={classes.paper}>
-            <CardHeader
-              subheader="Customer Information"
-              style={{ textAlign: 'center' }}
-            />
-            <Divider />
-            <CardContent>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Typography gutterBottom>{order.address.street}</Typography>
-                  <Typography gutterBottom>
-                    {order.address.city}, {order.address.state}{' '}
-                    {order.address.zip}
-                  </Typography>
-                </Grid>
-                {order.driversLicense && (
-                  <React.Fragment>
-                    <Grid item xs={12}>
-                      <Typography gutterBottom>
-                        License Number: {order.driversLicense.number}
-                      </Typography>
-                      <Typography gutterBottom>
-                        Experation Date:{order.driversLicense.experationDate}
-                      </Typography>
-                    </Grid>
-                  </React.Fragment>
-                )}
-                {order.estimatedStoreArrival && (
+      <Grid item xs={6} md={3}>
+        <Card className={classes.paper}>
+          <CardHeader
+            subheader="Customer Information"
+            style={{ textAlign: 'center' }}
+          />
+          <Divider />
+          <CardContent>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Typography gutterBottom>{order.address.street}</Typography>
+                <Typography gutterBottom>
+                  {order.address.city}, {order.address.state}{' '}
+                  {order.address.zip}
+                </Typography>
+              </Grid>
+              {order.driversLicense && (
+                <React.Fragment>
                   <Grid item xs={12}>
                     <Typography gutterBottom>
-                      Order Will Arrive in {order.estimatedStoreArrival} Weeks
+                      License Number: {order.driversLicense.number}
+                    </Typography>
+                    <Typography gutterBottom>
+                      Experation Date:{order.driversLicense.experationDate}
                     </Typography>
                   </Grid>
-                )}
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-      )}
+                </React.Fragment>
+              )}
+              {order.estimatedStoreArrival && (
+                <Grid item xs={12}>
+                  <Typography gutterBottom>
+                    Order Will Arrive in {order.estimatedStoreArrival} Weeks
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
+          </CardContent>
+        </Card>
+      </Grid>
       <Grid item xs={6} md={3}>
         <Card className={classes.paper}>
           <CardHeader subheader="Totals" style={{ textAlign: 'center' }} />

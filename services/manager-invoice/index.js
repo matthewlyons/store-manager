@@ -29,9 +29,11 @@ app.post('/Print/:Type', async (req, res) => {
 
   let template = Type === 'order' ? 'order' : 'quote';
   let html = await compileTemplate(template, order);
+  let printHTML = configureHTML(html, template);
   let type = Type === 'order' ? 'Invoice' : 'Quote';
   let title = `${order.customer.name} ${type}`;
-  let pdf = await createPDF(html, title);
+  let pdfTitle = title.replace(/\W/g, '')
+  let pdf = await createPDF(printHTML, pdfTitle);
 
   printPDF(pdf)
     .then((pdf) => {
@@ -52,7 +54,8 @@ app.post('/Email/:Type', async (req, res) => {
   let html = await compileTemplate(template, order);
   let type = Type === 'order' ? 'Invoice' : 'Quote';
   let title = `${order.customer.name} ${type}`;
-  let pdf = await createPDF(html, title);
+  let pdfTitle = title.replace(/\W/g, '')
+  let pdf = await createPDF(html, pdfTitle);
 
   emailInvoice(pdf, email)
     .then(() => {
