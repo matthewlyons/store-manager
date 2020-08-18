@@ -27,25 +27,23 @@ router
   .post([check('new_password_1').isLength({ min: 5 })], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res
-        .status(400)
-        .send({ message: 'Password Must Be 5 Characters Long' });
+      return res.status(400).json({ errors: [{ message: 'Password Must Be 5 Characters Long' }] });
     }
 
     let { current_password, new_password_1, new_password_2 } = req.body;
 
     // Find User by ID
     let user = await User.findById(req.params.id);
-    if (!user) return res.status(404).send({ message: 'No User Found' });
+    if (!user) return res.status(404).json({ errors: [{ message: 'No User Found' }] });
 
     // Verify Current Password
     const isMatch = await bcrypt.compare(current_password, user.password);
-    if (!isMatch) return res.status(401).json({ message: 'Wrong Password' });
+    if (!isMatch) return res.status(401).json({ errors: [{ message: 'Password Incorrect' }] });
 
     // Verify new passwords match
 
     if (new_password_1 !== new_password_2)
-      return res.status(400).send({ message: 'Passwords Dont Match' });
+      return res.status(400).json({ errors: [{ message: 'Passwords Do Not Match' }] });
 
     user.password = await hashPassword(new_password_1);
     user.save().then((user) => {
@@ -55,7 +53,7 @@ router
   // Change User Name
   .put(async (req, res) => {
     let user = await User.findById(req.params.id);
-    if (!user) res.status(404).send({ message: 'No User Found' });
+    if (!user) res.status(404).json({ errors: [{ message: 'No User Found' }] });
     user.name = req.body.name;
     user.save().then((user) => {
       res.send('Success');
