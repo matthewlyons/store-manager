@@ -2,6 +2,8 @@
 
 This is a microservices app to allow my client to manage their Products, Customers, and Sales from a single GUI.
 
+![](screenshots/Screenshot.png)
+
 ## Built With
 
 - [Node.js](https://nodejs.org/en/) - Runtime
