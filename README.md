@@ -2,7 +2,16 @@
 
 This is a microservices app to allow my client to manage their Products, Customers, and Sales from a single GUI.
 
-[View the Project here.](http://app.MatthewWLyons.com)
+[View the Demo version of the Project here.](http://app.MatthewWLyons.com)
+
+The demo version does not include features like:
+
+- Authorization
+- Tax Calculation
+- PDF Invoice Generation
+- Invoice Emailing or Printing
+- Bulk Importing
+- Static Asset Server for Image Processing
 
 ![](screenshots/Screenshot.png)
 
