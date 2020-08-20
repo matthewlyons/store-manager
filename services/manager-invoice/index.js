@@ -4,13 +4,7 @@ const bodyParser = require('body-parser');
 
 const path = require('path');
 
-const {
-  configureOrder,
-  emailInvoice,
-  compileTemplate,
-  createPDF,
-  printPDF
-} = require('./helpers');
+const { configureHTML, configureOrder, emailInvoice, compileTemplate, createPDF, printPDF } = require('./helpers');
 
 const app = express();
 
@@ -32,7 +26,7 @@ app.post('/Print/:Type', async (req, res) => {
   let printHTML = configureHTML(html, template);
   let type = Type === 'order' ? 'Invoice' : 'Quote';
   let title = `${order.customer.name} ${type}`;
-  let pdfTitle = title.replace(/\W/g, '')
+  let pdfTitle = title.replace(/\W/g, '');
   let pdf = await createPDF(printHTML, pdfTitle);
 
   printPDF(pdf)
@@ -54,7 +48,7 @@ app.post('/Email/:Type', async (req, res) => {
   let html = await compileTemplate(template, order);
   let type = Type === 'order' ? 'Invoice' : 'Quote';
   let title = `${order.customer.name} ${type}`;
-  let pdfTitle = title.replace(/\W/g, '')
+  let pdfTitle = title.replace(/\W/g, '');
   let pdf = await createPDF(html, pdfTitle);
 
   emailInvoice(pdf, email)

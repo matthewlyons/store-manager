@@ -51,10 +51,7 @@ export default function UploadConfirm(props) {
       return ['Armoire', 'Bedroom'];
     } else if (stringContains(title, 'Trundle')) {
       return ['Trundle', 'Bedroom'];
-    } else if (
-      stringContains(title, 'Nightstand') ||
-      stringContains(title, 'Night')
-    ) {
+    } else if (stringContains(title, 'Nightstand') || stringContains(title, 'Night')) {
       return ['Nightstand', 'Bedroom'];
     } else if (stringContains(title, 'Mirror')) {
       return ['Mirror', 'Bedroom'];
@@ -98,10 +95,7 @@ export default function UploadConfirm(props) {
       // Dining
     } else if (stringContains(title, 'Table') || stringContains(title, 'TBL')) {
       return ['Table', 'Dining'];
-    } else if (
-      stringContains(title, 'Bench') ||
-      stringContains(title, 'Trunk')
-    ) {
+    } else if (stringContains(title, 'Bench') || stringContains(title, 'Trunk')) {
       return ['Bench', 'Bedroom'];
     } else if (stringContains(title, 'Chair')) {
       return ['Chair', 'Dining'];
@@ -155,6 +149,7 @@ export default function UploadConfirm(props) {
 
   useEffect(() => {
     let data = JSON.parse(uploadedProducts);
+    console.log(data);
     let filterData = data.map((obj) => {
       let [subCategory, category] = getCollection(obj.title);
       return {
@@ -169,15 +164,16 @@ export default function UploadConfirm(props) {
       };
     });
     let createProducts = findCreateUpdateProducts(currentProducts, filterData);
-    let { deleteProducts, updateProducts } = findUpdateDeleteProducts(
-      currentProducts,
-      filterData
-    );
+    let { deleteProducts, updateProducts } = findUpdateDeleteProducts(currentProducts, filterData);
 
     setCreateProducts([...createProducts]);
     setDeleteProducts([...deleteProducts]);
     setUpdateProducts([...updateProducts]);
   }, [uploadedProducts]);
+
+  useEffect(() => {
+    console.log(props);
+  }, [props]);
 
   const submitData = () => {
     makeRequest('post', 'bulk', '/Pricing', {
@@ -207,9 +203,7 @@ export default function UploadConfirm(props) {
           <Paper>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Typography style={{ textAlign: 'center' }}>
-                  New Products
-                </Typography>
+                <Typography style={{ textAlign: 'center' }}>New Products</Typography>
               </Grid>
               <Grid item xs={12}>
                 <Divider />
@@ -232,17 +226,11 @@ export default function UploadConfirm(props) {
                         return (
                           <TableRow key={'delete' + i}>
                             <TableCell component="th" scope="row"></TableCell>
-                            <TableCell align="left">
-                              {props.vendor.name}
-                            </TableCell>
+                            <TableCell align="left">{props.vendor.name}</TableCell>
                             <TableCell align="left">{element.sku}</TableCell>
-                            <TableCell align="left">
-                              {element.vendorCollection}
-                            </TableCell>
+                            <TableCell align="left">{element.vendorCollection}</TableCell>
                             <TableCell align="left">{element.title}</TableCell>
-                            <TableCell align="left">
-                              {element.subCategory}
-                            </TableCell>
+                            <TableCell align="left">{element.subCategory}</TableCell>
                           </TableRow>
                         );
                       })}
@@ -257,9 +245,7 @@ export default function UploadConfirm(props) {
           <Paper>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Typography style={{ textAlign: 'center' }}>
-                  Old Products
-                </Typography>
+                <Typography style={{ textAlign: 'center' }}>Old Products</Typography>
               </Grid>
               <Grid item xs={12}>
                 <Divider />
@@ -282,17 +268,11 @@ export default function UploadConfirm(props) {
                         return (
                           <TableRow key={'delete' + i}>
                             <TableCell component="th" scope="row"></TableCell>
-                            <TableCell align="left">
-                              {props.vendor.name}
-                            </TableCell>
+                            <TableCell align="left">{props.vendor.name}</TableCell>
                             <TableCell align="left">{element.sku}</TableCell>
-                            <TableCell align="left">
-                              {element.vendorCollection}
-                            </TableCell>
+                            <TableCell align="left">{element.vendorCollection}</TableCell>
                             <TableCell align="left">{element.title}</TableCell>
-                            <TableCell align="left">
-                              {element.subCategory}
-                            </TableCell>
+                            <TableCell align="left">{element.subCategory}</TableCell>
                           </TableRow>
                         );
                       })}

@@ -39,6 +39,9 @@ const OrderSchema = new Schema({
         status: {
           type: String
         },
+        color: {
+          type: String
+        },
         custom: {
           type: Boolean,
           default: false

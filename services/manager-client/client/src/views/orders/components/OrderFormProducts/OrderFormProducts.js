@@ -173,10 +173,8 @@ export default function OrderFormProducts(props) {
       }
     }
     if (!exists) {
-      setProducts([
-        ...products,
-        { ...product, quantity: 1, status: 'Special Order', notes: [] }
-      ]);
+      let color = product.finish || product.color || '';
+      setProducts([...products, { ...product, color, quantity: 1, status: 'Special Order', notes: [] }]);
     }
   };
 
@@ -247,9 +245,7 @@ export default function OrderFormProducts(props) {
     let updatedCustomProduct = customProduct;
 
     updatedCustomProduct.quantity =
-      type === '-'
-        ? updatedCustomProduct.quantity - 1
-        : updatedCustomProduct.quantity + 1;
+      type === '-' ? updatedCustomProduct.quantity - 1 : updatedCustomProduct.quantity + 1;
 
     setCustomProduct({ ...updatedCustomProduct });
   };
@@ -293,9 +289,7 @@ export default function OrderFormProducts(props) {
   const updateProductQuantity = (type, index) => {
     let updatedProducts = products;
     updatedProducts[index].quantity =
-      type === '-'
-        ? updatedProducts[index].quantity - 1
-        : updatedProducts[index].quantity + 1;
+      type === '-' ? updatedProducts[index].quantity - 1 : updatedProducts[index].quantity + 1;
     if (updatedProducts[index].quantity < 0) {
       updatedProducts.splice(index, 1);
       setEditProductModal(false);
@@ -335,6 +329,10 @@ export default function OrderFormProducts(props) {
       });
   }, [state]);
 
+  useEffect(() => {
+    console.log(products);
+  }, [products]);
+
   return (
     <React.Fragment>
       <Grid item xs={12}>
@@ -355,10 +353,7 @@ export default function OrderFormProducts(props) {
       </Grid>
       <Grid item xs={12} md={9}>
         <Card className={classes.root}>
-          <CardHeader
-            subheader="Products In Order"
-            style={{ textAlign: 'center' }}
-          />
+          <CardHeader subheader="Products In Order" style={{ textAlign: 'center' }} />
           <Divider />
           <CardContent>
             {products.map((product, i) => {
@@ -380,12 +375,9 @@ export default function OrderFormProducts(props) {
                 >
                   <div className={classes.product}>
                     <Typography variant="subtitle1">
-                      {product.quantity} x {vendor} | {product.sku} |{' '}
-                      {product.title}
+                      {product.quantity} x {vendor} | {product.sku} | {product.vendorCollection || ''} {product.title}
                     </Typography>
-                    <Typography variant="subtitle1">
-                      ${product.price}
-                    </Typography>
+                    <Typography variant="subtitle1">${product.price}</Typography>
                   </div>
                   <div className={classes.note}>
                     {product.notes.map((note, i) => {
@@ -422,13 +414,7 @@ export default function OrderFormProducts(props) {
           toggleModal('search');
         }}
       >
-        <Slide
-          direction="left"
-          in={databaseArray.length > 0}
-          mountOnEnter
-          unmountOnExit
-          style={{ zIndex: 10000 }}
-        >
+        <Slide direction="left" in={databaseArray.length > 0} mountOnEnter unmountOnExit style={{ zIndex: 10000 }}>
           <Paper elevation={4} className={classes.modal} square>
             <div className={classes.flexContainer}>
               <h3 className={classes.marginAuto}>Add Products</h3>
@@ -436,9 +422,7 @@ export default function OrderFormProducts(props) {
 
             <ListLink>
               {databaseArray.map((product, i) => {
-                let inOrder = productInOrder(product.sku)
-                  ? 'activeLink textWhite'
-                  : '';
+                let inOrder = productInOrder(product.sku) ? 'activeLink textWhite' : '';
 
                 return (
                   <div
@@ -538,9 +522,7 @@ export default function OrderFormProducts(props) {
                   </Button>
                 </Grid>
                 <Grid item xs={4}>
-                  <Typography variant="h6">
-                    {products[editIndex].quantity}
-                  </Typography>
+                  <Typography variant="h6">{products[editIndex].quantity}</Typography>
                 </Grid>
                 <Grid item xs={4}>
                   <Button
@@ -556,12 +538,7 @@ export default function OrderFormProducts(props) {
             <Grid item xs={6}>
               <Typography variant="h6">Status</Typography>
               <FormControl variant="outlined" fullWidth={true}>
-                <Select
-                  native
-                  name="status"
-                  value={products[editIndex].status}
-                  onChange={editProduct}
-                >
+                <Select native name="status" value={products[editIndex].status} onChange={editProduct}>
                   <option value="Special Order">Special Order</option>
                   <option value="In-Stock">In-Stock</option>
                   <option value="Complete">Complete</option>
@@ -601,6 +578,19 @@ export default function OrderFormProducts(props) {
                   </Button>
                 </Grid>
               </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth={true}
+                label="Color"
+                variant="outlined"
+                name="color"
+                value={products[editIndex].color}
+                onChange={editProduct}
+              />
             </Grid>
             <Grid item xs={12}>
               <Divider />
