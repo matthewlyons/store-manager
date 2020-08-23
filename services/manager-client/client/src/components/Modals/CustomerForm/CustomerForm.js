@@ -378,7 +378,6 @@ export default function CustomerForm(props) {
                           name={name + 'city'}
                           value={address.city}
                           inputRef={register}
-                          inputProps={{ autoCorrect: 'off', spellCheck: false }}
                         />
                       )}
                     />
