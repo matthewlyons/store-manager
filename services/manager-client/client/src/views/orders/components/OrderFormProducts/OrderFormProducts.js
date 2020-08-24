@@ -99,6 +99,7 @@ export default function OrderFormProducts(props) {
   // Custom Product
   const [customProduct, setCustomProduct] = useState({
     sku: '',
+    color: '',
     title: '',
     quantity: 1,
     status: 'Special Order',
@@ -678,6 +679,16 @@ export default function OrderFormProducts(props) {
               variant="outlined"
               name="sku"
               value={customProduct.sku}
+              onChange={editCustomProduct}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth={true}
+              label="Product Color"
+              variant="outlined"
+              name="color"
+              value={customProduct.color}
               onChange={editCustomProduct}
             />
           </Grid>
