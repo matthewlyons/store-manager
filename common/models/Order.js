@@ -40,7 +40,11 @@ const OrderSchema = new Schema({
           type: String
         },
         color: {
-          type: String
+          type: String,
+          required: true,
+          validate: (v) => {
+            return v !== '';
+          }
         },
         custom: {
           type: Boolean,
