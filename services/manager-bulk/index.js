@@ -54,6 +54,14 @@ app.post('/Pricing', (req, res) => {
     dbProduct.save();
     console.log(`Creating: ${product.sku}`);
   });
+
+  // Update.forEach((product) => {
+  //   created++;
+  //   let dbProduct = new Product(product);
+  //   dbProduct.save();
+  //   console.log(`Updating: ${product.sku}`);
+  // });
+
   Delete.forEach((product) => {
     deleted++;
     console.log(`Deleting: ${product._id}`);
