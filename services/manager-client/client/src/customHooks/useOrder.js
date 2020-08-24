@@ -59,7 +59,7 @@ export default function useOrder() {
       if (address.state === 'Oregon') {
         orderObj.driversLicense = driversLicense;
       }
-    } else if (customer.addresses.length > 0) {
+    } else if (customer.addresses?.length > 0) {
       let orderAddress = {
         street: customer.addresses[0].street,
         city: customer.addresses[0].city,
