@@ -168,11 +168,17 @@ export default function OrderCreatePage(props) {
     if (props.location.state?.id) {
       setType('Update');
       console.log('Running');
-      let dest = props.location.state.type === 'Order' ? 'orders' : 'draftorders';
+      let dest =
+        props.location.state.type === 'Order' ? 'orders' : 'draftorders';
       makeRequest('get', 'api', `/${dest}/${props.location.state.id}`)
         .then((res) => {
           console.log(res.data);
-          let { delivery, deliveryFee, deposit, estimatedStoreArrival } = res.data;
+          let {
+            delivery,
+            deliveryFee,
+            deposit,
+            estimatedStoreArrival
+          } = res.data;
           let orderProducts = res.data.products;
           let orderCustomer = res.data.customer;
           setStaticValues({
@@ -207,7 +213,9 @@ export default function OrderCreatePage(props) {
   useEffect(() => {
     console.log('Updating Tax Rate');
     if (customer.addresses) {
-      let { street, city, zip, state } = staticValues.delivery ? address : VancouverWoodworks;
+      let { street, city, zip, state } = staticValues.delivery
+        ? address
+        : VancouverWoodworks;
       if (state !== 'Washington' && state !== 'WA') {
         setStaticValues({ ...staticValues, taxRate: 0 });
       } else {
@@ -240,7 +248,10 @@ export default function OrderCreatePage(props) {
   }, [customerID]);
 
   useEffect(() => {
-    let { itemTotal, salesTax, subTotal, totalDue } = getValues(staticValues, products);
+    let { itemTotal, salesTax, subTotal, totalDue } = getValues(
+      staticValues,
+      products
+    );
 
     setOrderValues({ itemTotal, salesTax, subTotal, totalDue });
   }, [products, staticValues]);
@@ -267,12 +278,24 @@ export default function OrderCreatePage(props) {
             Menu
           </Button>
           {type === 'Create' ? (
-            <Menu id="simple-menu" anchorEl={anchor} keepMounted open={Boolean(anchor)} onClose={handleClose}>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchor}
+              keepMounted
+              open={Boolean(anchor)}
+              onClose={handleClose}
+            >
               <MenuItem onClick={submitOrder}>Submit Order</MenuItem>
               <MenuItem onClick={submitDraftOrder}>Save as Draft</MenuItem>
             </Menu>
           ) : (
-            <Menu id="simple-menu" anchorEl={anchor} keepMounted open={Boolean(anchor)} onClose={handleClose}>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchor}
+              keepMounted
+              open={Boolean(anchor)}
+              onClose={handleClose}
+            >
               <MenuItem onClick={updateOrder}>Save</MenuItem>
             </Menu>
           )}
