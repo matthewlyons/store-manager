@@ -4,7 +4,14 @@ const bodyParser = require('body-parser');
 
 const path = require('path');
 
-const { configureHTML, configureOrder, emailInvoice, compileTemplate, createPDF, printPDF } = require('./helpers');
+const {
+  configureHTML,
+  configureOrder,
+  emailInvoice,
+  compileTemplate,
+  createPDF,
+  printPDF
+} = require('./helpers');
 
 const app = express();
 
@@ -28,16 +35,17 @@ app.post('/Print/:Type', async (req, res) => {
   let title = `${order.customer.name} ${type}`;
   let pdfTitle = title.replace(/\W/g, '');
   let pdf = await createPDF(printHTML, pdfTitle);
+  res.send('Done');
 
-  printPDF(pdf)
-    .then((pdf) => {
-      res.send('Printing...');
-    })
-    .catch((pdf) => {
-      return res.status(500).json({
-        errors: [{ message: 'Could Not Print Invoice' }]
-      });
-    });
+  // printPDF(pdf)
+  //   .then((pdf) => {
+  //     res.send('Printing...');
+  //   })
+  //   .catch((pdf) => {
+  //     return res.status(500).json({
+  //       errors: [{ message: 'Could Not Print Invoice' }]
+  //     });
+  //   });
 });
 
 app.post('/Email/:Type', async (req, res) => {

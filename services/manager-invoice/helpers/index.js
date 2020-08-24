@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const hbs = require('handlebars');
+const hbs = require('hbs');
 const nodemailer = require('nodemailer');
 const _ = require('underscore');
 const fs = require('fs-extra');
@@ -22,6 +22,8 @@ hbs.registerHelper('getTotal', function (arg1, arg2) {
 hbs.registerHelper('getTaxPercent', function (arg1) {
   return arg1 * 100;
 });
+
+hbs.registerPartials(path.resolve(__dirname + '/../templates/partials/'));
 
 const mailerConfig = {
   host: 'smtp.office365.com',
