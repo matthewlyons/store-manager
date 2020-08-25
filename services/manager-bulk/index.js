@@ -18,36 +18,12 @@ app.get('/', (req, res) => {
   res.send('Hello from Bulk Product Routes');
 });
 
-app.post('/upload', (req, res) => {
-  res.send('Updating');
-  console.log('Updating');
-  let { Create, Update, Delete } = req.body;
-
-  deleteProducts(Delete);
-
-  // Update Outdated Products
-  Update.forEach((product) => {
-    Product.findOneAndUpdate({ _id: product._id }, { ...product });
-  });
-
-  Create.forEach((product) => {
-    let newProduct = new Product(product);
-    newProduct.save();
-  });
-
-  function deleteProducts(products, index = 0) {
-    if (products.length == index) return;
-    Product.deleteOne({ _id: products[index]._id }).then((product) => {
-      return deleteProducts(products, index + 1);
-    });
-  }
-});
-
 app.post('/Pricing', (req, res) => {
   let created = 0;
   let updated = 0;
   let deleted = 0;
   let { Create, Update, Delete } = req.body;
+  console.log({ Create, Update, Delete });
   Create.forEach((product) => {
     created++;
     let dbProduct = new Product(product);
@@ -55,12 +31,20 @@ app.post('/Pricing', (req, res) => {
     console.log(`Creating: ${product.sku}`);
   });
 
-  // Update.forEach((product) => {
-  //   created++;
-  //   let dbProduct = new Product(product);
-  //   dbProduct.save();
-  //   console.log(`Updating: ${product.sku}`);
-  // });
+  Update.forEach((product) => {
+    updated++;
+    console.log(`Updating: ${product.sku}`);
+
+    Product.findOneAndUpdate({ sku: product.sku }, { $set: { ...product } })
+      .then((result) => {
+        console.log('Success');
+        console.log(product);
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 
   Delete.forEach((product) => {
     deleted++;
@@ -69,7 +53,9 @@ app.post('/Pricing', (req, res) => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   });
-  res.json({ success: true, created, updated, deleted });
+  res.send(
+    `${created} Products Created, ${updated} Products updated,${deleted} Products deleted`
+  );
 });
 
 app.post('/Data', (req, res) => {

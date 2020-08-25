@@ -42,7 +42,9 @@ router
 
 // Get Products By Vendor
 router.route('/Vendor').post(async (req, res) => {
-  Product.find().then((products) => {
+  console.log(req.body.vendor);
+  let { vendor } = req.body;
+  Product.find({ vendor }).then((products) => {
     res.json(products);
   });
 });

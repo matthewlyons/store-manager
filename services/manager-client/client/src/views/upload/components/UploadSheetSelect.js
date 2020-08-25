@@ -25,8 +25,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function UploadForm(props) {
+export default function UploadSheetSelect(props) {
   const classes = useStyles();
+
   const onChangeHandler = (event) => {
     var file = event.target.files[0];
     var reader = new FileReader();
@@ -36,12 +37,11 @@ export default function UploadForm(props) {
         type: 'binary'
       });
       workbook.SheetNames.forEach(function (sheetName) {
-        // Here is your object
         var XL_row_object = XLSX.utils.sheet_to_row_object_array(
           workbook.Sheets[sheetName]
         );
-        var json_object = JSON.stringify(XL_row_object);
-        props.moveForward('uploadedProducts', json_object);
+
+        props.updateData('uploadedProducts', XL_row_object);
       });
     };
     reader.readAsBinaryString(file);

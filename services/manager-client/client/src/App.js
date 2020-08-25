@@ -24,8 +24,7 @@ import CustomerHomePage from './views/customers/CustomerHomePage';
 import CustomerViewPage from './views/customers/CustomerViewPage';
 import CustomerCreatePage from './views/customers/CustomerCreatePage';
 // Bulk Uploads
-import UploadHomePage from './views/upload/UploadHomePage';
-import UploadData from './views/upload/UploadData';
+import Upload from './views/upload/Upload';
 // Products
 import ProductHomePage from './views/products/ProductHomePage';
 import ProductForm from './views/products/ProductForm';
@@ -100,8 +99,7 @@ function App() {
               path="/Customers/View/:id"
               component={CustomerViewPage}
             />
-            <PrivateRoute exact path="/Upload" component={UploadHomePage} />
-            <PrivateRoute exact path="/Upload/Data" component={UploadData} />
+            <PrivateRoute exact path="/Upload" component={Upload} />
             <PrivateRoute exact path="/Products" component={ProductHomePage} />
             <PrivateRoute
               exact

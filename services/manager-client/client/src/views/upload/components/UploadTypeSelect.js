@@ -1,14 +1,15 @@
 import React from 'react';
-import XLSX from 'xlsx';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
+  Button,
   Divider,
   Card,
   CardHeader,
   CardContent
 } from '@material-ui/core';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1
@@ -25,28 +26,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function UploadDataForm(props) {
+export default function UploadTypeSelect(props) {
   const classes = useStyles();
-
-  const onChangeHandler = (event) => {
-    var file = event.target.files[0];
-    var reader = new FileReader();
-    reader.onload = function (event) {
-      var data = event.target.result;
-      var workbook = XLSX.read(data, {
-        type: 'binary'
-      });
-      workbook.SheetNames.forEach(function (sheetName) {
-        // Here is your object
-        var XL_row_object = XLSX.utils.sheet_to_row_object_array(
-          workbook.Sheets[sheetName]
-        );
-        props.setProductData(XL_row_object);
-      });
-    };
-
-    reader.readAsBinaryString(file);
-  };
+  let { updateData } = props;
   return (
     <Grid
       container
@@ -59,13 +41,20 @@ export default function UploadDataForm(props) {
       <Grid item xs={12}>
         <Card className={classes.paper}>
           <CardHeader
-            subheader="Select Vendor"
+            subheader="Bulk Upload Products"
             style={{ textAlign: 'center' }}
           />
           <Divider />
           <CardContent className={classes.buttonGroup}>
-            <h1>File Upload</h1>
-            <input type="file" name="file" onChange={onChangeHandler} />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                updateData('type', 'pricing');
+              }}
+            >
+              Upload Pricing
+            </Button>
           </CardContent>
         </Card>
       </Grid>

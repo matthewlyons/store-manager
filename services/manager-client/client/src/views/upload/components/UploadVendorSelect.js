@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
+
 import { useAlert } from '../../../customHooks';
+
 import { makeStyles } from '@material-ui/core/styles';
+
 import {
   Grid,
   Button,
@@ -9,7 +12,9 @@ import {
   CardHeader,
   CardContent
 } from '@material-ui/core';
+
 import { StoreContext } from '../../../context/StoreContext';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1
@@ -26,11 +31,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function UploadVendor(props) {
+export default function UploadVendorSelect(props) {
+  let { updateData } = props;
+
   const { createAlert } = useAlert();
-  const { setError, makeRequest } = useContext(StoreContext);
+
+  const { makeRequest } = useContext(StoreContext);
+
   const classes = useStyles();
+
   const [vendors, setVendors] = useState([]);
+
   useEffect(() => {
     makeRequest('get', 'api', '/vendor/')
       .then((res) => {
@@ -65,7 +76,7 @@ export default function UploadVendor(props) {
                   color="primary"
                   key={i}
                   onClick={() => {
-                    props.moveForward('vendor', element);
+                    updateData('vendor', element);
                   }}
                 >
                   {element.name}
