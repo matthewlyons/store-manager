@@ -36,12 +36,14 @@ export default function UploadSheetSelect(props) {
       var workbook = XLSX.read(data, {
         type: 'binary'
       });
-      workbook.SheetNames.forEach(function (sheetName) {
-        var XL_row_object = XLSX.utils.sheet_to_row_object_array(
-          workbook.Sheets[sheetName]
-        );
+      workbook.SheetNames.forEach(function (sheetName, i) {
+        if (i === 0) {
+          var XL_row_object = XLSX.utils.sheet_to_row_object_array(
+            workbook.Sheets[sheetName]
+          );
 
-        props.updateData('uploadedProducts', XL_row_object);
+          props.updateData('uploadedProducts', XL_row_object);
+        }
       });
     };
     reader.readAsBinaryString(file);
