@@ -3,4 +3,5 @@
 **/data
 **/certificates
 **/invoices/*
+!**/invoices/*.gitkeep 
 .env
