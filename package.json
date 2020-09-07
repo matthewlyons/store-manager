@@ -27,7 +27,10 @@
     "nodetax": "node ./services/manager-tax/index.js",
     "nodeinvoice": "node ./services/manager-invoice/index.js",
     "dev": "concurrently \"npm run nodeapi\" \"npm run nodeclient\" \"npm run nodebulk\" \"npm run nodeauth\" \"npm run nodetax\" \"npm run nodeinvoice\"",
-    "nodemon": "concurrently \"npm run api\" \"npm run client\" \"npm run bulk\" \"npm run auth\" \"npm run tax\" \"npm run invoice\""
+    "nodemon": "concurrently \"npm run api\" \"npm run client\" \"npm run bulk\" \"npm run auth\" \"npm run tax\" \"npm run invoice\"",
+    "build-client": "cd services/manager-client/client && npm i && npm run build",
+    "build-touchscreen": "cd services/touchscreen-client/client && npm i && npm run build",
+    "build": "npm run build-client && npm run build-touchscreen"
   },
   "keywords": [],
   "author": "Matthew Lyons",
