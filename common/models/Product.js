@@ -56,16 +56,16 @@ const ProductSchema = new Schema({
     type: String
   },
   width: {
-    type: Number
+    type: String
   },
   height: {
-    type: Number
+    type: String
   },
   depth: {
-    type: Number
+    type: String
   },
   length: {
-    type: Number
+    type: String
   },
   visible: {
     type: Boolean,
@@ -79,19 +79,21 @@ const ProductSchema = new Schema({
   }
 });
 
-// Create or Update Product with Pricing and Information
-// Single Product Updates
-// Bulk Product Scrape
-ProductSchema.pre('save', async function (next) {
+// Product Removed
+ProductSchema.post('remove', function (doc) {
+  // if shopify id, make request to shopify to delete product
+});
+
+// For update Pricing ONLY
+ProductSchema.pre('findOneAndUpdate', function (next, doc) {
+  // if shopify id update shopify
   next();
 });
 
-// Product Removed
-ProductSchema.post('remove', function (doc) {});
-
-// Create or Update Product with Pricing
-// Bulk Pricing Updates
-ProductSchema.pre('findOneAndUpdate', function (next, doc) {
+// For Update product data
+ProductSchema.pre('findByIdAndUpdate', function (next, doc) {
+  // if shopify id update shopify
+  // if no shopify id create shopify product
   next();
 });
 

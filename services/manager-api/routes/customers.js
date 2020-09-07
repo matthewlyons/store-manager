@@ -21,17 +21,20 @@ router
   .route('/:id')
   // Get
   .get((req, res) => {
-    console.log('Finging Customer');
-    Customer.findOne({ _id: req.params.id })
+    console.log('Finding Customer');
+    Customer.findById(req.params.id)
       .populate('orders.order')
       .populate('draftorders.order')
       .then((customer) => {
         console.log(customer);
-        res.json(customer);
+        if (customer) {
+          return res
+            .status(404)
+            .json({ errors: [{ message: 'No Customer Found' }] });
+        }
+        return res.json(customer);
       })
       .catch((err) => {
-        console.log(err);
-        logError(req, err);
         return res
           .status(404)
           .json({ errors: [{ message: 'No Customer Found' }] });
@@ -69,7 +72,7 @@ router.post('/', async (req, res) => {
   console.log(NewCustomer);
   NewCustomer.save()
     .then((customer) => {
-      console.log("Success in creating customer")
+      console.log('Success in creating customer');
       res.json(customer);
     })
     .catch((error) => {

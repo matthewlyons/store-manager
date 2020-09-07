@@ -3,12 +3,19 @@ const bcrypt = require('bcryptjs');
 
 const mongoose = require('mongoose');
 
-let DB = process.env.MONGO_URI;
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const User = require('../../models/User');
 
 module.exports = {
-  connectDB() {
+  async connectDB() {
+    let DB;
+    if (process.env.NODE_ENV === 'test') {
+      mongoServer = new MongoMemoryServer();
+      DB = await mongoServer.getUri();
+    } else {
+      DB = process.env.MONGO_URI;
+    }
     console.log(DB);
     mongoose
       .connect(DB, {
