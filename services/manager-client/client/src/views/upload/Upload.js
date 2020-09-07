@@ -128,7 +128,9 @@ export default function Upload() {
       <Grid item xs={12}>
         <Divider />
       </Grid>
-      {getStepContent(data.step)}
+      <Grid item xs={12}>
+        {getStepContent(data.step)}
+      </Grid>
     </Grid>
   );
 }

@@ -12,16 +12,16 @@ const User = require('../../../common/models/User');
 // Login Route
 router.post('/', async (req, res) => {
   let { name, password } = req.body;
-  console.log(name);
   let user = await User.findOne({ name });
   if (!user) {
     return res.status(404).json({ errors: [{ message: 'No User Found' }] });
   }
-  console.log(user);
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) return res.status(401).json({ errors: [{ message: 'Password Incorrect' }] });
+  if (!isMatch)
+    return res
+      .status(401)
+      .json({ errors: [{ message: 'Password Incorrect' }] });
   let [countdown, midnight] = timeUntilMidnight();
-  console.log(countdown, midnight);
   const payload = {
     user: {
       _id: user._id
@@ -38,7 +38,6 @@ router.post('/', async (req, res) => {
         console.log(err);
         res.status(404).json({ errors: [{ message: 'No User Found' }] });
       }
-      console.log('Sending Token');
       res.json({
         user: { _id: user._id, name: user.name, access: user.access },
         token,
@@ -56,7 +55,10 @@ router.post('/Customer', async (req, res) => {
     return res.status(404).json({ errors: [{ message: 'No User Found' }] });
   }
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) return res.status(401).json({ errors: [{ message: 'Password Incorrect' }] });
+  if (!isMatch)
+    return res
+      .status(401)
+      .json({ errors: [{ message: 'Password Incorrect' }] });
   const payload = {
     user: {
       _id: user._id

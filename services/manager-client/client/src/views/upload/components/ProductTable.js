@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -30,12 +30,17 @@ export default function ProductTable(props) {
 
   let { products, vendor, value, position } = props;
 
+  const productList = useMemo(() => {
+    console.log('Product Change');
+    return products;
+  }, [products]);
+
+  let className = useMemo(() => {
+    return value !== position ? 'ProductTable Hidden' : 'ProductTable';
+  }, [props]);
+
   return (
-    <Grid
-      container
-      spacing={3}
-      className={value !== position ? 'ProductTable Hidden' : 'ProductTable '}
-    >
+    <Grid container spacing={3} className={className}>
       <Grid item xs={12}>
         <TableContainer>
           <Table className={classes.table}>
@@ -50,7 +55,7 @@ export default function ProductTable(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {products.map((element, i) => {
+              {productList.map((element, i) => {
                 return (
                   <TableRow key={'delete' + i}>
                     <TableCell component="th" scope="row"></TableCell>
