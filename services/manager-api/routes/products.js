@@ -1,5 +1,7 @@
 const express = require('express');
 
+const fs = require('fs');
+
 const router = express.Router();
 
 // MongoDB Models
@@ -39,6 +41,23 @@ router
         });
       });
   });
+
+router.route('/Save').post(async (req, res) => {
+  let products = await Product.find().populate('vendor');
+  let jsonData = JSON.stringify({ data: products });
+  fs.writeFile('products.json', jsonData, (err) => {
+    if (err) {
+      res.status(400).send({
+        errors: [
+          {
+            message: 'Something Went Wrong'
+          }
+        ]
+      });
+    }
+    res.send('Save Successful');
+  });
+});
 
 // Get Products By Vendor
 router.route('/Vendor').post(async (req, res) => {

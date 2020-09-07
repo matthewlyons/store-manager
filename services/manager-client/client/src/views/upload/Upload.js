@@ -1,4 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
+
+import { makeStyles } from '@material-ui/core/styles';
+import { Paper, Grid, TextField, Button, Divider } from '@material-ui/core';
+
 import { useAlert, useUpload } from '../../customHooks';
 
 import UploadTypeSelect from './components/UploadTypeSelect';
@@ -8,7 +12,19 @@ import UploadConfirmPricing from './components/UploadConfirmPricing';
 
 import { StoreContext } from '../../context/StoreContext';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary
+  }
+}));
+
 export default function Upload() {
+  const classes = useStyles();
   const { makeRequest } = useContext(StoreContext);
 
   const { createAlert } = useAlert();
@@ -61,6 +77,16 @@ export default function Upload() {
     setData({ ...data, [field]: value, step: data.step + 1 });
   };
 
+  const downloadProducts = () => {
+    makeRequest('post', 'api', '/products/save')
+      .then((res) => {
+        createAlert(res.data, false);
+      })
+      .catch((error) => {
+        createAlert(error);
+      });
+  };
+
   const submitPricing = () => {
     let obj = {
       Create: data.createProducts,
@@ -91,5 +117,18 @@ export default function Upload() {
     }
   };
 
-  return <div>{getStepContent(data.step)}</div>;
+  return (
+    <Grid container spacing={3}>
+      <Grid item className="flex flexBaseline" xs={12}>
+        <h2 className="flexSpacer">Bulk Upload Products</h2>
+        <Button variant="contained" color="primary" onClick={downloadProducts}>
+          Download Products
+        </Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Divider />
+      </Grid>
+      {getStepContent(data.step)}
+    </Grid>
+  );
 }

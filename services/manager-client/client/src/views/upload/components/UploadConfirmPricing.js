@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useAlert } from '../../../customHooks';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Grid,
-  Typography,
-  Divider,
-  Button
-} from '@material-ui/core';
+
+import { Paper, Grid, Button, AppBar, Tabs, Tab, Box } from '@material-ui/core';
+
+import ProductTable from './ProductTable';
 
 const useStyles = makeStyles({
   root: {
@@ -22,11 +13,18 @@ const useStyles = makeStyles({
 });
 
 export default function UploadConfirmPricing(props) {
+  const classes = useStyles();
+
   let { submit, data } = props;
-  let { vendor, createProducts, deleteProducts } = data;
+  let { vendor, createProducts, deleteProducts, updateProducts } = data;
+
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const { createAlert } = useAlert();
-  const classes = useStyles();
 
   return (
     <div>
@@ -38,100 +36,38 @@ export default function UploadConfirmPricing(props) {
             Submit
           </Button>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Paper>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Typography style={{ textAlign: 'center' }}>
-                  New Products
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Divider />
-              </Grid>
-              <Grid item xs={12}>
-                <TableContainer>
-                  <Table className={classes.table}>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Include</TableCell>
-                        <TableCell align="left">Vendor</TableCell>
-                        <TableCell align="left">SKU</TableCell>
-                        <TableCell align="left">Collection</TableCell>
-                        <TableCell align="left">Title</TableCell>
-                        <TableCell align="left">Category</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {createProducts.map((element, i) => {
-                        return (
-                          <TableRow key={'delete' + i}>
-                            <TableCell component="th" scope="row"></TableCell>
-                            <TableCell align="left">{vendor.name}</TableCell>
-                            <TableCell align="left">{element.sku}</TableCell>
-                            <TableCell align="left">
-                              {element.vendorCollection}
-                            </TableCell>
-                            <TableCell align="left">{element.title}</TableCell>
-                            <TableCell align="left">
-                              {element.subCategory}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Typography style={{ textAlign: 'center' }}>
-                  Old Products
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Divider />
-              </Grid>
-              <Grid item xs={12}>
-                <TableContainer>
-                  <Table className={classes.table}>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Include</TableCell>
-                        <TableCell align="left">Vendor</TableCell>
-                        <TableCell align="left">SKU</TableCell>
-                        <TableCell align="left">Collection</TableCell>
-                        <TableCell align="left">Title</TableCell>
-                        <TableCell align="left">Category</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {deleteProducts.map((element, i) => {
-                        return (
-                          <TableRow key={'delete' + i}>
-                            <TableCell component="th" scope="row"></TableCell>
-                            <TableCell align="left">{vendor.name}</TableCell>
-                            <TableCell align="left">{element.sku}</TableCell>
-                            <TableCell align="left">
-                              {element.vendorCollection}
-                            </TableCell>
-                            <TableCell align="left">{element.title}</TableCell>
-                            <TableCell align="left">
-                              {element.subCategory}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Grid>
-            </Grid>
+            <AppBar position="static">
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="simple tabs example"
+                centered
+              >
+                <Tab label="New Products" />
+                <Tab label="Old Products" />
+                <Tab label="Updated Products" />
+              </Tabs>
+            </AppBar>
+            <ProductTable
+              products={createProducts}
+              vendor={vendor}
+              value={value}
+              position={0}
+            />
+            <ProductTable
+              products={deleteProducts}
+              vendor={vendor}
+              value={value}
+              position={1}
+            />
+            <ProductTable
+              products={updateProducts}
+              vendor={vendor}
+              value={value}
+              position={2}
+            />
           </Paper>
         </Grid>
       </Grid>
