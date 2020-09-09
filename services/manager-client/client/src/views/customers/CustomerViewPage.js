@@ -229,7 +229,7 @@ export default function NewCustomerViewPage(props) {
                     {item.comment}
                   </TableCell>
                   <TableCell align="left">
-                    {item.street}, {item.city}, {item.state} {item.zip}
+                    {item.street}, {item.city}, {item.state} {item.zip}, {item.unit}
                   </TableCell>
                 </TableRow>
               ))}
