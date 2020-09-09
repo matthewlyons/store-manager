@@ -35,15 +35,19 @@ app.post('/Print/:Type', async (req, res) => {
   let title = `${order.customer.name} ${type}`;
   let pdfTitle = title.replace(/\W/g, '');
   let pdf = await createPDF(printHTML, pdfTitle);
-  printPDF(pdf)
-    .then((pdf) => {
-      res.send('Printing...');
-    })
-    .catch((pdf) => {
-      return res.status(500).json({
-        errors: [{ message: 'Could Not Print Invoice' }]
+  if (process.env.NODE_ENV === 'production') {
+    printPDF(pdf)
+      .then((pdf) => {
+        res.send('Printing...');
+      })
+      .catch((pdf) => {
+        return res.status(500).json({
+          errors: [{ message: 'Could Not Print Invoice' }]
+        });
       });
-    });
+  } else {
+    res.send('Printing...');
+  }
 });
 
 app.post('/Email/:Type', async (req, res) => {

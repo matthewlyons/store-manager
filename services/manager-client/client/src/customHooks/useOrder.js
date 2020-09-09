@@ -1,26 +1,42 @@
 export default function useOrder() {
   const getValues = (staticValues, products) => {
-    let { deliveryFee, taxRate, deposit, delivery } = staticValues;
+    let {
+      deliveryFee,
+      taxRate,
+      deposit,
+      delivery,
+      militaryDiscount
+    } = staticValues;
+
+    let salesTax;
+    let subTotal;
+    let discount = 0;
 
     deliveryFee = Number(deliveryFee);
     deposit = Number(deposit);
 
     let itemTotal = products.reduce((total, product) => {
-      return total + parseInt(product.price) * product.quantity;
+      return total + Number(product.price) * product.quantity;
     }, 0);
 
-    let salesTax;
-    let subTotal;
-    if (delivery) {
-      salesTax = parseFloat(((itemTotal + deliveryFee) * taxRate).toFixed(2));
-      subTotal = parseFloat((itemTotal + deliveryFee + salesTax).toFixed(2));
-    } else {
-      salesTax = parseFloat((itemTotal * taxRate).toFixed(2));
-      subTotal = parseFloat((itemTotal + salesTax).toFixed(2));
+    if (militaryDiscount) {
+      discount = Number((itemTotal * 0.03).toFixed(2));
     }
 
-    let totalDue = parseFloat((subTotal - deposit).toFixed(2));
-    return { itemTotal, salesTax, subTotal, totalDue };
+    if (delivery) {
+      salesTax = Number(
+        ((itemTotal - discount + deliveryFee) * taxRate).toFixed(2)
+      );
+      subTotal = Number(
+        (itemTotal - discount + deliveryFee + salesTax).toFixed(2)
+      );
+    } else {
+      salesTax = Number(((itemTotal - discount) * taxRate).toFixed(2));
+      subTotal = Number((itemTotal - discount + salesTax).toFixed(2));
+    }
+
+    let totalDue = Number((subTotal - deposit).toFixed(2));
+    return { itemTotal, discount, salesTax, subTotal, totalDue };
   };
   const getOrder = ({
     customer,
@@ -37,13 +53,12 @@ export default function useOrder() {
       delivery: staticValues.delivery,
       salesTaxRate: staticValues.taxRate,
       ...orderValues,
+      militaryDiscount: staticValues.militaryDiscount,
       deposit: staticValues.deposit,
       customer: customer._id,
       employee,
       note
     };
-
-    console.log(products);
 
     let customProducts = products.filter((product) => {
       return product.status === 'Special Order';

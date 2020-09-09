@@ -27,7 +27,7 @@ router
       .populate('draftorders.order')
       .then((customer) => {
         console.log(customer);
-        if (customer) {
+        if (!customer) {
           return res
             .status(404)
             .json({ errors: [{ message: 'No Customer Found' }] });

@@ -12,6 +12,7 @@
 
     {{#each pages}}
     <section class="Page">
+
         <header class="Container PaddingTopBottom">
             <div class="Logo">
                 <img
@@ -21,8 +22,8 @@
                 <h3 class="Light Font17 LH20 TextCenter">
                     3000 NE Andresen Road<br />Vancouver, WA 98661<br />360-696-8590
                 </h3>
-            </div>
 
+            </div>
             <div class="Date TextCenter LH27">
                 <h3 class="Font27 SemiBold">INVOICE</h3>
                 <h3 class="Font20 Light">{{ConvertDate ../date}}</h3>
@@ -32,12 +33,13 @@
         <section class="CustomerInformation Container">
             <h3 class="Font16 LH20">
                 {{../customer.name}}<br />
-                {{../address.street}}<br />{{../address.city}}, {{../address.state}}
+                {{../address.street}}{{#if ../address.unit}}, {{../address.unit}}{{/if}}<br />{{../address.city}},
+                {{../address.state}}
                 {{../address.zip}}
             </h3>
             <h3 class="TextCenter FlexFill Font16 LH20">
                 {{#each ../customer.phone}}
-                <br />{{number}}
+                <br />{{#if comment}}{{comment}}: {{/if}}{{number}}
                 {{/each}}
             </h3>
             <h3 class="TextRight Font16 LH20">
@@ -95,9 +97,22 @@
                         hue due to natural grain variations and type of wood selected.
                     </h1>
                 </div>
+                {{#if ../militaryDiscount}}
+                <div class="LH15">
+                    <h1 class="Font12 Light">
+                        Thank you for your service.
+                    </h1>
+                </div>
+                {{/if}}
+
+                <div class="LH15">
+                    <h1 class="Font12 Light">
+                        You Were Helped By {{../employee}}
+                    </h1>
+                </div>
                 <div class="LH15">
                     <h1 class="Font16">
-                        {{../note}}
+                        Notes Section {{../note}}
                     </h1>
                 </div>
                 <div class="LH20">
@@ -112,29 +127,42 @@
             <div class="Flex OrderTotalContainer">
                 <div class="FlexFill LH25">
                     <h1 class="Font20">Item Total:</h1>
+                    {{#if ../militaryDiscount}}
+                    <h1 class="Font20">Military Discount:</h1>
+                    {{/if}}
                     {{#if ../delivery}}
                     <h1 class="Font20">Delivery Fee:</h1>
-                    {{else}}
-                    <h1 class="Font20"><br /></h1>
-                    {{/if}}</h1>
+                    {{/if}}
 
                     <h1 class="Font20">Sales Tax ({{getTaxPercent ../salesTaxRate }}%):</h1>
                     <h1 class="Font20">Subtotal:</h1>
                     <h1 class="Font20">Deposit:</h1>
+                    {{#unless ../delivery}}
+                    <h1 class="Font20"><br /></h1>
+                    {{/unless}}
+                    {{#unless ../militaryDiscount}}
+                    <h1 class="Font20"><br /></h1>
+                    {{/unless}}
                     <h1 class="Font20"><br /></h1>
                     <h1 class="Font20 Bold">Total Due:</h1>
                 </div>
                 <div class="LH25 TextRight">
                     <h1 class="Font20">${{../itemTotal}}</h1>
+                    {{#if ../militaryDiscount}}
+                    <h1 class="Font20">-${{../discount}}</h1>
+                    {{/if}}
                     {{#if ../delivery}}
                     <h1 class="Font20">${{../deliveryFee}}</h1>
-                    {{else}}
-                    <h1 class="Font20"><br /></h1>
                     {{/if}}
-
                     <h1 class="Font20">${{../salesTax}}</h1>
                     <h1 class="Font20">${{../subTotal}}</h1>
                     <h1 class="Font20">${{../deposit}}</h1>
+                    {{#unless ../delivery}}
+                    <h1 class="Font20"><br /></h1>
+                    {{/unless}}
+                    {{#unless ../militaryDiscount}}
+                    <h1 class="Font20"><br /></h1>
+                    {{/unless}}
                     <h1 class="Font20"><br /></h1>
                     <h1 class="Font20 Bold">${{../totalDue}}</h1>
                 </div>

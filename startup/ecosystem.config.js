@@ -9,7 +9,7 @@ const apps = PORTS.map((app) => {
     watch: false,
     max_memory_restart: '1G',
     env: {
-      NODE_ENV: 'development',
+      NODE_ENV: 'production',
       PORT: app.port
     },
     env_production: {

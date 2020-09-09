@@ -68,8 +68,7 @@ const OrderSchema = new Schema({
         required: true
       },
       comment: {
-        type: String,
-        required: true
+        type: String
       }
     }
   ],
@@ -90,6 +89,12 @@ const OrderSchema = new Schema({
       zip: {
         type: Number,
         required: true
+      },
+      unit: {
+        type: String
+      },
+      comment: {
+        type: String
       }
     },
     required: () => {
@@ -140,6 +145,12 @@ const OrderSchema = new Schema({
   salesTaxRate: {
     type: Number,
     required: true
+  },
+  militaryDiscount: {
+    type: Boolean
+  },
+  discount: {
+    type: Number
   },
   deposit: {
     type: Number,

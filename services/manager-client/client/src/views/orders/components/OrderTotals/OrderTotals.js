@@ -10,7 +10,9 @@ import {
   Typography,
   IconButton,
   CardContent,
-  TextField
+  TextField,
+  FormControlLabel,
+  Switch
 } from '@material-ui/core';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -30,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function OrderTotals(props) {
+  let { staticValues, setStaticValues, orderValues, note, setNote } = props;
+
   const classes = useStyles();
 
   const [salesTaxModal, setSalesTaxModal] = useState(false);
@@ -48,7 +52,12 @@ export default function OrderTotals(props) {
     setStaticValues({ ...staticValues, taxRate: e.target.value });
   };
 
-  let { staticValues, setStaticValues, orderValues, note, setNote } = props;
+  const editDiscount = () => {
+    setStaticValues({
+      ...staticValues,
+      militaryDiscount: !staticValues.militaryDiscount
+    });
+  };
 
   return (
     <Grid item xs={12}>
@@ -85,6 +94,18 @@ export default function OrderTotals(props) {
                     <Grid item xs={6}>
                       <Typography gutterBottom>
                         ${staticValues.deliveryFee}
+                      </Typography>
+                    </Grid>
+                  </React.Fragment>
+                )}
+                {staticValues.militaryDiscount && (
+                  <React.Fragment>
+                    <Grid item xs={6}>
+                      <Typography gutterBottom>Military Discount</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography gutterBottom>
+                        -${orderValues.discount}
                       </Typography>
                     </Grid>
                   </React.Fragment>
@@ -160,6 +181,23 @@ export default function OrderTotals(props) {
               onChange={(e) => {
                 setNote(e.target.value);
               }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={staticValues.militaryDiscount}
+                  name="militaryDiscount"
+                  onChange={editDiscount}
+                  value={staticValues.militaryDiscount}
+                  color="primary"
+                />
+              }
+              label="Military Discount"
             />
           </Grid>
         </Grid>

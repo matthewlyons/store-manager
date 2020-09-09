@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
 connectDB();
 
 const Product = require('../../common/models/Product');
+const Customer = require('../../common/models/Customer');
 
 app.get('/', (req, res) => {
   res.send('Hello from Bulk Product Routes');
@@ -56,6 +57,27 @@ app.post('/Pricing', (req, res) => {
   res.send(
     `${created} Products Created, ${updated} Products updated,${deleted} Products deleted`
   );
+});
+
+// Bulk Create Customers
+app.post('/Customers', (req, res) => {
+  let created = 0;
+
+  let { customers } = req.body;
+
+  customers.forEach((customer) => {
+    created++;
+    let dbCustomer = new Customer(customer);
+    let error = dbCustomer.validateSync();
+    if (error) {
+      console.log(error);
+    } else {
+      dbCustomer.save();
+      console.log(`Creating Customer`);
+    }
+  });
+
+  res.send(`${created} Customers Created.`);
 });
 
 app.post('/Data', (req, res) => {

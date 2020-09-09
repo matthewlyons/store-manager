@@ -66,6 +66,8 @@ export default function OrderCreatePage(props) {
     storeArrival: 16,
     address: 0,
     deposit: 0,
+    militaryDiscount: false,
+
     delivery: false,
     deliveryFee: 99,
     topLine: false,
@@ -76,6 +78,7 @@ export default function OrderCreatePage(props) {
   const [products, setProducts] = useState([]);
   const [orderValues, setOrderValues] = useState({
     itemTotal: 0,
+    discount: 0,
     salesTax: 0,
     subTotal: 0,
     totalDue: 0
@@ -126,7 +129,6 @@ export default function OrderCreatePage(props) {
       note,
       driversLicense
     });
-    console.log(orderObj);
     let dest = props.location.state.type === 'Order' ? 'orders' : 'draftorders';
     let viewDest = props.location.state.type === 'Order' ? 'Order' : 'Draft';
     makeRequest('put', 'api', `/${dest}/${props.location.state.id}`, orderObj)
@@ -248,12 +250,12 @@ export default function OrderCreatePage(props) {
   }, [customerID]);
 
   useEffect(() => {
-    let { itemTotal, salesTax, subTotal, totalDue } = getValues(
+    let { itemTotal, discount, salesTax, subTotal, totalDue } = getValues(
       staticValues,
       products
     );
 
-    setOrderValues({ itemTotal, salesTax, subTotal, totalDue });
+    setOrderValues({ itemTotal, discount, salesTax, subTotal, totalDue });
   }, [products, staticValues]);
 
   useEffect(() => {

@@ -26,6 +26,9 @@ const CustomerSchema = new Schema({
         type: String,
         required: true
       },
+      unit: {
+        type: String
+      },
       comment: {
         type: String
       }

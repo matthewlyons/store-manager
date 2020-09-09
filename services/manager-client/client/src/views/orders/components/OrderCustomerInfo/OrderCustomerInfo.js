@@ -162,10 +162,11 @@ export default function OrderCustomerInfo(props) {
     });
   };
 
-  const autoDeposit = (event) => {
+  const autoDeposit = (ammount) => {
+    console.log(ammount);
     setStaticValues({
       ...staticValues,
-      deposit: Number(recommendedDeposit)
+      deposit: Number(ammount)
     });
   };
 
@@ -418,8 +419,25 @@ export default function OrderCustomerInfo(props) {
               </Grid>
               {staticValues.deposit !== recommendedDeposit && (
                 <Grid item xs={12} style={{ textAlign: 'center' }}>
-                  <Button variant="outlined" onClick={autoDeposit}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      autoDeposit(recommendedDeposit);
+                    }}
+                  >
                     Recommended: ${recommendedDeposit}
+                  </Button>
+                </Grid>
+              )}
+              {staticValues.deposit !== orderValues.subTotal && (
+                <Grid item xs={12} style={{ textAlign: 'center' }}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      autoDeposit(orderValues.subTotal);
+                    }}
+                  >
+                    Pay In Full
                   </Button>
                 </Grid>
               )}

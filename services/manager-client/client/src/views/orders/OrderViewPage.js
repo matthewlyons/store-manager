@@ -70,6 +70,7 @@ export default function OrderViewPage(props) {
     let route = type === 'Order' ? 'orders' : 'draftorders';
     makeRequest('get', 'api', `/${route}/${id}`)
       .then((res) => {
+        console.log(res.data);
         setOrder(res.data);
       })
       .catch((error) => {
@@ -271,7 +272,9 @@ export default function OrderViewPage(props) {
           <CardContent>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Typography gutterBottom>{order.address.street}</Typography>
+                <Typography gutterBottom>
+                  {order.address.street}, {order.address.unit}
+                </Typography>
                 <Typography gutterBottom>
                   {order.address.city}, {order.address.state}{' '}
                   {order.address.zip}
@@ -326,6 +329,20 @@ export default function OrderViewPage(props) {
                   <Grid item xs={6}>
                     <Typography gutterBottom align="right">
                       ${order.deliveryFee}
+                    </Typography>
+                  </Grid>
+                </React.Fragment>
+              )}
+              {order.militaryDiscount && (
+                <React.Fragment>
+                  <Grid item xs={6}>
+                    <Typography gutterBottom align="right">
+                      Military Discount
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography gutterBottom align="right">
+                      -${order.discount}
                     </Typography>
                   </Grid>
                 </React.Fragment>

@@ -149,5 +149,55 @@ export default function useUpload() {
     return { createProducts, deleteProducts, updateProducts };
   };
 
-  return { getProducts, getCollection };
+  const getCustomers = (customers) => {
+    let formattedCustomers = customers.map((customer) => {
+      // If phone number
+      let phoneArray;
+      if (customer['Ship to 1']) {
+        let phone = customer['Ship to 1'].split(' ');
+        let number = phone[0].split('-');
+        number[0] = `(${number[0]})`;
+        number = number.join('-');
+        phoneArray = [{ number, comment: phone[1] }];
+      }
+
+      let phone = phoneArray ? phoneArray : [];
+
+      // If Address
+      let addresses = [];
+      if (customer['Bill to 3']) {
+        let addressArray = customer['Bill to 3']
+          .replace(',', '')
+          .replace('.', '')
+          .replace(/  +/g, ' ')
+          .split(' ');
+
+        if (
+          customer['Bill to 2'] &&
+          addressArray[0] &&
+          addressArray[1] &&
+          addressArray[2]
+        ) {
+          let address = {
+            street: customer['Bill to 2'],
+            city: addressArray[0],
+            state: addressArray[1],
+            zip: addressArray[2],
+            unit: customer['Bill to 4']
+          };
+          addresses = [{ ...address }];
+        }
+      }
+
+      return {
+        name: customer.Customer,
+        addresses,
+        phone
+      };
+    });
+
+    return { formattedCustomers };
+  };
+
+  return { getProducts, getCollection, getCustomers };
 }

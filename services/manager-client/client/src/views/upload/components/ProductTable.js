@@ -2,21 +2,13 @@ import React, { useEffect, useMemo } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Paper,
   Table,
   TableBody,
   TableHead,
   TableCell,
   TableContainer,
   TableRow,
-  Grid,
-  Typography,
-  Divider,
-  Button,
-  AppBar,
-  Tabs,
-  Tab,
-  Box
+  Grid
 } from '@material-ui/core';
 
 const useStyles = makeStyles({

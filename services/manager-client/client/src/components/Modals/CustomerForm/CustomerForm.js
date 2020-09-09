@@ -103,7 +103,7 @@ export default function CustomerForm(props) {
       city: '',
       state: 'Washington',
       zip: undefined,
-      comment: ''
+      unit: ''
     });
     setCustomerState({ ...updatedCustomer });
   };
@@ -190,7 +190,7 @@ export default function CustomerForm(props) {
             city,
             state,
             zip,
-            comment: ''
+            unit: ''
           });
           setCustomerState({ ...updatedCustomer });
           setNewAddress(null);
@@ -464,10 +464,10 @@ export default function CustomerForm(props) {
                   <Grid item xs={6}>
                     <TextField
                       fullWidth={true}
-                      label="Comment"
+                      label="Unit"
                       variant="outlined"
-                      value={address.comment}
-                      name={name + 'comment'}
+                      value={address.unit}
+                      name={name + 'unit'}
                       onChange={editPhoneAddress}
                     />
                   </Grid>
@@ -506,6 +506,7 @@ export default function CustomerForm(props) {
                       fullWidth={true}
                       label="Address"
                       variant="outlined"
+                      inputProps={{ autoCorrect: 'off', spellCheck: false }}
                       {...props}
                     />
                   )}
