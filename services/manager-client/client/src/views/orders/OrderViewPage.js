@@ -271,15 +271,17 @@ export default function OrderViewPage(props) {
           <Divider />
           <CardContent>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Typography gutterBottom>
-                  {order.address.street}, {order.address.unit}
-                </Typography>
-                <Typography gutterBottom>
-                  {order.address.city}, {order.address.state}{' '}
-                  {order.address.zip}
-                </Typography>
-              </Grid>
+              {order.address && (
+                <Grid item xs={12}>
+                  <Typography gutterBottom>
+                    {order.address.street}, {order.address.unit}
+                  </Typography>
+                  <Typography gutterBottom>
+                    {order.address.city}, {order.address.state}{' '}
+                    {order.address.zip}
+                  </Typography>
+                </Grid>
+              )}
               {order.driversLicense && (
                 <React.Fragment>
                   <Grid item xs={12}>
