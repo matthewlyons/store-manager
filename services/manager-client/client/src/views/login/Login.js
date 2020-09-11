@@ -74,9 +74,9 @@ export default function Login() {
     setData({ ...data, step: data.step + 1, [key]: value });
   };
 
-  // const handleBack = () => {
-  //   setData({ ...data, step: data.step - 1 });
-  // };
+  const handleBack = () => {
+    setData({ ...data, step: data.step - 1 });
+  };
 
   return (
     <CenterCard>
@@ -113,7 +113,18 @@ export default function Login() {
                   required
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleBack}
+                >
+                  Go Back
+                </Button>
                 <Button variant="contained" color="primary" onClick={submit}>
                   Login
                 </Button>
