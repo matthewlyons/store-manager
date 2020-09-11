@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs-extra');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
@@ -30,6 +31,13 @@ app.post('/Print/:Type', async (req, res) => {
 
   let template = Type === 'order' ? 'order' : 'quote';
   let html = await compileTemplate(template, order);
+
+  if (process.env.NODE_ENV !== 'production') {
+    fs.writeFile('invoice.html', html, function (err) {
+      console.log('HTML Saved');
+    });
+  }
+
   let printHTML = configureHTML(html, template);
   let type = Type === 'order' ? 'Invoice' : 'Quote';
   let title = `${order.customer.name} ${type}`;
