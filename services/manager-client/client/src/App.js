@@ -33,6 +33,7 @@ import ProductForm from './views/products/ProductForm';
 import Settings from './views/settings/Settings';
 // Login
 import Login from './views/login/Login';
+import ErrorHandler from './components/ErrorHandler';
 
 function App() {
   const { width } = useWindowDimensions();
@@ -71,58 +72,64 @@ function App() {
       <div className={classes.root}>
         <CssBaseline />
         {navigation}
-        <main className={classes.content}>
-          <Switch>
-            <PrivateRoute exact path="/" component={HomePage} />
-            <PrivateRoute exact path="/Orders" component={OrderHomePage} />
-            <PrivateRoute
-              exact
-              path="/Orders/View/:type/:id"
-              component={OrderViewPage}
-            />
-            <PrivateRoute
-              exact
-              path="/Orders/Form/:id?"
-              component={OrderCreatePage}
-            />
-            <PrivateRoute
-              exact
-              path="/Customers"
-              component={CustomerHomePage}
-            />
-            <PrivateRoute
-              exact
-              path="/Customers/Create"
-              component={CustomerCreatePage}
-            />
-            <PrivateRoute
-              exact
-              path="/Customers/View/:id"
-              component={CustomerViewPage}
-            />
-            <PrivateRoute exact path="/Upload" component={Upload} />
-            <PrivateRoute
-              exact
-              path="/Upload/Customers"
-              component={UploadCustomers}
-            />
-            <PrivateRoute exact path="/Products" component={ProductHomePage} />
-            <PrivateRoute
-              exact
-              path="/Products/Create"
-              component={ProductForm}
-            />
-            <PrivateRoute
-              exact
-              path="/Products/View/:id"
-              component={ProductForm}
-            />
-            <PrivateRoute exact path="/Settings" component={Settings} />
-            <Route exact path="/Login">
-              <Login />
-            </Route>
-          </Switch>
-        </main>
+        <ErrorHandler>
+          <main className={classes.content}>
+            <Switch>
+              <PrivateRoute exact path="/" component={HomePage} />
+              <PrivateRoute exact path="/Orders" component={OrderHomePage} />
+              <PrivateRoute
+                exact
+                path="/Orders/View/:type/:id"
+                component={OrderViewPage}
+              />
+              <PrivateRoute
+                exact
+                path="/Orders/Form/:id?"
+                component={OrderCreatePage}
+              />
+              <PrivateRoute
+                exact
+                path="/Customers"
+                component={CustomerHomePage}
+              />
+              <PrivateRoute
+                exact
+                path="/Customers/Create"
+                component={CustomerCreatePage}
+              />
+              <PrivateRoute
+                exact
+                path="/Customers/View/:id"
+                component={CustomerViewPage}
+              />
+              <PrivateRoute exact path="/Upload" component={Upload} />
+              <PrivateRoute
+                exact
+                path="/Upload/Customers"
+                component={UploadCustomers}
+              />
+              <PrivateRoute
+                exact
+                path="/Products"
+                component={ProductHomePage}
+              />
+              <PrivateRoute
+                exact
+                path="/Products/Create"
+                component={ProductForm}
+              />
+              <PrivateRoute
+                exact
+                path="/Products/View/:id"
+                component={ProductForm}
+              />
+              <PrivateRoute exact path="/Settings" component={Settings} />
+              <Route exact path="/Login">
+                <Login />
+              </Route>
+            </Switch>
+          </main>
+        </ErrorHandler>
       </div>
       <Loading />
     </Router>
