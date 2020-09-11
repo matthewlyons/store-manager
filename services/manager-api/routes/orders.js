@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 // Create Order
 router.post('/', async (req, res) => {
   const NewOrder = new Order(req.body);
-
+console.log(NewOrder);
   let customer = await Customer.findOne({ _id: req.body.customer });
 
   if (!customer) {
