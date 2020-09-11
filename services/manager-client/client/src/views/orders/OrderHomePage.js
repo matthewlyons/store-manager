@@ -69,8 +69,19 @@ export default function OrderHomePage() {
             <ListLink>
               {orders.map((order, i) => (
                 <ListItem key={i} to={`/Orders/View/Order/${order._id}`}>
-                  <p>{order.customer.name}</p>
-                  <p>{Moment(order.date).format('hh:mm A MM/DD/YY')}</p>
+                  <Grid container spacing={3} alignItems="center">
+                    <Grid item xs={4} align="left">
+                      <p>{order.customer.name}</p>
+                    </Grid>
+                    <Grid item xs={4} align="right">
+                      <p>{Moment(order.date).format('hh:mm A MM/DD/YY')}</p>
+                    </Grid>
+                    {/* <Grid item xs={4} align="right">
+                      <Button variant="contained" color="primary">
+                        Print Order
+                      </Button>
+                    </Grid> */}
+                  </Grid>
                 </ListItem>
               ))}
             </ListLink>
