@@ -10,6 +10,7 @@ const {
   configureOrder,
   emailInvoice,
   compileTemplate,
+  compileEJS,
   createPDF,
   printPDF
 } = require('./helpers');
@@ -31,6 +32,7 @@ app.post('/Print/:Type', async (req, res) => {
 
   let template = Type === 'order' ? 'order' : 'quote';
   let html = await compileTemplate(template, order);
+  let ejstemplate = await compileEJS(template, order);
 
   if (process.env.NODE_ENV !== 'production') {
     fs.writeFile('invoice.html', html, function (err) {

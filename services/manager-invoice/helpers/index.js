@@ -59,6 +59,7 @@ module.exports = {
     }
   },
   async compileEJS(template, data) {
+    console.log('Running');
     const filePath = path.resolve(
       __dirname,
       '..' + `/ejstemplates/${template}.ejs`
