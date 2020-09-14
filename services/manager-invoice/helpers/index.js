@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const hbs = require('hbs');
+const ejs = require('ejs');
 const nodemailer = require('nodemailer');
 const _ = require('underscore');
 const fs = require('fs-extra');
@@ -56,6 +57,15 @@ module.exports = {
       default:
         break;
     }
+  },
+  async compileEJS(template, data) {
+    const filePath = path.resolve(
+      __dirname,
+      '..' + `/ejstemplates/${template}.ejs`
+    );
+    let compiled = ejs.compile(fs.readFileSync(filePath, 'utf8'));
+    let html = compiled({ data });
+    console.log(html);
   },
   async compileTemplate(template, data) {
     const filePath = path.resolve(
