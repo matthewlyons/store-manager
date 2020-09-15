@@ -44,6 +44,7 @@ export default function ProductTable(props) {
                 <TableCell align="left">Collection</TableCell>
                 <TableCell align="left">Title</TableCell>
                 <TableCell align="left">Category</TableCell>
+                <TableCell align="left">Color</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -58,6 +59,7 @@ export default function ProductTable(props) {
                     </TableCell>
                     <TableCell align="left">{element.title}</TableCell>
                     <TableCell align="left">{element.subCategory}</TableCell>
+                    <TableCell align="left">{element.color}</TableCell>
                   </TableRow>
                 );
               })}

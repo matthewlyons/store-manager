@@ -129,7 +129,8 @@ export default function useUpload() {
         vendor,
         vendorCollection: obj.vendorCollection,
         subCategory,
-        category
+        category,
+        color: obj.color
       };
     });
     return result;

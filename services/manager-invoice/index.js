@@ -24,6 +24,7 @@ app.use(cors());
 
 app.use(express.static(path.resolve(__dirname, 'build')));
 app.use(express.static(path.resolve(__dirname, 'template')));
+app.use(express.static(path.resolve(__dirname, 'ejstemplates')));
 
 app.post('/Print/:Type', async (req, res) => {
   let { Type } = req.params;
@@ -32,7 +33,6 @@ app.post('/Print/:Type', async (req, res) => {
 
   let template = Type === 'order' ? 'order' : 'quote';
   let html = await compileTemplate(template, order);
-  let ejstemplate = await compileEJS(template, order);
 
   if (process.env.NODE_ENV !== 'production') {
     fs.writeFile('invoice.html', html, function (err) {
