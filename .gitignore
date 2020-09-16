@@ -6,3 +6,5 @@
 !**/invoices/*.gitkeep 
 invoice.html
 .env
+**/assets/**/*.png
+**/assets/**/*.jpg
