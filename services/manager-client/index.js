@@ -1,3 +1,5 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -10,7 +12,7 @@ app.use('/api', proxy('http://localhost:5000'));
 app.use('/bulk', proxy('http://localhost:5001'));
 app.use('/invoice', proxy('http://localhost:5002'));
 app.use('/auth', proxy('http://localhost:5003'));
-app.use('/static-assets', proxy('http://localhost:5004'));
+app.use('/static', proxy('https://localhost:5004'));
 app.use('/tax', proxy('http://localhost:5006'));
 
 app.get('*', (req, res) => {

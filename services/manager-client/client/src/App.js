@@ -31,6 +31,8 @@ import ProductHomePage from './views/products/ProductHomePage';
 import ProductForm from './views/products/ProductForm';
 // Settings
 import Settings from './views/settings/Settings';
+// Images Home Page
+import ImagesHome from './views/images/ImagesHome';
 // Login
 import Login from './views/login/Login';
 import ErrorHandler from './components/ErrorHandler';
@@ -123,6 +125,7 @@ function App() {
                 path="/Products/View/:id"
                 component={ProductForm}
               />
+              <PrivateRoute exact path="/Images" component={ImagesHome} />
               <PrivateRoute exact path="/Settings" component={Settings} />
               <Route exact path="/Login">
                 <Login />

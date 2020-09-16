@@ -26,33 +26,32 @@ app.post('/Pricing', (req, res) => {
   let { Create, Update, Delete } = req.body;
   console.log({ Create, Update, Delete });
   Create.forEach((product) => {
-    created++;
     let dbProduct = new Product(product);
-    dbProduct.save();
+    dbProduct.save().then((product) => {
+      created++;
+    });
     console.log(`Creating: ${product.sku}`);
   });
 
   Update.forEach((product) => {
-    updated++;
     console.log(`Updating: ${product.sku}`);
 
     Product.findOneAndUpdate({ sku: product.sku }, { $set: { ...product } })
       .then((result) => {
         console.log('Success');
-        console.log(product);
-        console.log(result);
+        updated++;
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   });
 
   Delete.forEach((product) => {
-    deleted++;
     console.log(`Deleting: ${product._id}`);
     Product.findByIdAndDelete(product._id)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        deleted++;
+        console.log(res);
+      })
+      .catch((err) => {});
   });
   res.send(
     `${created} Products Created, ${updated} Products updated,${deleted} Products deleted`

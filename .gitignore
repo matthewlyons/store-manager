@@ -1,10 +1,13 @@
 **/node_modules
 **/build
 **/data
-**/certificates
 **/invoices/*
 !**/invoices/*.gitkeep 
 invoice.html
 .env
 **/assets/**/*.png
 **/assets/**/*.jpg
+**.key
+**.cert
+**.psd
+**.tif

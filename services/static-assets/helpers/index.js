@@ -7,27 +7,43 @@ let imageQueue = [];
 
 module.exports = {
   async convertImage(file) {
+    let fileName = file.split('.')[0];
     const originalPath = path.resolve(__dirname + '../../assets/original');
     console.log(originalPath);
+    console.log(fileName);
     const convertedPath = path.resolve(__dirname + '../../assets/converted');
     await sharp(`${originalPath}/${file}`)
+      .flatten({ background: { r: 255, g: 255, b: 255 } })
       .resize(100, 100, {
         fit: 'contain',
-        background: { r: 255, g: 255, b: 255, alpha: 1 },
+        background: { r: 255, g: 255, b: 255, alpha: 1 }
       })
-      .toFile(`${convertedPath}/sm/${file}`);
+      .toFormat('jpeg')
+      .toFile(`${convertedPath}/sm/${fileName}.jpg`);
     await sharp(`${originalPath}/${file}`)
+      .flatten({ background: { r: 255, g: 255, b: 255 } })
       .resize(500, 500, {
         fit: 'contain',
-        background: { r: 255, g: 255, b: 255, alpha: 1 },
+        background: { r: 255, g: 255, b: 255, alpha: 1 }
       })
-      .toFile(`${convertedPath}/md/${file}`);
+      .toFormat('jpeg')
+      .toFile(`${convertedPath}/md/${fileName}.jpg`);
     await sharp(`${originalPath}/${file}`)
+      .flatten({ background: { r: 255, g: 255, b: 255 } })
       .resize(1000, 1000, {
         fit: 'contain',
-        background: { r: 255, g: 255, b: 255, alpha: 1 },
+        background: { r: 255, g: 255, b: 255, alpha: 1 }
       })
-      .toFile(`${convertedPath}/lg/${file}`);
+      .toFormat('jpeg')
+      .toFile(`${convertedPath}/lg/${fileName}.jpg`);
+    await sharp(`${originalPath}/${file}`)
+      .flatten({ background: { r: 255, g: 255, b: 255 } })
+      .resize(2000, 2000, {
+        fit: 'contain',
+        background: { r: 255, g: 255, b: 255, alpha: 1 }
+      })
+      .toFormat('jpeg')
+      .toFile(`${convertedPath}/xl/${fileName}.jpg`);
     fs.unlinkSync(`${originalPath}/${file}`);
   },
   async addImageToQueue() {
@@ -61,7 +77,7 @@ module.exports = {
     let response = await axios({
       url,
       method: 'GET',
-      responseType: 'stream',
+      responseType: 'stream'
     });
 
     response.data.pipe(writer);
@@ -73,5 +89,5 @@ module.exports = {
     writer.on('error', () => {
       return module.exports.downloadImages(index + 1);
     });
-  },
+  }
 };

@@ -68,6 +68,16 @@ router.route('/Vendor').post(async (req, res) => {
   });
 });
 
+// Get Products By Vendor that don't have images
+router.route('/Images').post(async (req, res) => {
+  console.log(req.body.vendor);
+  console.log('Finding Images');
+  let { vendor } = req.body;
+  Product.find({ vendor, image: undefined }).then((products) => {
+    res.json(products);
+  });
+});
+
 router.get('/Search/:Query', async (req, res) => {
   let query = req.params.Query;
   Product.find({

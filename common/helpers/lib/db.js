@@ -16,22 +16,26 @@ module.exports = {
     } else {
       DB = process.env.MONGO_URI;
     }
-    console.log(DB);
-    mongoose
-      .connect(DB, {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true
-      })
-      .then(async () => {
-        console.log('MongoDB Connected');
-        let users = await module.exports.checkUsers();
-        if (users == 0) {
-          module.exports.createAdmin();
-        }
-      })
-      .catch((err) => console.log(err));
+    return new Promise((resolve, reject) => {
+      mongoose
+        .connect(DB, {
+          useNewUrlParser: true,
+          useCreateIndex: true,
+          useFindAndModify: false,
+          useUnifiedTopology: true
+        })
+        .then(async () => {
+          let users = await module.exports.checkUsers();
+          if (users == 0) {
+            module.exports.createAdmin();
+          }
+          resolve('MongoDB Connected');
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err);
+        });
+    });
   },
   async checkUsers() {
     let users = await User.find();
