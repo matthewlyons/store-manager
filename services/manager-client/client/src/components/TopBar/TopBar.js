@@ -11,6 +11,7 @@ import BackupIcon from '@material-ui/icons/Backup';
 import KingBedIcon from '@material-ui/icons/KingBed';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ImageIcon from '@material-ui/icons/Image';
 
 import { ListItem, ListItemIcon } from '@material-ui/core';
 
@@ -79,6 +80,7 @@ export default function TopBar(props) {
           icon={<KingBedIcon />}
         />
         <ListItemLink to="/Upload" primary="Upload" icon={<BackupIcon />} />
+        <ListItemLink to="/Images" primary="Images" icon={<ImageIcon />} />
         <ListItemLink
           to="/Settings"
           primary="Settings"

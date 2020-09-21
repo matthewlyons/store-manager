@@ -64,6 +64,7 @@
     "pdf-to-printer": "^1.4.0",
     "puppeteer": "^2.1.1",
     "request": "^2.88.2",
+    "selfsigned": "^1.10.8",
     "sharp": "^0.25.4",
     "smartcrop": "^2.0.3",
     "smartcrop-sharp": "^2.0.3",

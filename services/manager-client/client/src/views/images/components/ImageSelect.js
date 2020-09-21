@@ -49,7 +49,7 @@ export default function ImageSelect(props) {
         .then((res) => {
           console.log(res.data);
           if (res.data.length < 1) {
-            // setIndex(index + 1);
+            setIndex(index + 1);
           } else {
             setImages(res.data);
           }
@@ -61,7 +61,17 @@ export default function ImageSelect(props) {
   }, [props, index]);
 
   const selectImage = () => {
-    console.log(images[selected]);
+    console.log();
+    makeRequest('post', 'api', '/products/image', {
+      fileName: images[selected],
+      id: props.products[index]._id
+    })
+      .then((res) => {
+        setIndex(index + 1);
+      })
+      .catch((error) => {
+        createAlert(error);
+      });
   };
 
   return (
@@ -83,7 +93,9 @@ export default function ImageSelect(props) {
                     setSelector(i);
                   }}
                 >
-                  <LazyLoad src={`https://localhost:5004/${image}`} />
+                  <LazyLoad
+                    src={`https://localhost:5004/${encodeURIComponent(image)}`}
+                  />
                 </GridListTile>
               );
             })}

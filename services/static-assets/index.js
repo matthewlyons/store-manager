@@ -3,18 +3,16 @@ const bodyParser = require('body-parser');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
-const axios = require('axios');
 const chokidar = require('chokidar');
 const cors = require('cors');
-const { connectDB } = require('../../common/helpers');
 
 const { convertImage } = require('./helpers');
 
-connectDB().then((message) => {
-  console.log(`Static Assets: ${message}`);
-});
-
 const app = express();
+
+var selfsigned = require('selfsigned');
+var attrs = [{ name: 'commonName', value: '76.115.30.28' }];
+var pems = selfsigned.generate(attrs, { days: 365 });
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -47,12 +45,8 @@ const port = process.env.PORT || 5004;
 https
   .createServer(
     {
-      key: fs.readFileSync(
-        path.resolve(__dirname, './certificates/server.key')
-      ),
-      cert: fs.readFileSync(
-        path.resolve(__dirname, './certificates/server.cert')
-      )
+      key: pems.private,
+      cert: pems.cert
     },
     app
   )

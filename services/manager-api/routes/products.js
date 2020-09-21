@@ -1,8 +1,20 @@
 const express = require('express');
-
+const axios = require('axios');
 const fs = require('fs');
 
+const nodemailer = require('nodemailer');
+
 const router = express.Router();
+
+const mailerConfig = {
+  host: 'smtp.office365.com',
+  secureConnection: true,
+  port: 587,
+  auth: {
+    user: process.env.EMAIL_ADDRESS,
+    pass: process.env.EMAIL_PASSWORD
+  }
+};
 
 // MongoDB Models
 const Product = require('../../../common/models/Product');
@@ -45,8 +57,26 @@ router
 router.route('/Save').post(async (req, res) => {
   let products = await Product.find().populate('vendor');
   let jsonData = JSON.stringify({ data: products });
-  fs.writeFile('products.json', jsonData, (err) => {
-    if (err) {
+  let transporter = nodemailer.createTransport(mailerConfig);
+
+  let mailOptions = {
+    from: 'Vancouver Woodworks <sales@vancouverwoodworks.com>',
+    to: 'matt@lanternmediagroup.com',
+    subject: 'Product Export',
+    html: '<body><p>JSON Product Export</p></body>',
+    attachments: [
+      {
+        // define custom content type for the attachment
+        filename: 'products.json',
+        content: jsonData,
+        contentType: 'text/plain'
+      }
+    ]
+  };
+
+  transporter.sendMail(mailOptions, function (error) {
+    if (error) {
+      console.log(error);
       res.status(400).send({
         errors: [
           {
@@ -54,8 +84,9 @@ router.route('/Save').post(async (req, res) => {
           }
         ]
       });
+    } else {
+      res.send('Product Export Sent.');
     }
-    res.send('Save Successful');
   });
 });
 
@@ -70,8 +101,6 @@ router.route('/Vendor').post(async (req, res) => {
 
 // Get Products By Vendor that don't have images
 router.route('/Images').post(async (req, res) => {
-  console.log(req.body.vendor);
-  console.log('Finding Images');
   let { vendor } = req.body;
   Product.find({ vendor, image: undefined }).then((products) => {
     res.json(products);
@@ -96,6 +125,7 @@ router.get('/Search/:Query', async (req, res) => {
       res.json([]);
     });
 });
+
 router.get('/color', async (req, res) => {
   Product.find({ color: { $ne: null } })
     .limit(50)
@@ -104,6 +134,30 @@ router.get('/color', async (req, res) => {
     })
     .catch((err) => {
       res.json([]);
+    });
+});
+
+router.post('/image', (req, res) => {
+  let { fileName, id } = req.body;
+  console.log('Selecting Image');
+  axios
+    .post('https://localhost:5004/Select', { fileName })
+    .then(async (response) => {
+      let product = await Product.findById(id);
+      product.image = fileName;
+      product.save();
+      console.log('Saved Product');
+      res.send('done');
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send({
+        errors: [
+          {
+            message: 'Something Went Wrong'
+          }
+        ]
+      });
     });
 });
 

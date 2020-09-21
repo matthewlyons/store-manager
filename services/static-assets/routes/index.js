@@ -3,7 +3,6 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
-const chokidar = require('chokidar');
 
 const router = express.Router();
 
@@ -12,14 +11,21 @@ router.get('/', (req, res) => {
 });
 
 router.post('/Select', (req, res) => {
-  let { fileName, id } = req.body;
-
+  let { fileName } = req.body;
+  console.log(fileName);
   fs.copyFile(
-    __dirname + `/assets/bulk/${fileName}`,
-    __dirname + `/assets/original/${fileName}`,
+    path.resolve(__dirname + `/../assets/bulk/${fileName}`),
+    path.resolve(__dirname + `/../assets/original/${fileName}`),
     async (err) => {
       if (err) {
-        return res.send('Error');
+        console.log(err);
+        res.status(400).send({
+          errors: [
+            {
+              message: 'Something Went Wrong'
+            }
+          ]
+        });
       }
       res.send('Done');
     }
