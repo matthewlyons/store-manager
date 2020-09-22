@@ -94,7 +94,7 @@ export default function ImageSelect(props) {
                   }}
                 >
                   <LazyLoad
-                    src={`https://localhost:5004/${encodeURIComponent(image)}`}
+                    src={`http://localhost:5007/${encodeURIComponent(image)}`}
                   />
                 </GridListTile>
               );

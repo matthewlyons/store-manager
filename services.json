@@ -28,6 +28,22 @@
     "port": 5003
   },
   {
+    "name": "static-assets-https",
+    "description": "HTTPS Image Server",
+    "type": "Static",
+    "script": "https",
+    "env": "server",
+    "port": 5004
+  },
+  {
+    "name": "static-assets-http",
+    "description": "HTTP Image Server",
+    "type": "Static",
+    "script": "http",
+    "env": "server",
+    "port": 5007
+  },
+  {
     "name": "touchscreen-api",
     "description": "Touchscreen Product API",
     "type": "Touchscreen",

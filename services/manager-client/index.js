@@ -12,7 +12,7 @@ app.use('/api', proxy('http://localhost:5000'));
 app.use('/bulk', proxy('http://localhost:5001'));
 app.use('/invoice', proxy('http://localhost:5002'));
 app.use('/auth', proxy('http://localhost:5003'));
-app.use('/static', proxy('https://localhost:5004'));
+app.use('/static', proxy('http://localhost:5007'));
 app.use('/tax', proxy('http://localhost:5006'));
 
 app.get('*', (req, res) => {

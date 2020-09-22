@@ -93,6 +93,7 @@ export default function Upload() {
       Delete: data.deleteProducts,
       Update: data.updateProducts
     };
+    console.log(obj);
     makeRequest('post', 'bulk', '/Pricing', obj)
       .then((res) => {
         createAlert(res.data, false);

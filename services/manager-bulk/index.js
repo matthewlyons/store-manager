@@ -24,7 +24,6 @@ app.post('/Pricing', (req, res) => {
   let updated = 0;
   let deleted = 0;
   let { Create, Update, Delete } = req.body;
-  console.log({ Create, Update, Delete });
   Create.forEach((product) => {
     let dbProduct = new Product(product);
     dbProduct.save().then((product) => {
@@ -35,10 +34,11 @@ app.post('/Pricing', (req, res) => {
 
   Update.forEach((product) => {
     console.log(`Updating: ${product.sku}`);
-
     Product.findOneAndUpdate({ sku: product.sku }, { $set: { ...product } })
       .then((result) => {
         console.log('Success');
+        console.log(product);
+        console.log(result);
         updated++;
       })
       .catch((err) => {});

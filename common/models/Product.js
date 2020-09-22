@@ -49,7 +49,7 @@ const ProductSchema = new Schema({
   wood: {
     type: String
   },
-  finish: {
+  color: {
     type: String
   },
   hardware: {

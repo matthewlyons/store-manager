@@ -108,6 +108,8 @@ export default function OrderCreatePage(props) {
       driversLicense
     });
 
+    console.log(orderObj);
+
     makeRequest('post', 'api', '/orders/', orderObj)
       .then((res) => {
         let order = res.data;

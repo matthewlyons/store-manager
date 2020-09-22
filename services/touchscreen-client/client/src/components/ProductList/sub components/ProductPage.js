@@ -49,7 +49,7 @@ export default function ProductPage(props) {
               <ul className="h5 FeatureList">
                 {product.vendor && <p>-Vendor: {product.vendor}</p>}
                 {product.collection && <p>-Collection: {product.collection}</p>}
-                {product.finish && <p>-Finish: {product.finish}</p>}
+                {product.color && <p>-Finish: {product.color}</p>}
                 {product.hardware && <p>-Hardware: {product.hardware}</p>}
                 {product.width && <li>-Width: {product.width}"</li>}
                 {product.length && <li>-Length: {product.length}"</li>}
