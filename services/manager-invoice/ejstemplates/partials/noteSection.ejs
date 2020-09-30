@@ -1,0 +1,38 @@
+<section style="height: 230px;" class="FinePrint Container">
+    <section style="width: 435px;">
+        <div>
+            <h1 class="Font20">Thank you for your business</h1>
+        </div>
+        <div>
+            <h1 class="Font16 Italic">
+                Minimum $99 Charge on all deliveries.<br />No refunds on special
+                orders.
+            </h1>
+        </div>
+        <div class="LH15">
+            <h1 class="Font12 Light">
+                Color panels represent an average color which will vary in tone<br />and
+                hue due to natural grain variations and type of wood selected.
+            </h1>
+        </div>
+
+        <%if (order.militaryDiscount) { %>
+        <div class="LH15">
+            <h1 class="Font12 Light">
+                Thank you for your service.
+            </h1>
+        </div>
+        <% } %>
+
+        <div class="LH15">
+            <h1 class="Font16 Light">
+                You Were Helped By <%= order.employee %>
+            </h1>
+        </div>
+        <div class="LH15">
+            <h1 class="Font16">
+                <%= order.note %>
+            </h1>
+        </div>
+    </section>
+</section>

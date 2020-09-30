@@ -1,30 +1,28 @@
 <section class="CustomerInformation Container">
     <h3 class="Font16 LH20 FlexFill">
-        <%=customer.name%>
-        <%=estimatedStoreArrival%>
-        {{customer.name}}<br />
-        {{#if address.street}}
-        {{address.street}}{{#if address.unit}}, {{address.unit}}{{/if}}<br />{{address.city}},
-        {{address.state}}
-        {{address.zip}}
-        {{else}}
+        <%= customer.name %><br />
+        <%if (address.street) { %>
+        <%= address.street %><%if (address.unit) { %>, <%= address.unit %> <% } %>
+        </br> <%= address.city %>, <%= address.state %> <%= address.zip %>
+        <% } else { %>
         &nbsp;
         <br />
         &nbsp;
-        {{/if}}
+        <% } %>
     </h3>
     <h3 class="TextCenter Font16 LH20">
-        {{#each customer.phone}}
-        <br />{{#if comment}}{{comment}}: {{/if}}{{number}}
-        {{/each}}
+        <% for(var i=0; i < customer.phone.length; i++) { %>
+        <br /><%if (customer.phone[i].comment) { %><%= customer.phone[i].comment %>
+        : <% } %><%= customer.phone[i].number %>
+        <% } %>
     </h3>
     <h3 class="TextRight Font16 LH20 FlexFill">
-        {{#if estimatedStoreArrival}}
-        <br />Estimated Store Arrival<br />{{estimatedStoreArrival}} Weeks.
-        {{else}}
+        <%if (estimatedStoreArrival) { %>
+        <br />Estimated Store Arrival<br /><%=estimatedStoreArrival%> Weeks.
+        <% } else { %>
         &nbsp;
         <br />
         &nbsp;
-        {{/if}}
+        <% } %>
     </h3>
 </section>

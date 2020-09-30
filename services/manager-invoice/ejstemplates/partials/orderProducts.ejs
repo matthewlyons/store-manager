@@ -1,0 +1,35 @@
+<section class="ProductTable <%if (type == 'Full') { %> Additional<% } %>">
+    <table class="Container">
+        <tr>
+            <th class="TextCenter Bold Font14">Qty</th>
+            <th class="TextCenter Description Bold Font14">Description</th>
+            <th class="TextCenter Bold Font14">Status</th>
+            <th class="TextCenter Bold Font14">Color</th>
+            <th class="TextCenter Bold Font14">Rate</th>
+
+            <th class="TextRight Bold Font14" style="width: 1px;">Amount</th>
+        </tr>
+        <% for(var i=0; i < products.length; i++) { %>
+        <tr>
+            <td class="TextCenter Regular Font14"><%= products[i].quantity %></td>
+            <td class="Regular Font14 <%if (products[i].notes.length < 1 ) { %>Last<% } %>">
+                <%= helpers.properCase(products[i].vendorCollection) %>
+                <%= helpers.properCase(products[i].title) %><br /><%= products[i].vendor.name %> |
+                <%= products[i].sku %>
+            </td>
+            <td class="TextCenter Regular Font14"><%= products[i].status %></td>
+            <td class="TextCenter Regular Font14"><%= helpers.properCase(products[i].color) %></td>
+            <td class="TextCenter Regular Font14">$<%= products[i].price %></td>
+            <td class="TextCenter Regular Font14">
+                $<%= helpers.getTotal(products[i].quantity, products[i].price) %></td>
+        </tr>
+        <% for(var j=0; j < products[i].notes.length; j++) { %>
+        <tr>
+            <td></td>
+            <td <%if (j+1 == products[i].notes.length) { %>class="Last" <% } %> colspan="5">-<%= products[i].notes[j] %>
+            </td>
+        </tr>
+        <% } %>
+        <% } %>
+    </table>
+</section>

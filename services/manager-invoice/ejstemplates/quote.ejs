@@ -13,7 +13,8 @@
 
     <%if (i === order.pages.length - 1) { %>
     <section class="Page">
-        <%- include('./partials/header', { date: order.date, type: 'INVOICE' }) %>
+        <h1 class="DraftWaterMark">DRAFT</h1>
+        <%- include('./partials/header', { date: order.date, type: 'QUOTE' }) %>
         <div class="Container BorderLine"></div>
         <%- include('./partials/customerInformation', {customer: order.customer, address: order.address, estimatedStoreArrival: order.estimatedStoreArrival}) %>
         <div class="Container BorderLine"></div>
@@ -28,7 +29,8 @@
     </section>
     <% } else { %>
     <section class="Page">
-        <%- include('./partials/header', { date: order.date, type: 'INVOICE' }) %>
+        <h1 class="DraftWaterMark">DRAFT</h1>
+        <%- include('./partials/header', { date: order.date, type: 'QUOTE' }) %>
         <div class="Container BorderLine"></div>
         <%- include('./partials/customerInformation', {customer: order.customer, address: order.address, estimatedStoreArrival: order.estimatedStoreArrival}) %>
         <div class="Container BorderLine"></div>

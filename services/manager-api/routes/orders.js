@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 // Create Order
 router.post('/', async (req, res) => {
   const NewOrder = new Order(req.body);
-console.log(NewOrder);
+  console.log(NewOrder);
   let customer = await Customer.findOne({ _id: req.body.customer });
 
   if (!customer) {
@@ -74,6 +74,9 @@ router
     if (order) {
       console.log(order);
       res.json(order);
+      // fs.writeFile('invoice.json', JSON.stringify(order), function (err) {
+      //   console.log('Order Saved');
+      // });
     } else {
       return res.status(404).json({ errors: [{ message: 'No Order Found' }] });
     }

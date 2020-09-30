@@ -3,15 +3,16 @@ const fs = require('fs-extra');
 const ejs = require('ejs');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
+const Moment = require('moment');
 const path = require('path');
+const _ = require('lodash');
 
 const {
   configureHTML,
   configureOrder,
   emailInvoice,
   compileTemplate,
-  compileEJS,
+  processOrder,
   createPDF,
   printPDF
 } = require('./helpers');
@@ -22,6 +23,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cors());
+
+let helpers = {
+  ConvertDate: (date) => {
+    return Moment(date).format('MM/DD/YY');
+  },
+  getTaxPercent: (rate) => {
+    return rate * 100;
+  },
+  getTotal: (price, quantity) => {
+    return price * quantity;
+  },
+  properCase: (string) => {
+    return _.startCase(_.toLower(string));
+  }
+};
 
 app.use(express.static(path.resolve(__dirname, 'build')));
 // app.use(express.static(path.resolve(__dirname, 'template')));
@@ -35,28 +51,22 @@ app.get('/', async (req, res) => {
 });
 app.post('/Print/:Type', async (req, res) => {
   let { Type } = req.params;
-  console.log(req.body.order);
-  let order = configureOrder(req.body.order);
+
+  let order = processOrder(req.body.order);
 
   let template = Type === 'order' ? 'order' : 'quote';
-  let html = await compileTemplate(template, order);
-  // try {
-  //   console.log('Running');
-  //   const filePath = path.resolve(__dirname, `./ejstemplates/${template}.ejs`);
-  //   let compiled = ejs.compile(fs.readFileSync(filePath, 'utf8'), {
-  //     filename: filePath
-  //   });
-  //   let html = compiled({ order });
-  //   console.log(html);
-  // } catch (err) {
-  //   console.log(err);
-  // }
 
-  // if (process.env.NODE_ENV !== 'production') {
-  //   fs.writeFile('invoice.html', html, function (err) {
-  //     console.log('HTML Saved');
-  //   });
-  // }
+  const filePath = path.resolve(__dirname, `./ejstemplates/${template}.ejs`);
+  let compiled = ejs.compile(fs.readFileSync(filePath, 'utf8'), {
+    filename: filePath
+  });
+  let html = compiled({ order, helpers });
+
+  if (process.env.NODE_ENV !== 'production') {
+    fs.writeFile('invoice.html', html, function (err) {
+      console.log('HTML Saved');
+    });
+  }
 
   let printHTML = configureHTML(html, template);
   let type = Type === 'order' ? 'Invoice' : 'Quote';

@@ -14,12 +14,15 @@ const Moment = require('moment');
 hbs.registerHelper('ifEquals', function (arg1, arg2, options) {
   return arg1 == arg2 ? options.fn(this) : options.inverse(this);
 });
+
 hbs.registerHelper('ConvertDate', function (date) {
   return Moment(date).format('MM/DD/YY');
 });
+
 hbs.registerHelper('getTotal', function (arg1, arg2) {
   return arg1 * arg2;
 });
+
 hbs.registerHelper('getTaxPercent', function (arg1) {
   return arg1 * 100;
 });
@@ -43,8 +46,39 @@ module.exports = {
       return { index: i + 1, products: list };
     });
     order.pagesLength = products.length;
-    delete order.products;
+    // delete order.products;
     return order;
+  },
+  processOrder(order) {
+    let pages = [];
+
+    let productList = order.products.map((product) => {
+      let notes = product.notes.length * 16;
+      let total = notes + 28 + 10;
+      return { ...product, pixels: total };
+    });
+
+    function chunkPages(i = 0, arr = [], currentTotal = 0) {
+      let totalPixels = 352;
+      if (pages.length > 0) {
+        totalPixels = 700;
+      }
+      arr.push(productList[i]);
+      let newTotal = currentTotal + productList[i].pixels;
+      if (i >= productList.length - 1) {
+        console.log(`Page Length: ${arr.length}`);
+        pages.unshift(arr);
+        return { ...order, pages };
+      }
+      if (newTotal + productList[i + 1].pixels > totalPixels) {
+        pages.unshift(arr);
+
+        return chunkPages(i + 1, [], 0);
+      } else {
+        return chunkPages(i + 1, arr, newTotal);
+      }
+    }
+    return chunkPages();
   },
   configureHTML(html, type) {
     switch (type) {

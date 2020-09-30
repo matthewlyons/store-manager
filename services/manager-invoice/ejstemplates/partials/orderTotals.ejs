@@ -1,0 +1,46 @@
+<section class="OrderTotals">
+    <div class="Flex OrderTotalContainer">
+        <div class="FlexFill LH25">
+            <h1 class="Font20">Item Total:</h1>
+
+            <%if (order.militaryDiscount) { %>
+            <h1 class="Font20">Military Discount:</h1>
+            <% } %>
+            <%if (order.delivery) { %>
+            <h1 class="Font20">Delivery Fee:</h1>
+            <% } %>
+
+            <h1 class="Font20">Sales Tax (<%= helpers.getTaxPercent(order.salesTaxRate); %>%):</h1>
+            <h1 class="Font20">Subtotal:</h1>
+            <h1 class="Font20">Deposit:</h1>
+            <%if (!order.delivery) { %>
+            <h1 class="Font20"><br /></h1>
+            <% } %>
+            <%if (!order.militaryDiscount) { %>
+            <h1 class="Font20"><br /></h1>
+            <% } %>
+            <h1 class="Font20"><br /></h1>
+            <h1 class="Font20 Bold">Total Due:</h1>
+        </div>
+        <div class="LH25 TextRight">
+            <h1 class="Font20">$<%= order.itemTotal %></h1>
+            <%if (order.militaryDiscount) { %>
+            <h1 class="Font20">-$<%= order.discount %></h1>
+            <% } %>
+            <%if (order.delivery) { %>
+            <h1 class="Font20">$<%= order.deliveryFee %></h1>
+            <% } %>
+            <h1 class="Font20">$<%= order.salesTax %></h1>
+            <h1 class="Font20">$<%= order.subTotal %></h1>
+            <h1 class="Font20">$<%= order.deposit %></h1>
+            <%if (!order.delivery) { %>
+            <h1 class="Font20"><br /></h1>
+            <% } %>
+            <%if (!order.militaryDiscount) { %>
+            <h1 class="Font20"><br /></h1>
+            <% } %>
+            <h1 class="Font20"><br /></h1>
+            <h1 class="Font20 Bold">$<%= order.totalDue %></h1>
+        </div>
+    </div>
+</section>
