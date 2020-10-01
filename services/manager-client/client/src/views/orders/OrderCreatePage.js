@@ -67,7 +67,6 @@ export default function OrderCreatePage(props) {
     address: 0,
     deposit: 0,
     militaryDiscount: false,
-
     delivery: false,
     deliveryFee: 99,
     topLine: false,
@@ -181,12 +180,15 @@ export default function OrderCreatePage(props) {
             delivery,
             deliveryFee,
             deposit,
-            estimatedStoreArrival
+            estimatedStoreArrival,
+            militaryDiscount,
+            note
           } = res.data;
           let orderProducts = res.data.products;
           let orderCustomer = res.data.customer;
           setStaticValues({
             ...staticValues,
+            militaryDiscount,
             delivery,
             deliveryFee,
             deposit,
@@ -196,6 +198,7 @@ export default function OrderCreatePage(props) {
           setProducts([...orderProducts]);
           setCustomerID(orderCustomer._id);
           setCustomer({ ...orderCustomer });
+          setNote(note);
           setTitle('Update Order.');
         })
         .catch((error) => {
