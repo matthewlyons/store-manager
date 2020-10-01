@@ -91,9 +91,15 @@ app.post('/Print/:Type', async (req, res) => {
 app.post('/Email/:Type', async (req, res) => {
   let { Type } = req.params;
   let email = req.body.email;
-  let order = configureOrder(req.body.order);
+  let order = processOrder(req.body.order);
+
   let template = Type === 'order' ? 'order' : 'quote';
-  let html = await compileTemplate(template, order);
+
+  const filePath = path.resolve(__dirname, `./ejstemplates/${template}.ejs`);
+  let compiled = ejs.compile(fs.readFileSync(filePath, 'utf8'), {
+    filename: filePath
+  });
+  let html = compiled({ order, helpers });
   let type = Type === 'order' ? 'Invoice' : 'Quote';
   let title = `${order.customer.name} ${type}`;
   let pdfTitle = title.replace(/\W/g, '');
