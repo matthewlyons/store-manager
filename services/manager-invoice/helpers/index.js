@@ -1,33 +1,10 @@
 require('dotenv').config();
 
-const hbs = require('hbs');
-const ejs = require('ejs');
 const nodemailer = require('nodemailer');
-const _ = require('underscore');
 const fs = require('fs-extra');
 const path = require('path');
 const printer = require('pdf-to-printer');
 const puppeteer = require('puppeteer');
-const { dirname } = require('path');
-const Moment = require('moment');
-
-hbs.registerHelper('ifEquals', function (arg1, arg2, options) {
-  return arg1 == arg2 ? options.fn(this) : options.inverse(this);
-});
-
-hbs.registerHelper('ConvertDate', function (date) {
-  return Moment(date).format('MM/DD/YY');
-});
-
-hbs.registerHelper('getTotal', function (arg1, arg2) {
-  return arg1 * arg2;
-});
-
-hbs.registerHelper('getTaxPercent', function (arg1) {
-  return arg1 * 100;
-});
-
-hbs.registerPartials(path.resolve(__dirname + '/../templates/partials/'));
 
 const mailerConfig = {
   host: 'smtp.office365.com',
@@ -40,15 +17,6 @@ const mailerConfig = {
 };
 
 module.exports = {
-  configureOrder(order) {
-    let products = _.chunk(order.products.reverse(), 8);
-    order.pages = products.reverse().map((list, i) => {
-      return { index: i + 1, products: list };
-    });
-    order.pagesLength = products.length;
-    // delete order.products;
-    return order;
-  },
   processOrder(order) {
     let pages = [];
 
@@ -66,7 +34,6 @@ module.exports = {
       arr.push(productList[i]);
       let newTotal = currentTotal + productList[i].pixels;
       if (i >= productList.length - 1) {
-        console.log(`Page Length: ${arr.length}`);
         pages.unshift(arr);
         return { ...order, pages };
       }
@@ -92,29 +59,7 @@ module.exports = {
         break;
     }
   },
-  async compileEJS(template, data) {
-    console.log('Running');
-    const filePath = path.resolve(
-      __dirname,
-      '..' + `/ejstemplates/${template}.ejs`
-    );
-    let compiled = ejs.compile(fs.readFileSync(filePath, 'utf8'));
-    let html = compiled({ data });
-    console.log(html);
-  },
-  async compileTemplate(template, data) {
-    const filePath = path.resolve(
-      __dirname,
-      '..' + `/templates/${template}.handlebars`
-    );
-    const html = await fs.readFile(filePath, 'utf-8');
-
-    const compiled = await hbs.compile(html)(data);
-    return compiled;
-  },
   async emailInvoice(file, email) {
-    console.log('Sending Email');
-    console.log(mailerConfig);
     let transporter = nodemailer.createTransport(mailerConfig);
     let filePath = path.resolve(__dirname, '..', `invoices/${file}.pdf`);
     let mailOptions = {
@@ -151,7 +96,6 @@ module.exports = {
       printer
         .print(filePath)
         .then((data) => {
-          console.log(data);
           fs.unlinkSync(filePath);
           resolve('Success');
         })
@@ -173,7 +117,6 @@ module.exports = {
         path: path.resolve(__dirname, '..' + `/invoices/${title}.pdf`),
         format: 'letter'
       });
-      console.log('done');
       await browser.close();
       process.exit;
       return title;

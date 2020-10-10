@@ -9,9 +9,7 @@ const _ = require('lodash');
 
 const {
   configureHTML,
-  configureOrder,
   emailInvoice,
-  compileTemplate,
   processOrder,
   createPDF,
   printPDF
@@ -40,10 +38,9 @@ let helpers = {
 };
 
 app.use(express.static(path.resolve(__dirname, 'build')));
-// app.use(express.static(path.resolve(__dirname, 'template')));
-app.use(express.static(path.resolve(__dirname, 'ejstemplates')));
+app.use(express.static(path.resolve(__dirname, 'templates')));
 
-app.set('views', path.join(__dirname, './ejstemplates'));
+app.set('views', path.join(__dirname, './templates'));
 app.set('view engine', 'ejs');
 
 app.get('/', async (req, res) => {
@@ -56,7 +53,7 @@ app.post('/Print/:Type', async (req, res) => {
 
   let template = Type === 'order' ? 'order' : 'quote';
 
-  const filePath = path.resolve(__dirname, `./ejstemplates/${template}.ejs`);
+  const filePath = path.resolve(__dirname, `./templates/${template}.ejs`);
   let compiled = ejs.compile(fs.readFileSync(filePath, 'utf8'), {
     filename: filePath
   });
@@ -95,7 +92,7 @@ app.post('/Email/:Type', async (req, res) => {
 
   let template = Type === 'order' ? 'order' : 'quote';
 
-  const filePath = path.resolve(__dirname, `./ejstemplates/${template}.ejs`);
+  const filePath = path.resolve(__dirname, `./templates/${template}.ejs`);
   let compiled = ejs.compile(fs.readFileSync(filePath, 'utf8'), {
     filename: filePath
   });
