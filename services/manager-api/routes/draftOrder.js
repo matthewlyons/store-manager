@@ -64,14 +64,13 @@ router
     let order = await DraftOrder.findOne({ _id: req.params.id })
       .populate('customer')
       .populate({ path: 'products.vendor', model: 'vendor' })
-      .exec(function (err) {
+      .exec(function (err, order) {
         if (err)
           return res
             .status(404)
             .json({ errors: [{ message: 'No Draft Order Found' }] });
+        res.json(order);
       });
-
-    return res.json(order);
   })
   // Update
   .put(async (req, res) => {

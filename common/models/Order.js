@@ -34,7 +34,13 @@ const OrderSchema = new Schema({
         },
         purchased: {
           type: Boolean,
-          default: false
+          default: () => {
+            if (this.status === 'Special Order') {
+              return false;
+            } else {
+              return true;
+            }
+          }
         },
         status: {
           type: String

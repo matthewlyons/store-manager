@@ -26,6 +26,7 @@ app.use('/orders', require('./routes/orders'));
 app.use('/draftorders', require('./routes/draftOrder'));
 app.use('/errors', require('./routes/errors'));
 app.use('/products', require('./routes/products'));
+app.use('/purchaseorder', require('./routes/purchaseOrder'));
 app.use('/vendor', require('./routes/vendor'));
 app.use('/visits', require('./routes/visits'));
 

@@ -67,17 +67,16 @@ router
   .route('/:id')
   // Get
   .get(async (req, res) => {
-    let order = await Order.findOne({ _id: req.params.id })
+    Order.findOne({ _id: req.params.id })
       .populate('customer')
       .populate({ path: 'products.vendor', model: 'vendor' })
-      .exec(function (err) {
+      .exec(function (err, order) {
         if (err)
           return res
             .status(404)
             .json({ errors: [{ message: 'No Order Found' }] });
+        res.json(order);
       });
-
-    res.json(order);
   })
   // Update
   .put(async (req, res) => {
