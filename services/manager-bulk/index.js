@@ -23,39 +23,66 @@ app.post('/Pricing', (req, res) => {
   let created = 0;
   let updated = 0;
   let deleted = 0;
-  let { Create, Update, Delete } = req.body;
-  Create.forEach((product) => {
-    let dbProduct = new Product(product);
-    dbProduct.save().then((product) => {
-      created++;
-    });
-    console.log(`Creating: ${product.sku}`);
-  });
+  let errors = 0;
 
-  Update.forEach((product) => {
-    console.log(`Updating: ${product.sku}`);
+  let { Create, Update, Delete } = req.body;
+
+  function updateProducts(i = 0) {
+    if (i > Update.length - 1) {
+      return createProducts();
+    }
+    let product = Update[i];
     Product.findOneAndUpdate({ sku: product.sku }, { $set: { ...product } })
       .then((result) => {
-        console.log('Success');
-        console.log(product);
-        console.log(result);
         updated++;
+        return updateProducts(i + 1);
       })
-      .catch((err) => {});
-  });
+      .catch((err) => {
+        errors++;
+        return updateProducts(i + 1);
+      });
+  }
 
-  Delete.forEach((product) => {
-    console.log(`Deleting: ${product._id}`);
+  function createProducts(i = 0) {
+    if (i > Create.length - 1) {
+      return deleteProducts();
+    }
+    let product = Create[i];
+    let dbProduct = new Product(product);
+    dbProduct
+      .save()
+      .then((product) => {
+        created++;
+        return createProducts(i + 1);
+      })
+      .catch((err) => {
+        errors++;
+        return createProducts(i + 1);
+      });
+  }
+
+  function deleteProducts(i = 0) {
+    if (i > Delete.length - 1) {
+      return done();
+    }
+    let product = Delete[i];
     Product.findByIdAndDelete(product._id)
       .then((res) => {
         deleted++;
-        console.log(res);
+        return deleteProducts(i + 1);
       })
-      .catch((err) => {});
-  });
-  res.send(
-    `${created} Products Created, ${updated} Products updated,${deleted} Products deleted`
-  );
+      .catch((err) => {
+        errors++;
+        return deleteProducts(i + 1);
+      });
+  }
+
+  function done() {
+    return res.send(
+      `${created} Products Created, ${updated} Products Updated, ${deleted} Products Deleted, ${errors} Errors Occurred`
+    );
+  }
+  updateProducts();
 });
 
 // Bulk Create Customers
