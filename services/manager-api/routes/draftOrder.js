@@ -61,17 +61,17 @@ router
   .route('/:id')
   // Get
   .get(async (req, res) => {
-    console.log(req.params);
     let order = await DraftOrder.findOne({ _id: req.params.id })
       .populate('customer')
-      .populate({ path: 'products.vendor', model: 'vendor' });
-    if (order) {
-      res.json(order);
-    } else {
-      return res
-        .status(404)
-        .json({ errors: [{ message: 'No Draft Order Found' }] });
-    }
+      .populate({ path: 'products.vendor', model: 'vendor' })
+      .exec(function (err) {
+        if (err)
+          return res
+            .status(404)
+            .json({ errors: [{ message: 'No Draft Order Found' }] });
+      });
+
+    return res.json(order);
   })
   // Update
   .put(async (req, res) => {

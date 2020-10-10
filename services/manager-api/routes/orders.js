@@ -69,17 +69,15 @@ router
   .get(async (req, res) => {
     let order = await Order.findOne({ _id: req.params.id })
       .populate('customer')
-      .populate({ path: 'products.vendor', model: 'vendor' });
+      .populate({ path: 'products.vendor', model: 'vendor' })
+      .exec(function (err) {
+        if (err)
+          return res
+            .status(404)
+            .json({ errors: [{ message: 'No Order Found' }] });
+      });
 
-    if (order) {
-      console.log(order);
-      res.json(order);
-      // fs.writeFile('invoice.json', JSON.stringify(order), function (err) {
-      //   console.log('Order Saved');
-      // });
-    } else {
-      return res.status(404).json({ errors: [{ message: 'No Order Found' }] });
-    }
+    res.json(order);
   })
   // Update
   .put(async (req, res) => {

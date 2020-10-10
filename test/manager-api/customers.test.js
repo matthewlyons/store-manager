@@ -6,13 +6,19 @@ const request = require('supertest');
 const app = require('../../services/manager-api/index');
 
 describe('GET Customer with Wrong id', () => {
-  it('Returns error when there is no matching customer.', (done) => {
+  before(function (done) {
+    app.on('appStarted', function () {
+      done();
+    });
+  });
+
+  it('Create Customer.', (done) => {
     request(app)
-      .get('/customers/fakeID')
-      .then((res) => {
+      .get('/')
+      .expect(200)
+      .end(function (res) {
         console.log(res);
         done();
-      })
-      .catch((err) => done(err));
+      });
   });
 });
