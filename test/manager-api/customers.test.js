@@ -5,19 +5,14 @@ const request = require('supertest');
 
 const app = require('../../services/manager-api/index');
 
-describe('GET Customer with Wrong id', () => {
-  before(function (done) {
-    app.on('appStarted', function () {
-      done();
-    });
-  });
-
-  it('Create Customer.', (done) => {
-    request(app)
-      .get('/')
+describe('Order Routes', () => {
+  it('Get All Orders.', (done) => {
+    request(app.app)
+      .get('/orders')
       .expect(200)
-      .end(function (res) {
-        console.log(res);
+      .end((err, res) => {
+        expect(res.statusCode).to.be.equal(200);
+        expect(res.body).to.be.an('array');
         done();
       });
   });
