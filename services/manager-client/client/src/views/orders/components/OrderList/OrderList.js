@@ -29,7 +29,6 @@ export default function OrderList({ orders }) {
   const classes = useStyles();
 
   let list = useMemo(() => {
-    console.log(orders);
     return orders;
   }, [orders]);
 
