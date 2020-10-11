@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive --exit",
+    "test": "pm2 kill && pm2 start ./startup/ecosystem_test.config.js && mocha --recursive --exit && pm2 kill",
     "start": "pm2 start ./startup/ecosystem.config.js",
     "manager": "pm2 start ./startup/ecosystem_manager.config.js",
     "touchscreen": "pm2 start ./startup/ecosystem_touchscreen.config.js",
@@ -44,6 +44,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "chokidar": "^3.4.0",
     "concurrently": "^5.2.0",
     "cors": "^2.8.5",
