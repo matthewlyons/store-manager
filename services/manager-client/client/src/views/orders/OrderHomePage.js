@@ -2,15 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useAlert } from '../../customHooks';
 import { Link } from 'react-router-dom';
 
-import Moment from 'moment';
+import Loading from '../../components/Loading';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Grid, Button, Divider } from '@material-ui/core';
-
-import ListLink from '../../components/ListLink';
-import ListItem from '../../components/ListItem';
+import { Grid, Button, Divider } from '@material-ui/core';
 
 import { StoreContext } from '../../context/StoreContext';
+import OrderList from './components/OrderList';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +31,9 @@ export default function OrderHomePage() {
   const { makeRequest } = useContext(StoreContext);
   const classes = useStyles();
 
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     makeRequest('get', 'api', '/orders/')
       .then((res) => {
@@ -42,8 +43,6 @@ export default function OrderHomePage() {
         createAlert(error);
       });
   }, []);
-
-  const [orders, setOrders] = useState([]);
 
   return (
     <Grid container spacing={3}>
@@ -63,31 +62,7 @@ export default function OrderHomePage() {
       <Grid item xs={12}>
         <Divider />
       </Grid>
-      {orders.length > 0 && (
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <ListLink>
-              {orders.map((order, i) => (
-                <ListItem key={i} to={`/Orders/View/Order/${order._id}`}>
-                  <Grid container spacing={3} alignItems="center">
-                    <Grid item xs={4} align="left">
-                      <p>{order.customer.name}</p>
-                    </Grid>
-                    <Grid item xs={4} align="right">
-                      <p>{Moment(order.date).format('hh:mm A MM/DD/YY')}</p>
-                    </Grid>
-                    {/* <Grid item xs={4} align="right">
-                      <Button variant="contained" color="primary">
-                        Print Order
-                      </Button>
-                    </Grid> */}
-                  </Grid>
-                </ListItem>
-              ))}
-            </ListLink>
-          </Paper>
-        </Grid>
-      )}
+      <OrderList orders={orders} />
     </Grid>
   );
 }
