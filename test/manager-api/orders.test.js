@@ -9,9 +9,9 @@ describe('Order Routes', () => {
   it('Get All Orders.', (done) => {
     request(url)
       .get('/orders')
+      .expect('Content-Type', /json/)
       .end((err, res) => {
         expect(res.statusCode).to.be.equal(200);
-        console.log(res.body);
         expect(res.body).to.be.an('array');
         done();
       });
@@ -19,7 +19,7 @@ describe('Order Routes', () => {
   it('Get fake order.', (done) => {
     request(url)
       .get('/orders/fakeid')
-      .expect(404)
+      .expect('Content-Type', /json/)
       .end((err, res) => {
         expect(res.statusCode).to.be.equal(404);
         expect(res.body.errors[0].message).to.be.equal('No Order Found');
