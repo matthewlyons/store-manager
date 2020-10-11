@@ -165,17 +165,15 @@ router.post('/image', (req, res) => {
 router
   .route('/:id')
   .get(async (req, res) => {
-    let product = await Product.findOne({ _id: req.params.id }).populate(
-      'vendor'
-    );
-    console.log(product);
-    if (product) {
-      res.json(product);
-    } else {
-      return res
-        .status(404)
-        .json({ errors: [{ message: 'No Product Found' }] });
-    }
+    Product.findOne({ _id: req.params.id })
+      .populate('vendor')
+      .exec(function (err, order) {
+        if (err)
+          return res
+            .status(404)
+            .json({ errors: [{ message: 'No Product Found' }] });
+        res.json(order);
+      });
   })
   .post(async (req, res) => {
     Product.findOneAndUpdate(
@@ -192,16 +190,14 @@ router
     );
   })
   .delete(async (req, res) => {
-    let product = await Product.findOne({ _id: req.params.id });
-
-    if (product) {
+    Product.findOne({ _id: req.params.id }).exec(function (err, product) {
+      if (err)
+        return res
+          .status(404)
+          .json({ errors: [{ message: 'No Product Found' }] });
       product.remove();
-      res.json({ success: true });
-    } else {
-      return res
-        .status(404)
-        .json({ errors: [{ message: 'No Product Found' }] });
-    }
+      return res.json({ success: true });
+    });
   });
 
 module.exports = router;
