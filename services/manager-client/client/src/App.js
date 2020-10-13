@@ -36,6 +36,8 @@ import ImagesHome from './views/images/ImagesHome';
 // Login
 import Login from './views/login/Login';
 import ErrorHandler from './components/ErrorHandler';
+// Vendor Pages
+import VendorHomepage from './views/vendor/VendorHomepage';
 
 function App() {
   const { width } = useWindowDimensions();
@@ -127,6 +129,11 @@ function App() {
               />
               <PrivateRoute exact path="/Images" component={ImagesHome} />
               <PrivateRoute exact path="/Settings" component={Settings} />
+              <PrivateRoute
+                exact
+                path="/Vendor/:id"
+                component={VendorHomepage}
+              />
               <Route exact path="/Login">
                 <Login />
               </Route>

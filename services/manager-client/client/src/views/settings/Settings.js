@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAlert } from '../../customHooks';
 import { StoreContext } from '../../context/StoreContext';
 import { makeStyles } from '@material-ui/core/styles';
@@ -209,8 +210,7 @@ export default function Settings() {
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
-                    <TableCell align="center">Visible On Shopify</TableCell>
-                    <TableCell align="right">Delete</TableCell>
+                    <TableCell align="right">Edit</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -220,27 +220,13 @@ export default function Settings() {
                         <TableCell component="th" scope="row">
                           {vendor.name}
                         </TableCell>
-                        <TableCell align="center">
-                          <FormControlLabel
-                            control={
-                              <Switch
-                                checked={vendor.visible}
-                                onChange={() => {
-                                  setVisible(vendor._id);
-                                }}
-                                name="delivery"
-                                value={vendor.visible}
-                                color="primary"
-                              />
-                            }
-                          />
-                        </TableCell>
                         <TableCell align="right">
-                          <DeleteIcon
-                            color="secondary"
-                            style={{ cursor: 'pointer' }}
-                            onClick={areYouSure}
-                          />
+                          <Link to={`/Vendor/${vendor._id}`}>
+                            <EditIcon
+                              color="primary"
+                              style={{ cursor: 'pointer' }}
+                            />
+                          </Link>
                         </TableCell>
                       </TableRow>
                     );
