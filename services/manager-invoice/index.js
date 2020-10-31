@@ -46,6 +46,7 @@ app.set('view engine', 'ejs');
 app.get('/', async (req, res) => {
   res.render('order');
 });
+
 app.post('/Print/:Type', async (req, res) => {
   let { Type } = req.params;
 
@@ -53,23 +54,60 @@ app.post('/Print/:Type', async (req, res) => {
 
   let template = Type === 'order' ? 'order' : 'quote';
 
-  const filePath = path.resolve(__dirname, `./templates/${template}.ejs`);
-  let compiled = ejs.compile(fs.readFileSync(filePath, 'utf8'), {
-    filename: filePath
-  });
-  let html = compiled({ order, helpers });
+  const quotePath = path.resolve(__dirname, `./templates/quote.ejs`);
+  const order_accountingPath = path.resolve(
+    __dirname,
+    `./templates/order_accounting.ejs`
+  );
+  const order_customerPath = path.resolve(
+    __dirname,
+    `./templates/order_customer.ejs`
+  );
+  const order_storePath = path.resolve(
+    __dirname,
+    `./templates/order_store.ejs`
+  );
+  let finalHTML;
+
+  if (Type === 'order') {
+    let accountingCompiled = ejs.compile(
+      fs.readFileSync(order_accountingPath, 'utf8'),
+      {
+        filename: order_accountingPath
+      }
+    );
+    let customerCompiled = ejs.compile(
+      fs.readFileSync(order_customerPath, 'utf8'),
+      {
+        filename: order_customerPath
+      }
+    );
+    let storeCompiled = ejs.compile(fs.readFileSync(order_storePath, 'utf8'), {
+      filename: order_storePath
+    });
+
+    finalHTML =
+      (await customerCompiled({ order, helpers })) +
+      (await storeCompiled({ order, helpers })) +
+      (await accountingCompiled({ order, helpers }));
+  } else {
+    let quoteCompiled = ejs.compile(fs.readFileSync(quotePath, 'utf8'), {
+      filename: quotePath
+    });
+    finalHTML = quoteCompiled({ order, helpers });
+  }
 
   if (process.env.NODE_ENV !== 'production') {
-    fs.writeFile('invoice.html', html, function (err) {
+    fs.writeFile('invoice.html', finalHTML, function (err) {
       console.log('HTML Saved');
     });
   }
 
-  let printHTML = configureHTML(html, template);
   let type = Type === 'order' ? 'Invoice' : 'Quote';
   let title = `${order.customer.name} ${type}`;
   let pdfTitle = title.replace(/\W/g, '');
-  let pdf = await createPDF(printHTML, pdfTitle);
+  let pdf = await createPDF(finalHTML, pdfTitle);
+
   if (process.env.NODE_ENV === 'production') {
     printPDF(pdf)
       .then((pdf) => {

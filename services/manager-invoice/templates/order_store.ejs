@@ -24,7 +24,7 @@
         <div class="Container BorderLine"></div>
         <%- include('./partials/customerSignature') %>
         <div class="Container BorderLine"></div>
-        <%- include('./partials/footer', { pageIndex: i+1, totalPages: order.pages.length  }) %>
+        <%- include('./partials/footer', { pageIndex: i+1, totalPages: order.pages.length, type: 'Store Copy'  }) %>
     </section>
     <% } else { %>
     <section class="Page">
@@ -34,7 +34,7 @@
         <div class="Container BorderLine"></div>
         <%- include('./partials/orderProducts', { type: 'Full', products: order.pages[i] }) %>
         <div class="Container BorderLine"></div>
-        <%- include('./partials/footer', { pageIndex: i+1, totalPages: order.pages.length  }) %>
+        <%- include('./partials/footer', { pageIndex: i+1, totalPages: order.pages.length, type: 'Store Copy'  }) %>
     </section>
     <% } %>
 
