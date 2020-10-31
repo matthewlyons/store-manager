@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <%- include('./partials/style') %>
+    <% for(var i=0; i < order.pages.length; i++) { %>
+
+    <%if (i === order.pages.length - 1) { %>
+    <section class="Page">
+        <%- include('./partials/header', { date: order.date, type: 'INVOICE' }) %>
+        <div class="Container BorderLine"></div>
+        <%- include('./partials/customerInformation', {customer: order.customer, address: order.address, estimatedStoreArrival: order.estimatedStoreArrival}) %>
+        <div class="Container BorderLine"></div>
+        <%- include('./partials/orderProducts', { type: 'Condensed', products: order.pages[i] }) %>
+        <div class="Container BorderLine"></div>
+        <%- include('./partials/noteSection') %>
+        <%- include('./partials/orderTotals') %>
+        <div class="Container BorderLine"></div>
+        <%- include('./partials/customerSignature') %>
+        <div class="Container BorderLine"></div>
+        <%- include('./partials/footer', { pageIndex: i+1, totalPages: order.pages.length, type: 'Customer Copy'  }) %>
+    </section>
+    <% } else { %>
+    <section class="Page">
+        <%- include('./partials/header', { date: order.date, type: 'INVOICE' }) %>
+        <div class="Container BorderLine"></div>
+        <%- include('./partials/customerInformation', {customer: order.customer, address: order.address, estimatedStoreArrival: order.estimatedStoreArrival}) %>
+        <div class="Container BorderLine"></div>
+        <%- include('./partials/orderProducts', { type: 'Full', products: order.pages[i] }) %>
+        <div class="Container BorderLine"></div>
+        <%- include('./partials/footer', { pageIndex: i+1, totalPages: order.pages.length, type: 'Customer Copy'  }) %>
+    </section>
+    <% } %>
+
+    <% } %>
+</body>
+
+</html>
