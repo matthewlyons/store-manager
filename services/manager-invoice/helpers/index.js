@@ -94,7 +94,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       let filePath = path.resolve(__dirname, '..', `invoices/${file}.pdf`);
       printer
-        .print(filePath)
+        .print(filePath, { win32: ['-print-settings duplexshort'] })
         .then((data) => {
           fs.unlinkSync(filePath);
           resolve('Success');
