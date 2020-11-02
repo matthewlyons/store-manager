@@ -12,14 +12,8 @@ export default function Loading() {
         setLoading(false);
         createAlert('Server Took Too Long To Respond');
       }
-    }, 10000);
+    }, 30000);
   }, [state.loading]);
-
-useEffect(()=>{
-  setTimeout(()=>{
-    console.log("Failed")
-  },5000)
-},[state.loading])
 
   return (
     <React.Fragment>
