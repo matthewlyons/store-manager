@@ -23,6 +23,12 @@ module.exports = {
       return false;
     }
   },
+  authFunction() {
+    return function (req, res, next) {
+      console.log(req.headers.authorization);
+      next();
+    };
+  },
   verifyCustomerAuth(token, access) {
     return true;
   },
