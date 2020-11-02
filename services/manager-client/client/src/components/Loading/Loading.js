@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import React, { useContext, useEffect  } from 'react';
-
-=======
 import React, { useContext, useEffect } from 'react';
 import { useAlert } from '../../customHooks';
->>>>>>> origin/master
 import { StoreContext } from '../../context/StoreContext';
 
 export default function Loading() {
