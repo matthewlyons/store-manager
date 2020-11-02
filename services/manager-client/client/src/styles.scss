@@ -124,9 +124,27 @@ $Primary-Color: #08543f;
   justify-content: center;
   align-items: center;
   color: white;
-  background: black;
   z-index: 10000;
-  opacity: 0.5;
+  .Text {
+    z-index: 1;
+    background: $Primary-Color;
+    padding: 0;
+    margin: 0;
+    color: white;
+    h1 {
+      z-index: 1;
+      padding: 0;
+      margin: 0;
+      margin: 10px 20px;
+    }
+  }
+  .Background {
+    opacity: 0.5;
+    background: black;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+  }
 }
 
 .Hidden {
