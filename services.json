@@ -36,14 +36,6 @@
     "port": 5004
   },
   {
-    "name": "static-assets-http",
-    "description": "HTTP Image Server",
-    "type": "Static",
-    "script": "http",
-    "env": "server",
-    "port": 5007
-  },
-  {
     "name": "touchscreen-api",
     "description": "Touchscreen Product API",
     "type": "Touchscreen",
@@ -56,6 +48,21 @@
     "type": "Manager",
     "env": "server",
     "port": 5006
+  },
+  {
+    "name": "static-assets-http",
+    "description": "HTTP Image Server",
+    "type": "Static",
+    "script": "http",
+    "env": "server",
+    "port": 5007
+  },
+  {
+    "name": "manager-scrape",
+    "description": "Vendor Scraping Api",
+    "type": "Manager",
+    "env": "server",
+    "port": 5008
   },
   {
     "name": "manager-client",
