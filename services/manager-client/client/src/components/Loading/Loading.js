@@ -7,12 +7,15 @@ export default function Loading() {
   const { createAlert } = useAlert();
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if (state.loading) {
         setLoading(false);
         createAlert('Server Took Too Long To Respond');
       }
     }, 30000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [state.loading]);
 
   return (
