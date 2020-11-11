@@ -21,6 +21,7 @@ const StoreProvider = ({ children }) => {
       axios({
         method: method,
         url,
+        timeout: 30000,
         headers: {
           Authorization: 'Bearer ' + state.apiAuth.token,
           Customer: 'Bearer ' + state.custAuth.token
@@ -33,8 +34,10 @@ const StoreProvider = ({ children }) => {
         .catch((err) => {
           if (err.response) {
             reject(err.response.data);
-          } else {
+          } else if (err.message === 'Network Error') {
             reject('Server Unresponsive');
+          } else {
+            reject('Server Took Too Long To Respond');
           }
         });
     });
