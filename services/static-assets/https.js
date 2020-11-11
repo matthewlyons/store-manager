@@ -18,6 +18,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(function (req, res, next) {
+  console.log('Time:', Date.now());
+  next();
+});
+
 // Get images
 app.use(express.static(path.resolve(__dirname, 'assets', 'converted')));
 app.use(express.static(path.resolve(__dirname, 'assets', 'bulk')));
@@ -51,7 +56,7 @@ https
     app
   )
   .listen(port, function () {
-    console.log(`Static Assets Listening on port ${port}.`);
+    console.log(`Static Assets Listening on HTTPS Port  ${port}.`);
   });
 
 // app.listen()

@@ -23,5 +23,5 @@ app.use('/', require('./routes'));
 const port = process.env.PORT || 5007;
 
 app.listen(port, () => {
-  console.log(`Static Assets Listening on ${port}!`);
+  console.log(`Static Assets Listening on HTTP Port ${port}.`);
 });
