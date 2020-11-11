@@ -1,7 +1,7 @@
 <section class="CustomerInformation Container">
     <h3 class="Font16 LH20 FlexFill">
         <%= customer.name %><br />
-        <%if (address.street) { %>
+        <%if (address?.street) { %>
         <%= address.street %><%if (address.unit) { %>, <%= address.unit %> <% } %>
         </br> <%= address.city %>, <%= address.state %> <%= address.zip %>
         <% } else { %>
