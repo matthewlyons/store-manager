@@ -14,6 +14,7 @@
     "status": "pm2 status",
     "dump": "pm2 flush",
     "kill": "pm2 kill",
+    "data": "node getTouchscreenData",
     "api": "nodemon ./services/manager-api/index.js",
     "client": "nodemon ./services/manager-client/index.js",
     "http": "nodemon ./services/static-assets/http.js",
