@@ -12,6 +12,8 @@ const collectionRoute = path.join(
   '/services/touchscreen-client/client/src/data/'
 );
 
+console.log(collectionRoute)
+
 function checkValid(str) {
   try {
     let json = JSON.parse(str);
@@ -41,6 +43,8 @@ function getInfo(i = 0) {
       setTimeout(() => {
         return getInfo(i + 1);
       }, 5000);
+    }).catch((err)=>{
+      console.log(err)
     });
 }
 
