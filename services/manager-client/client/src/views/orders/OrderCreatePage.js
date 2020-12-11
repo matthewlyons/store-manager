@@ -107,8 +107,6 @@ export default function OrderCreatePage(props) {
       driversLicense
     });
 
-    console.log(orderObj);
-
     makeRequest('post', 'api', '/orders/', orderObj)
       .then((res) => {
         let order = res.data;
@@ -118,6 +116,7 @@ export default function OrderCreatePage(props) {
         createAlert(error);
       });
   };
+
   // Update Order
   const updateOrder = () => {
     let orderObj = getOrder({

@@ -258,12 +258,27 @@ export default function OrderFormProducts(props) {
 
   // Add Custom Product
   const addCustomProduct = () => {
+    if (!customProduct.sku) {
+      createAlert('Sku Required');
+      return;
+    }
+    if (!customProduct.price) {
+      createAlert('Price Required');
+      return;
+    }
+    if (customProduct.vendor.name === '') {
+      createAlert('Vendor Required');
+      return;
+    }
+
     setProducts([...products, { ...customProduct }]);
+    console.log(customProduct);
     setCustomProductModal(false);
     setCustomProduct({
       title: '',
       quantity: 1,
       status: 'Special Order',
+      custom: true,
       vendor: { name: '' },
       notes: []
     });
@@ -336,10 +351,6 @@ export default function OrderFormProducts(props) {
         createAlert(error);
       });
   }, [state]);
-
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
 
   return (
     <React.Fragment>
