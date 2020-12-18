@@ -61,6 +61,15 @@ router
 router
   .route('/:id')
   // Update Vendor
+  .get(async (req, res) => {
+    Vendor.findOne({ _id: req.params.id }).exec(function (err, order) {
+      if (err)
+        return res
+          .status(404)
+          .json({ errors: [{ message: 'No Vendor Found' }] });
+      res.json(order);
+    });
+  })
   .put(async (req, res) => {
     await Vendor.updateOne({ _id: req.params.id }, req.body);
     let NewVendor = await Vendor.findOne({ _id: req.params.id });
