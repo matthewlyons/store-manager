@@ -38,6 +38,8 @@ import Login from './views/login/Login';
 import ErrorHandler from './components/ErrorHandler';
 // Vendor Pages
 import VendorHomepage from './views/vendor/VendorHomepage';
+import VendorView from './views/vendor/VendorView';
+import Vendor_PruchaseOrder from './views/vendor/Vendor_PruchaseOrder';
 
 function App() {
   const { width } = useWindowDimensions();
@@ -129,10 +131,12 @@ function App() {
               />
               <PrivateRoute exact path="/Images" component={ImagesHome} />
               <PrivateRoute exact path="/Settings" component={Settings} />
+              <PrivateRoute exact path="/Vendor" component={VendorHomepage} />
+              <PrivateRoute exact path="/Vendor/:id" component={VendorView} />
               <PrivateRoute
                 exact
-                path="/Vendor/:id"
-                component={VendorHomepage}
+                path="/Vendor/Purchase/:id"
+                component={Vendor_PruchaseOrder}
               />
               <Route exact path="/Login">
                 <Login />

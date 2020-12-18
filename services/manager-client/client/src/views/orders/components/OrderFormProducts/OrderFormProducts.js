@@ -153,7 +153,7 @@ export default function OrderFormProducts(props) {
           if (res.data.length > 0) {
             setDatabaseArray(res.data);
           } else {
-            setError('No Products Found');
+            createAlert('No Products Found');
           }
         })
         .catch((error) => {
