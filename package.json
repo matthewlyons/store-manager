@@ -37,6 +37,12 @@
     "build-touchscreen": "cd services/touchscreen-client/client && npm i && npm run build",
     "build": "npm run build-client && npm run build-touchscreen"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "./services/manager-client/client",
+      "./services/touchscreen-client/client"
+    ]
+  },
   "keywords": [],
   "author": "Matthew Lyons",
   "license": "ISC",
