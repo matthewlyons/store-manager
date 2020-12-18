@@ -24,8 +24,20 @@ module.exports = {
     }
   },
   authFunction() {
-    return function (req, res, next) {
-      console.log(req.headers.authorization);
+    return async function (req, res, next) {
+      try {
+        let token = req.headers.authorization.split(' ')[1];
+        let response = jwt.verify(token, process.env.API_SECRET);
+        let { _id } = response.user;
+        let user = await User.findById(_id);
+        if (!user) {
+          return res
+            .status(401)
+            .json({ errors: [{ message: 'Unauthorized' }] });
+        }
+      } catch (error) {
+        return res.status(401).json({ errors: [{ message: 'Unauthorized' }] });
+      }
       next();
     };
   },
