@@ -13,6 +13,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import KingBedIcon from '@material-ui/icons/KingBed';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ImageIcon from '@material-ui/icons/Image';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 
 import {
   Drawer,
@@ -127,6 +128,11 @@ export default function Sidebar() {
         />
         <ListItemLink to="/Upload" primary="Upload" icon={<BackupIcon />} />
         <ListItemLink to="/Images" primary="Images" icon={<ImageIcon />} />
+        <ListItemLink
+          to="/Vendor"
+          primary="Vendors"
+          icon={<LocalShippingIcon />}
+        />
         <ListItemLink
           to="/Settings"
           primary="Settings"
