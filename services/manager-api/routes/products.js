@@ -126,6 +126,28 @@ router.get('/Search/:Query', async (req, res) => {
     });
 });
 
+router.get('/Vendor/:vendor/Search/:query', async (req, res) => {
+  console.log('Finding Products');
+  let { query, vendor } = req.params;
+  Product.find({
+    vendor,
+    $or: [
+      { sku: { $regex: new RegExp(query, 'i') } },
+      { title: { $regex: new RegExp(query, 'i') } },
+      { vendorCollection: { $regex: new RegExp(query, 'i') } }
+    ]
+  })
+    .limit(50)
+    .populate('vendor')
+    .then((products) => {
+      res.json(products);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json([]);
+    });
+});
+
 router.get('/color', async (req, res) => {
   Product.find({ color: { $ne: null } })
     .limit(50)
