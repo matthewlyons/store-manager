@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const VendorSchema = new mongoose.Schema({
+const VendorSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -13,7 +14,7 @@ const VendorSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
-  VendorCode: {
+  baseVendorCode: {
     type: String
   },
   vendorCodes: [
@@ -26,6 +27,31 @@ const VendorSchema = new mongoose.Schema({
         type: String,
         required: true
       }
+    }
+  ],
+  contactInformation: {
+    purchaseOrderEmail: {
+      type: String
+    },
+    contacts: [
+      {
+        name: {
+          type: String,
+          required: true
+        },
+        email: {
+          type: String
+        },
+        phone: {
+          type: String
+        }
+      }
+    ]
+  },
+  purchaseOrders: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'purchaseOrder'
     }
   ],
   date: {

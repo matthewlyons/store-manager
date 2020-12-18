@@ -1,15 +1,24 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const PurchaseOrderSchema = new mongoose.Schema({
+const PurchaseOrderSchema = new Schema({
   vendor: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'vendor',
     required: true
   },
   products: [
     {
+      date: {
+        type: String,
+        required: true
+      },
       sku: {
         type: String,
         required: true
+      },
+      vendorCollection: {
+        type: String
       },
       title: {
         type: String,
@@ -19,7 +28,7 @@ const PurchaseOrderSchema = new mongoose.Schema({
         type: String,
         required: true
       },
-      customer: {
+      name: {
         type: String,
         required: true
       }
