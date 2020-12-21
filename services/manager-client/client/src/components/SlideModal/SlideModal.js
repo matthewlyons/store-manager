@@ -8,7 +8,8 @@ import {
   Slide,
   Typography,
   Grid,
-  Divider
+  Divider,
+  Button
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SlideModal(props) {
-  const { open, close, children, title } = props;
+  const { open, close, children, title, action } = props;
   const classes = useStyles();
   return (
     <Dialog open={open} onBackdropClick={close}>
@@ -49,9 +50,28 @@ export default function SlideModal(props) {
       >
         <Paper elevation={4} className={classes.paper} square>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Typography variant="h6">{title}</Typography>
-            </Grid>
+            {action ? (
+              <Grid item className="flex flexBaseline" xs={12}>
+                <Typography
+                  variant="h6"
+                  className="flexSpacer"
+                  style={{ textAlign: 'left' }}
+                >
+                  {title}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={action.function}
+                >
+                  {action.title}
+                </Button>
+              </Grid>
+            ) : (
+              <Grid item xs={12}>
+                <Typography variant="h6">{title}</Typography>
+              </Grid>
+            )}
             <Grid item xs={12}>
               <Divider />
             </Grid>

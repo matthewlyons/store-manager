@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useMemo } from 'react';
 
 import { useAlert } from '../../../../customHooks';
 
@@ -184,6 +184,8 @@ export default function OrderCustomerInfo(props) {
 
   const removeCustomer = () => {
     setCustomerID('');
+    setCustomer({});
+    setCustomerModal(false);
     setStaticValues({ ...staticValues, delivery: false });
   };
 
@@ -217,6 +219,22 @@ export default function OrderCustomerInfo(props) {
     );
     setRecommendedDeposit(recommended);
   }, [orderValues]);
+
+  useEffect(() => {
+    console.log('OrderCustomerInfo');
+    console.log(customer);
+  }, [customer]);
+
+  let action = useMemo(() => {
+    let response;
+    if (customerID) {
+      response = {
+        title: 'Remove Customer',
+        function: removeCustomer
+      };
+    }
+    return response;
+  }, [customerID]);
 
   let editCustomerAction;
   if (customerID && edit !== true) {
@@ -534,7 +552,7 @@ export default function OrderCustomerInfo(props) {
         customerID={customerID}
         updateCustomer={updateCustomer}
         createCustomer={createCustomer}
-        removeCustomer={removeCustomer}
+        action={action}
         close={() => {
           toggleModal('customer');
         }}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useMemo } from 'react';
 import { useAlert, useOrder } from '../../customHooks';
 import { Prompt } from 'react-router-dom';
 
@@ -46,7 +46,6 @@ export default function OrderCreatePage(props) {
 
   // State
   const [type, setType] = useState('Create');
-  const [title, setTitle] = useState('');
   const [customerID, setCustomerID] = useState(undefined);
   const [customer, setCustomer] = useState({});
 
@@ -198,15 +197,30 @@ export default function OrderCreatePage(props) {
           setCustomerID(orderCustomer._id);
           setCustomer({ ...orderCustomer });
           setNote(note);
-          setTitle('Update Order.');
+          // setTitle('Update Order.');
         })
         .catch((error) => {
           createAlert(error);
         });
     } else {
-      setTitle('New Order.');
+      // setTitle('New Order.');
     }
   }, []);
+
+  let title = useMemo(() => {
+    let response;
+    if (props.location.state?.id) {
+      response = 'Update Order.';
+    } else {
+      if (customer.name) {
+        response = `New Order for ${customer.name}.`;
+      } else {
+        response = 'New Order.';
+      }
+    }
+
+    return response;
+  }, [props.location.state, customer, customerID]);
 
   // Set Customer ID from Params
   useEffect(() => {
@@ -242,7 +256,7 @@ export default function OrderCreatePage(props) {
       makeRequest('get', 'api', `/customers/${customerID}`)
         .then((res) => {
           setCustomer(res.data);
-          setTitle(`New Order for ${res.data.name}.`);
+          // setTitle(`New Order for ${res.data.name}.`);
           if (res.data.addresses?.length > 0) {
             setAddress({ ...res.data.addresses[0] });
           }

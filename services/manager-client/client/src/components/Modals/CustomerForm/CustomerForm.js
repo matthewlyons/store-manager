@@ -55,7 +55,8 @@ export default function CustomerForm(props) {
     open,
     close,
     createCustomer,
-    updateCustomer
+    updateCustomer,
+    action
   } = props;
 
   useEffect(() => {
@@ -64,10 +65,6 @@ export default function CustomerForm(props) {
     }
   }, [open]);
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
   let title = customerID ? 'Edit Customer' : 'Create Customer';
 
   const [customerState, setCustomerState] = useState({
@@ -75,6 +72,16 @@ export default function CustomerForm(props) {
     phone: [],
     email: []
   });
+
+  useEffect(() => {
+    if (!customerID) {
+      setCustomerState({
+        addresses: [],
+        phone: [],
+        email: []
+      });
+    }
+  }, [customerID]);
 
   const [newAddress, setNewAddress] = useState(null);
 
@@ -210,7 +217,12 @@ export default function CustomerForm(props) {
   };
 
   return (
-    <SlideModal open={open} close={close} title={title}>
+    <SlideModal
+      open={open}
+      close={close}
+      title={title}
+      action={action ? action : null}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
