@@ -47,18 +47,7 @@ module.exports = {
     }
     return chunkPages();
   },
-  configureHTML(html, type) {
-    switch (type) {
-      case 'order':
-        return html + html;
-        break;
-      case 'quote':
-        return html;
-        break;
-      default:
-        break;
-    }
-  },
+
   async emailInvoice(file, email) {
     let transporter = nodemailer.createTransport(mailerConfig);
     let filePath = path.resolve(__dirname, '..', `invoices/${file}.pdf`);
@@ -90,9 +79,40 @@ module.exports = {
       });
     });
   },
+  async emailPurchaseOrder(file, email) {
+    let transporter = nodemailer.createTransport(mailerConfig);
+    let filePath = path.resolve(__dirname, '..', `invoices/${file}.pdf`);
+    let mailOptions = {
+      from: 'Vancouver Woodworks <sales@vancouverwoodworks.com>',
+      to: email,
+      subject: 'Vancouver Woodworks Purchase Order',
+      html:
+        '<body><p>Please let me know if you have questions.</p><p></p><p>Have a great day!</p></body>',
+      attachments: [
+        {
+          filename: `${file}.pdf`,
+          path: filePath,
+          contentType: 'application/pdf'
+        }
+      ]
+    };
+
+    return new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, function (error) {
+        if (error) {
+          console.log(error);
+          fs.unlinkSync(filePath);
+          reject(error);
+        } else {
+          fs.unlinkSync(filePath);
+          resolve('Success');
+        }
+      });
+    });
+  },
   async printPDF(file) {
     return new Promise((resolve, reject) => {
-      let filePath = path.resolve(__dirname, '..', `invoices/${file}.pdf`);
+      let filePath = path.resolve(__dirname, '..', file);
       printer
         .print(filePath)
         .then((data) => {

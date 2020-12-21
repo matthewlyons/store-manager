@@ -8,8 +8,8 @@ const path = require('path');
 const _ = require('lodash');
 
 const {
-  configureHTML,
   emailInvoice,
+  emailPurchaseOrder,
   processOrder,
   createPDF,
   printPDF
@@ -109,7 +109,7 @@ app.post('/Print/:Type', async (req, res) => {
   let pdf = await createPDF(finalHTML, pdfTitle);
 
   if (process.env.NODE_ENV === 'production') {
-    printPDF(pdf)
+    printPDF(`invoices/${pdf}.pdf`)
       .then((pdf) => {
         res.send('Printing...');
       })
