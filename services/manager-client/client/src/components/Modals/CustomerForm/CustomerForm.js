@@ -165,7 +165,7 @@ export default function CustomerForm(props) {
     let name = str.split('-');
     let index = Number(name[1]);
     let updatedCustomer = customerState;
-    updatedCustomer.email[index] = event.target.value;
+    updatedCustomer.email[index] = event.target.value.trim();
     setCustomerState({ ...updatedCustomer });
   };
 
