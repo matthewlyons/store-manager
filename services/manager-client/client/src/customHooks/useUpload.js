@@ -124,7 +124,7 @@ export default function useUpload() {
       return {
         sku: obj.sku,
         price: Math.round(obj['our price']),
-        compare_at_price: Math.round(obj['list price']),
+        compare_at_price: Math.round(obj.compare_at_price),
         title: obj.title,
         vendor,
         vendorCollection: obj.vendorCollection,
