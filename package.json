@@ -71,7 +71,7 @@
     "mongoose": "^5.10.9",
     "nodemailer": "^6.4.11",
     "pdf-to-printer": "^1.4.0",
-    "puppeteer": "^2.1.1",
+    "puppeteer": "^7.0.4",
     "selfsigned": "^1.10.8",
     "sharp": "^0.25.4",
     "smartcrop": "^2.0.3",

@@ -118,7 +118,9 @@ export default function OrderViewPage(props) {
     })
       .then((res) => {
         setLoading(false);
+        setEmailModal(false);
         createAlert(res.data, false);
+        setOrder({ ...order, emailNotification: true });
       })
       .catch((error) => {
         setLoading(false);
@@ -191,7 +193,9 @@ export default function OrderViewPage(props) {
                   toggleModal('email');
                 }}
               >
-                Email Invoice
+                {order.emailNotification
+                  ? 'Resend Email Invoice'
+                  : 'Email Invoice'}
               </MenuItem>
             </Menu>
           ) : (

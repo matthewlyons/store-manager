@@ -126,7 +126,6 @@ const OrderSchema = new Schema({
       }
     }
   },
-
   delivery: {
     type: Boolean
   },
@@ -169,6 +168,10 @@ const OrderSchema = new Schema({
   customer: {
     type: Schema.Types.ObjectId,
     ref: 'customer'
+  },
+  emailNotification: {
+    type: Boolean,
+    default: false
   },
   employee: {
     type: String,

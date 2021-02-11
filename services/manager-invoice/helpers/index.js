@@ -131,7 +131,7 @@ module.exports = {
       const page = await browser.newPage();
 
       await page.setContent(html);
-      await page.emulateMedia('screen');
+      await page.emulateMediaType('screen');
 
       await page.pdf({
         path: path.resolve(__dirname, '..' + `/invoices/${title}.pdf`),

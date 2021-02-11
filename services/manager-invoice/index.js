@@ -6,6 +6,10 @@ const bodyParser = require('body-parser');
 const Moment = require('moment');
 const path = require('path');
 const _ = require('lodash');
+const { connectDB } = require('../../common/helpers');
+
+// MongoDB Models
+const { Order, DraftOrder } = require('../../common/models/Order');
 
 const {
   emailInvoice,
@@ -14,6 +18,10 @@ const {
   createPDF,
   printPDF
 } = require('./helpers');
+
+connectDB().then((message) => {
+  console.log(`Invoice API: ${message}`);
+});
 
 const app = express();
 
@@ -126,14 +134,30 @@ app.post('/Print/:Type', async (req, res) => {
 app.post('/Email/:Type', async (req, res) => {
   let { Type } = req.params;
   let email = req.body.email;
+
+  let dbOrder;
+
+  if (Type === 'order') {
+    dbOrder = await Order.findById(req.body.order._id);
+  } else {
+    dbOrder = await DraftOrder.findById(req.body.order._id);
+  }
+
+  if (!dbOrder.emailNotification) {
+    dbOrder.emailNotification = true;
+    dbOrder.save();
+  }
+
   let order = processOrder(req.body.order);
 
   let template = Type === 'order' ? 'order' : 'quote';
 
   const filePath = path.resolve(__dirname, `./templates/${template}.ejs`);
+
   let compiled = ejs.compile(fs.readFileSync(filePath, 'utf8'), {
     filename: filePath
   });
+
   let html = compiled({ order, helpers });
   let type = Type === 'order' ? 'Invoice' : 'Quote';
   let title = `${order.customer.name} ${type}`;
