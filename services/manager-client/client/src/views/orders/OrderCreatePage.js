@@ -69,7 +69,7 @@ export default function OrderCreatePage(props) {
     delivery: false,
     deliveryFee: 99,
     topLine: false,
-    taxRate: 0.084
+    taxRate: 0.085
   });
 
   // Products in Order
