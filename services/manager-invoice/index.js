@@ -131,19 +131,6 @@ app.post('/Email/:Type', async (req, res) => {
   let { Type } = req.params;
   let email = req.body.email;
 
-  let dbOrder;
-
-  if (Type === 'order') {
-    dbOrder = await Order.findById(req.body.order._id);
-  } else {
-    dbOrder = await DraftOrder.findById(req.body.order._id);
-  }
-
-  if (!dbOrder.emailNotification) {
-    dbOrder.emailNotification = true;
-    dbOrder.save();
-  }
-
   let order = processOrder(req.body.order);
 
   let template = Type === 'order' ? 'order' : 'quote';
