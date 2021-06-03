@@ -100,6 +100,8 @@ export default function OrderFormProducts(props) {
   const [customProduct, setCustomProduct] = useState({
     sku: '',
     color: '',
+    hardware: '',
+    wood: '',
     title: '',
     quantity: 1,
     status: 'Special Order',
@@ -271,8 +273,29 @@ export default function OrderFormProducts(props) {
       return;
     }
 
+    if (
+      customProduct.vendor.name === 'Country Values' ||
+      customProduct.vendor.name === 'NW Furniture' ||
+      customProduct.vendor.name === 'Fusion Designs' ||
+      customProduct.vendor.name === 'Oakcrafts'
+    ) {
+      if (customProduct.color === '') {
+        createAlert('Color Required');
+        return;
+      }
+      if (customProduct.wood === '') {
+        createAlert('Wood Type Required');
+        return;
+      }
+      if (customProduct.hardware === '') {
+        createAlert('Hardware Required');
+        return;
+      }
+    }
+
     setProducts([...products, { ...customProduct }]);
     console.log(customProduct);
+
     setCustomProductModal(false);
     setCustomProduct({
       title: '',
@@ -408,6 +431,16 @@ export default function OrderFormProducts(props) {
                     <Typography variant="subtitle1">
                       -Color: {product.color}
                     </Typography>
+                    {product.hardware && (
+                      <Typography variant="subtitle1">
+                        -Hardware: {product.hardware}
+                      </Typography>
+                    )}
+                    {product.wood && (
+                      <Typography variant="subtitle1">
+                        -Wood Type: {product.wood}
+                      </Typography>
+                    )}
                     {product.notes.map((note, i) => {
                       return (
                         <Typography variant="subtitle1" key={note + i}>
@@ -636,6 +669,26 @@ export default function OrderFormProducts(props) {
               />
             </Grid>
             <Grid item xs={12}>
+              <TextField
+                fullWidth={true}
+                label="Hardware"
+                variant="outlined"
+                name="hardware"
+                value={products[editIndex].hardware}
+                onChange={editProduct}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth={true}
+                label="Wood Type"
+                variant="outlined"
+                name="wood"
+                value={products[editIndex].wood}
+                onChange={editProduct}
+              />
+            </Grid>
+            <Grid item xs={12}>
               <Divider />
             </Grid>
             <Grid item xs={12}>
@@ -724,6 +777,7 @@ export default function OrderFormProducts(props) {
               onChange={editCustomProduct}
             />
           </Grid>
+
           <Grid item xs={6}>
             <TextField
               fullWidth={true}
@@ -731,6 +785,26 @@ export default function OrderFormProducts(props) {
               variant="outlined"
               name="color"
               value={customProduct.color}
+              onChange={editCustomProduct}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth={true}
+              label="Hardware"
+              variant="outlined"
+              name="hardware"
+              value={customProduct.hardware}
+              onChange={editCustomProduct}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth={true}
+              label="Wood Type"
+              variant="outlined"
+              name="wood"
+              value={customProduct.wood}
               onChange={editCustomProduct}
             />
           </Grid>

@@ -39,7 +39,7 @@ export default function OrderProducts(props) {
             key={product.sku + i}
             className={tableClass}
             onClick={() => {
-              click('product', i);
+              console.log('product', i);
             }}
           >
             <div className={classes.product}>

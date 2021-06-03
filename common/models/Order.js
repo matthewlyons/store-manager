@@ -52,6 +52,12 @@ const OrderSchema = new Schema({
             return v !== '';
           }
         },
+        hardware: {
+          type: String
+        },
+        wood: {
+          type: String
+        },
         custom: {
           type: Boolean,
           default: false
