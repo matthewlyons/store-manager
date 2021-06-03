@@ -121,26 +121,29 @@ module.exports = {
         })
         .catch((err) => {
           console.log(err);
-          reject('Failure');
+          reject(err);
         });
     });
   },
   async createPDF(html, title) {
     try {
       const browser = await puppeteer.launch();
+
       const page = await browser.newPage();
 
       await page.setContent(html);
       await page.emulateMediaType('screen');
-
+    
       await page.pdf({
         path: path.resolve(__dirname, '..' + `/invoices/${title}.pdf`),
         format: 'letter'
       });
+      console.log("Created Page")
       await browser.close();
       process.exit;
       return title;
     } catch (e) {
+      console.log('Handlebars Error')
       console.log(e);
     }
   }

@@ -30,7 +30,11 @@ export default function Login() {
   useEffect(() => {
     makeRequest('get', 'auth', '/users/')
       .then((res) => {
-        setData({ ...data, users: res.data });
+
+        let users = res.data;
+        let updatedUsers = res.data.filter((value)=>value.name!=='Josh');
+
+        setData({ ...data, users: updatedUsers });
       })
       .catch((error) => {
         createAlert(error);
