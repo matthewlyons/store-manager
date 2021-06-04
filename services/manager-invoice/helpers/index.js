@@ -22,6 +22,12 @@ module.exports = {
 
     let productList = order.products.map((product) => {
       let notes = product.notes.length * 16;
+      if (product.hardware !== '') {
+        notes = notes + 16;
+      }
+      if (product.wood !== '') {
+        notes = notes + 16;
+      }
       let total = notes + 28 + 10;
       return { ...product, pixels: total };
     });
@@ -55,8 +61,7 @@ module.exports = {
       from: 'Vancouver Woodworks <sales@vancouverwoodworks.com>',
       to: email,
       subject: 'Thank you for your order!',
-      html:
-        '<body><p>Please let me know if you have questions.</p><p></p><p>Have a great day!</p></body>',
+      html: '<body><p>Please let me know if you have questions.</p><p></p><p>Have a great day!</p></body>',
       attachments: [
         {
           filename: `${file}.pdf`,
@@ -86,8 +91,7 @@ module.exports = {
       from: 'Vancouver Woodworks <sales@vancouverwoodworks.com>',
       to: email,
       subject: 'Vancouver Woodworks Purchase Order',
-      html:
-        '<body><p>Please let me know if you have questions.</p><p></p><p>Have a great day!</p></body>',
+      html: '<body><p>Please let me know if you have questions.</p><p></p><p>Have a great day!</p></body>',
       attachments: [
         {
           filename: `${file}.pdf`,
@@ -133,17 +137,17 @@ module.exports = {
 
       await page.setContent(html);
       await page.emulateMediaType('screen');
-    
+
       await page.pdf({
         path: path.resolve(__dirname, '..' + `/invoices/${title}.pdf`),
         format: 'letter'
       });
-      console.log("Created Page")
+      console.log('Created Page');
       await browser.close();
       process.exit;
       return title;
     } catch (e) {
-      console.log('Handlebars Error')
+      console.log('Handlebars Error');
       console.log(e);
     }
   }
