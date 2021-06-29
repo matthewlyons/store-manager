@@ -14,7 +14,7 @@
                 <td class="TextCenter Regular Font14">
                     <%= products[i].quantity %>
                 </td>
-                <td class="Regular Font14 <%if (products[i].notes.length < 1 ) { %>Last<% } %>">
+                <td class="Regular Font14">
                     <%= helpers.properCase(products[i].vendorCollection) %>
                         <%= helpers.properCase(products[i].title) %><br />
                             <%= products[i].vendor.name %> |
@@ -35,14 +35,15 @@
             <%if (products[i].hardware) { %>
                 <tr>
                     <td></td>
-                    <td colspan="5">-Hardware: <%= products[i].hardware %>
+                    <td class="Font14" colspan="5">-Hardware: <%= products[i].hardware %>
                     </td>
                 </tr>
                 <% } %>
+
                     <%if (products[i].wood) { %>
                         <tr>
                             <td></td>
-                            <td colspan="5">-Wood: <%= products[i].wood %>
+                            <td class="Font14" colspan="5">-Wood: <%= products[i].wood %>
                             </td>
                         </tr>
                         <% } %>
@@ -50,11 +51,11 @@
                             <% for(var j=0; j < products[i].notes.length; j++) { %>
                                 <tr>
                                     <td></td>
-                                    <td <%if (j+1==products[i].notes.length) { %>class="Last" <% } %> colspan="5">-<%=
-                                                products[i].notes[j] %>
+                                    <td class="Font14" colspan="5">-<%= products[i].notes[j] %>
                                     </td>
                                 </tr>
                                 <% } %>
+                                    <tr class="Last"></tr>
                                     <% } %>
     </table>
 </section>
