@@ -8,14 +8,19 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const User = require('../../models/User');
 
 module.exports = {
-  async connectDB() {
+  async connectDB(URI) {
     let DB;
-    if (process.env.NODE_ENV === 'test') {
-      mongoServer = new MongoMemoryServer();
-      DB = await mongoServer.getUri();
+    if (URI) {
+      DB = URI;
     } else {
-      DB = process.env.MONGO_URI;
+      if (process.env.NODE_ENV === 'test') {
+        mongoServer = new MongoMemoryServer();
+        DB = await mongoServer.getUri();
+      } else {
+        DB = process.env.MONGO_URI;
+      }
     }
+    console.log(DB);
     return new Promise((resolve, reject) => {
       mongoose
         .connect(DB, {
