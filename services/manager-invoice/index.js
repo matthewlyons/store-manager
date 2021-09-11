@@ -18,7 +18,6 @@ const {
   printPDF
 } = require('./helpers');
 
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -101,30 +100,20 @@ app.post('/Print/:Type', async (req, res) => {
     finalHTML = quoteCompiled({ order, helpers });
   }
 
-  if (process.env.NODE_ENV !== 'production') {
-    fs.writeFile('invoice.html', finalHTML, function (err) {
-      console.log('HTML Saved');
-    });
-  }
-
   let type = Type === 'order' ? 'Invoice' : 'Quote';
   let title = `${order.customer.name} ${type}`;
   let pdfTitle = title.replace(/\W/g, '');
   let pdf = await createPDF(finalHTML, pdfTitle);
 
-  if (process.env.NODE_ENV === 'production') {
-    printPDF(`invoices/${pdf}.pdf`)
-      .then((pdf) => {
-        res.send('Printing...');
-      })
-      .catch((pdf) => {
-        return res.status(500).json({
-          errors: [{ message: pdf }]
-        });
+  printPDF(`invoices/${pdf}.pdf`)
+    .then((pdf) => {
+      res.send('Printing...');
+    })
+    .catch((pdf) => {
+      return res.status(500).json({
+        errors: [{ message: pdf }]
       });
-  } else {
-    res.send('Printing...');
-  }
+    });
 });
 
 app.post('/Email/:Type', async (req, res) => {
