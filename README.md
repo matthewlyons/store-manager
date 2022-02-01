@@ -22,6 +22,4 @@ The demo version does not include features like:
 - [Material-UI](https://material-ui.com/) - React Base Component Library
 - [Express](https://expressjs.com/) - Server / Framework
 - [MongoDB](https://www.mongodb.com/) - Persistant Document Storage
-- [JWT](https://jwt.io/) - Auth Token Generation
 - [Puppeteer](https://github.com/puppeteer/puppeteer) & [HandlebarsJS](https://handlebarsjs.com/) - Invoice Generator
-- [PM2](https://pm2.keymetrics.io/) - Manages the Deployed Services
