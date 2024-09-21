@@ -140,6 +140,37 @@ app.get("/html", async (req, res) => {
   res.send(html);
 });
 
+app.post("/api/print", async (req, res) => {
+  let { title, html } = req.params;
+
+  let pdf = await createPDF(html, title);
+
+  printPDF(`invoices/${pdf}.pdf`)
+    .then((pdf) => {
+      res.send("Printing...");
+    })
+    .catch((pdf) => {
+      return res.status(500).json({
+        errors: [{ message: pdf }],
+      });
+    });
+});
+app.post("/api/email", async (req, res) => {
+  let { title, html } = req.params;
+
+  let pdf = await createPDF(html, title);
+
+  emailInvoice(pdf, email)
+    .then(() => {
+      res.send("Email Sent");
+    })
+    .catch(() => {
+      res.json({
+        errors: [{ message: "Could Not Send Email" }],
+      });
+    });
+});
+
 app.post("/Print/:Type", async (req, res) => {
   let { Type } = req.params;
 
@@ -181,7 +212,7 @@ app.post("/Print/:Type", async (req, res) => {
 
     finalHTML =
       (await customerCompiled({ order, helpers })) +
-      (await storeCompiled({ order, helpers })) +
+      // (await storeCompiled({ order, helpers })) +
       (await accountingCompiled({ order, helpers }));
   } else {
     let quoteCompiled = ejs.compile(fs.readFileSync(quotePath, "utf8"), {
